@@ -1,0 +1,49 @@
+version: '3.3'
+
+networks:
+  db:
+  api:
+
+services:
+  
+  mongodb:
+    image: mongo:4.2.0
+    container_name: mongodb
+    command: mongod
+    restart: always
+    # ports:
+    #   - 27017:27017
+    volumes:
+      - ./database/db:/data/db
+    networks:
+      - db
+  
+  flask_api:
+    image: kingwill/projects:coen424-project-api-1.0
+    container_name: flask_api
+    depends_on:
+        - mongodb
+    environment: 
+      - MONGODB_HOST=mongodb
+      - MONGODB_PORT=27017
+    env_file:
+      - ./API/.env
+    restart: always
+    volumes:
+      - ./API/logs:/app/logs
+    expose:
+      - 8080
+    networks:
+      - db
+      - api
+  
+  nginx:
+    image: kingwill/projects:coen424-project-nginx-1.0
+    container_name: nginx
+    depends_on:
+        - flask_api
+    restart: always
+    ports:
+      - 80:80
+    networks:
+      - api

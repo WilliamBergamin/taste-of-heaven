@@ -1,0 +1,16 @@
+venv/
+.env
+
+*.pyc
+__pycache__/
+
+instance/
+
+.idea/
+
+.idea
+
+/database/db
+
+/API/logs
+
