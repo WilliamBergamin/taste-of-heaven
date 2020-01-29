@@ -19,7 +19,7 @@ public class Main extends Application {
     @Override
     public void start(Stage primaryStage) throws Exception{
 //        Parent root = FXMLLoader.load(getClass().getResource("sample.fxml"));
-        TextField textField = new TextField();
+        final TextField textField = new TextField();
 
         Button btn = new Button();
         btn.setText("enter");
@@ -43,7 +43,7 @@ public class Main extends Application {
         grid.add(textField, 1, 0);
         grid.add(btn, 1, 1);
 
-        primaryStage.setTitle("hola");
+        primaryStage.setTitle("taste-of-heaven");
         StackPane root = new StackPane();
         root.getChildren().add(grid);
         primaryStage.setScene(new Scene(root, 900, 400));
