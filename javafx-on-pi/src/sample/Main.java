@@ -2,11 +2,10 @@ package sample;
 
 import javafx.application.Application;
 import javafx.event.EventHandler;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
+import javafx.geometry.Pos;
 import javafx.scene.Scene;
-import javafx.scene.layout.GridPane;
-import javafx.scene.layout.StackPane;
+import javafx.scene.control.Alert;
+import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import javafx.scene.control.Label;
 import javafx.scene.control.Button;
@@ -16,11 +15,20 @@ import javafx.geometry.Insets;
 
 public class Main extends Application {
 
+    private Stage primaryStage;
+
     @Override
     public void start(Stage primaryStage) throws Exception{
-//        Parent root = FXMLLoader.load(getClass().getResource("sample.fxml"));
-        final TextField textField = new TextField();
 
+        this.primaryStage = primaryStage;
+
+        VBox vb = new VBox();
+        vb.setPadding(new Insets(10, 50, 50, 50));
+        vb.setSpacing(10);
+        vb.setAlignment(Pos.CENTER);
+
+        final TextField textField = new TextField();
+        textField.setMaxWidth(200);
         Button btn = new Button();
         btn.setText("enter");
         btn.setStyle("-fx-background-color: #7e7e7e;\n" +
@@ -28,28 +36,33 @@ public class Main extends Application {
                 "    -fx-background-insets: 0;\n" +
                 "    -fx-text-fill: white;");
         btn.setOnAction(new EventHandler<ActionEvent>() {
-
             @Override
             public void handle(ActionEvent event) {
-               System.out.println(textField.getText());
+                String token = textField.getText();
+                if (!token.isEmpty()) {
+                    nextScenes();
+                }else{
+                    Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                    alert.setHeaderText(null);
+                    alert.setContentText("We Need a Token!");
+                    alert.show();
+                }
             }
         });
 
-        GridPane grid = new GridPane();
-        grid.setVgap(3);
-        grid.setHgap(3);
-        grid.setPadding(new Insets(5, 5, 5, 5));
-        grid.add(new Label("To: "), 0, 0);
-        grid.add(textField, 1, 0);
-        grid.add(btn, 1, 1);
+        vb.getChildren().add(new Label("Machine token: "));
+        vb.getChildren().add(textField);
+        vb.getChildren().add(btn);
 
         primaryStage.setTitle("taste-of-heaven");
-        StackPane root = new StackPane();
-        root.getChildren().add(grid);
-        primaryStage.setScene(new Scene(root, 900, 400));
+        primaryStage.setScene(new Scene(vb, 900, 400));
         primaryStage.show();
     }
 
+    private void nextScenes(){
+        Scene2 scene2 = new Scene2();
+        scene2.getScene(primaryStage);
+    }
 
     public static void main(String[] args) {
         launch(args);
