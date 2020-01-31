@@ -6,18 +6,16 @@ import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.ProgressIndicator;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import static sample.Constants.*;
 
-public class Scene2 {
+public class Scene1 {
 
     private Stage primaryStage;
     private String machineToken;
 
-    public Scene2(String machineToken){
+    public Scene1(String machineToken){
         this.machineToken=machineToken;
     }
 
@@ -30,29 +28,25 @@ public class Scene2 {
         vb.setSpacing(10);
         vb.setAlignment(Pos.CENTER);
 
-        ProgressIndicator progressIndicator = new ProgressIndicator();
-
         Button btn = new Button();
-        btn.setText("Cancel");
+        btn.setText("Get Your Drink");
         btn.setStyle(BUTTONSTYLE);
         btn.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
-                backScene();
+                nextScene();
             }
         });
 
-        vb.getChildren().add(new Label("Scan bar code!"));
-        vb.getChildren().add(progressIndicator);
         vb.getChildren().add(btn);
 
-        Scene scene3 = new Scene(vb, WIDTH, HEIGHT);
+        Scene scene1 = new Scene(vb, WIDTH, HEIGHT);
 
-        primaryStage.setScene(scene3);
+        primaryStage.setScene(scene1);
     }
 
-    private void backScene(){
-        Scene1 scene1 = new Scene1(this.machineToken);
-        scene1.getScene(primaryStage);
+    private void nextScene(){
+        Scene2 scene2 = new Scene2(this.machineToken);
+        scene2.getScene(primaryStage);
     }
 }

@@ -12,6 +12,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 import javafx.event.ActionEvent;
 import javafx.geometry.Insets;
+import static sample.Constants.*;
 
 public class Main extends Application {
 
@@ -31,16 +32,13 @@ public class Main extends Application {
         textField.setMaxWidth(200);
         Button btn = new Button();
         btn.setText("enter");
-        btn.setStyle("-fx-background-color: #7e7e7e;\n" +
-                "    -fx-background-radius: 30;\n" +
-                "    -fx-background-insets: 0;\n" +
-                "    -fx-text-fill: white;");
+        btn.setStyle(BUTTONSTYLE);
         btn.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
-                String token = textField.getText();
-                if (!token.isEmpty()) {
-                    nextScenes();
+                String machineToken = textField.getText();
+                if (!machineToken.isEmpty()) {
+                    nextScenes(machineToken);
                 }else{
                     Alert alert = new Alert(Alert.AlertType.INFORMATION);
                     alert.setHeaderText(null);
@@ -55,13 +53,13 @@ public class Main extends Application {
         vb.getChildren().add(btn);
 
         primaryStage.setTitle("taste-of-heaven");
-        primaryStage.setScene(new Scene(vb, 900, 400));
+        primaryStage.setScene(new Scene(vb, WIDTH, HEIGHT));
         primaryStage.show();
     }
 
-    private void nextScenes(){
-        Scene2 scene2 = new Scene2();
-        scene2.getScene(primaryStage);
+    private void nextScenes(String machineToken){
+        Scene1 scene1 = new Scene1(machineToken);
+        scene1.getScene(primaryStage);
     }
 
     public static void main(String[] args) {

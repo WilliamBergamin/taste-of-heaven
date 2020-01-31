@@ -5,15 +5,23 @@ import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ProgressIndicator;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
+import static sample.Constants.*;
+
 public class Scene3 {
 
     private Stage primaryStage;
+    private String machineToken;
+
+    public Scene3(String machineToken){
+        this.machineToken=machineToken;
+    }
 
     public void getScene(Stage primaryStage){
 
@@ -26,32 +34,45 @@ public class Scene3 {
 
         ProgressIndicator progressIndicator = new ProgressIndicator();
 
-        Button btn = new Button();
-        btn.setText("Cancel");
-        btn.setStyle("-fx-background-color: #7e7e7e;\n" +
-                "    -fx-background-radius: 30;\n" +
-                "    -fx-background-insets: 0;\n" +
-                "    -fx-text-fill: white;");
-        btn.setOnAction(new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent event) {
-                backScene();
-            }
-        });
+        Button failedBtn = new Button(); // temp button
+        failedBtn.setText("failed"); // temp button
+        failedBtn.setOnAction(new EventHandler<ActionEvent>() { // temp button
+            @Override // temp button
+            public void handle(ActionEvent event) { // temp button
+                failedScene(); // temp button
+            } // temp button
+        }); // temp button
 
-        vb.getChildren().add(new Label("Scan bar code!"));
+        Button passedbutton = new Button(); // temp button
+        passedbutton.setText("pass"); // temp button
+        passedbutton.setOnAction(new EventHandler<ActionEvent>() { // temp button
+            @Override // temp button
+            public void handle(ActionEvent event) { // temp button
+                nextScene(); // temp button
+            } // temp button
+        }); // temp button
+
+        vb.getChildren().add(new Label("Processing!"));
         vb.getChildren().add(progressIndicator);
-        vb.getChildren().add(btn);
+        vb.getChildren().add(failedBtn);
+        vb.getChildren().add(passedbutton);
 
-        Scene scene3 = new Scene(vb,900,400);
+        Scene scene3 = new Scene(vb, WIDTH, HEIGHT);
 
-//        return scene1;
-        primaryStage.setTitle("Get Your Drink");
         primaryStage.setScene(scene3);
     }
 
-    private void backScene(){
-        Scene2 scene2 = new Scene2();
-        scene2.getScene(primaryStage);
+    private void failedScene(){
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setHeaderText(null);
+        alert.setContentText("Order Failed");
+        alert.show();
+        Scene1 scene1 = new Scene1(this.machineToken);
+        scene1.getScene(primaryStage);
+    }
+
+    private void nextScene(){
+        Scene1 scene1 = new Scene1(this.machineToken);
+        scene1.getScene(primaryStage);
     }
 }
