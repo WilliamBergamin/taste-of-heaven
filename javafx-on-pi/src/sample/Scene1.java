@@ -13,10 +13,10 @@ import static sample.Constants.*;
 public class Scene1 {
 
     private Stage primaryStage;
-    private String machineToken;
+    private Machine machine;
 
-    public Scene1(String machineToken){
-        this.machineToken=machineToken;
+    public Scene1(Machine machine){
+        this.machine = machine;
     }
 
     public void getScene(Stage primaryStage){
@@ -46,7 +46,7 @@ public class Scene1 {
     }
 
     private void nextScene(){
-        Scene2 scene2 = new Scene2(this.machineToken);
+        Scene2 scene2 = new Scene2(this.machine);
         scene2.getScene(primaryStage);
     }
 }

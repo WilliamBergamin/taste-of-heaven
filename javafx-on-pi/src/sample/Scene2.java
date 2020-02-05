@@ -5,23 +5,25 @@ import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ProgressIndicator;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
+import org.json.JSONObject;
 
 import static sample.Constants.*;
 
 public class Scene2 {
 
     private Stage primaryStage;
-    private String machineToken;
-    private StringBuffer orderToken = new StringBuffer();
+    private Machine machine;
+    private StringBuffer orderKey = new StringBuffer();
 
-    public Scene2(String machineToken){
-        this.machineToken=machineToken;
+    public Scene2(Machine machine){
+        this.machine=machine;
     }
 
     public void getScene(Stage primaryStage){
@@ -54,10 +56,19 @@ public class Scene2 {
         scene2.setOnKeyTyped(new EventHandler<KeyEvent>() {
             @Override
             public void handle(KeyEvent event) {
-                orderToken.append(event.getCharacter());
-                if (orderToken.length() == ORDERKEYLENGHT){
-                    System.out.println(orderToken.toString());
-                    nextScene(orderToken.toString());
+                orderKey.append(event.getCharacter());
+                if (orderKey.length() == ORDERKEYLENGHT){
+                    System.out.println(orderKey.toString());
+                    ServerHelper helper = new ServerHelper();
+                    JSONObject response = helper.getOrderInEvent(machine, orderKey.toString());
+                    if (response == null){
+                        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                        alert.setHeaderText(null);
+                        alert.setContentText("Invalid credentials!");
+                        alert.show();
+                    }else {
+                        nextScene(orderKey.toString());
+                    }
                 }
             }
         });
@@ -66,12 +77,12 @@ public class Scene2 {
     }
 
     private void backScene(){
-        Scene1 scene1 = new Scene1(this.machineToken);
+        Scene1 scene1 = new Scene1(this.machine);
         scene1.getScene(primaryStage);
     }
 
     private void nextScene(String orderToken){
-        Scene3 scene3 = new Scene3(this.machineToken, orderToken);
+        Scene3 scene3 = new Scene3(this.machine, orderToken);
         scene3.getScene(primaryStage);
     }
 }

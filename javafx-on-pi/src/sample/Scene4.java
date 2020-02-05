@@ -16,11 +16,11 @@ import static sample.Constants.WIDTH;
 public class Scene4 {
 
     private Stage primaryStage;
-    private String machineToken;
+    private Machine machine;
     private Label label = new Label("ENJOY YOUR BEVERAGE!");
 
-    public Scene4(String machineToken){
-        this.machineToken=machineToken;
+    public Scene4(Machine machine){
+        this.machine=machine;
     }
 
     public void getScene(Stage primaryStage){
@@ -60,7 +60,7 @@ public class Scene4 {
     }
 
     private void nextScene(){
-        Scene1 scene1 = new Scene1(this.machineToken);
+        Scene1 scene1 = new Scene1(this.machine);
         scene1.getScene(primaryStage);
     }
 }

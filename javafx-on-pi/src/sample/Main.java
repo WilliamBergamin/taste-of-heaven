@@ -12,6 +12,8 @@ import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 import javafx.event.ActionEvent;
 import javafx.geometry.Insets;
+import org.json.JSONObject;
+
 import static sample.Constants.*;
 
 public class Main extends Application {
@@ -39,9 +41,18 @@ public class Main extends Application {
             @Override
             public void handle(ActionEvent event) {
                 String machineToken = machineTokenTextField.getText();
-                String eventToken = eventTokenTextField.getText();
-                if (!machineToken.isEmpty() && !eventToken.isEmpty()) {
-                    nextScenes(machineToken, eventToken);
+                String eventKey = eventTokenTextField.getText();
+                if (!machineToken.isEmpty() && !eventKey.isEmpty()) {
+                    ServerHelper helper = new ServerHelper();
+                    JSONObject response = helper.addMachineToEvent(machineToken, eventKey);
+                    if (response == null){
+                        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                        alert.setHeaderText(null);
+                        alert.setContentText("Invalid credentials!");
+                        alert.show();
+                    }else {
+                        nextScenes(new Machine(machineToken, eventKey));
+                    }
                 }else{
                     Alert alert = new Alert(Alert.AlertType.INFORMATION);
                     alert.setHeaderText(null);
@@ -62,9 +73,9 @@ public class Main extends Application {
         primaryStage.show();
     }
 
-    private void nextScenes(String machineToken, String eventToken){
+    private void nextScenes(Machine machine){
         // TODO register machine to event before moving on
-        Scene1 scene1 = new Scene1(machineToken);
+        Scene1 scene1 = new Scene1(machine);
         scene1.getScene(primaryStage);
     }
 

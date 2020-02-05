@@ -15,12 +15,12 @@ import static sample.Constants.*;
 public class Scene3 {
 
     private Stage primaryStage;
-    private String machineToken;
+    private Machine machine;
     private String orderToken;
     private Label label = new Label("Fetching Order!");
 
-    public Scene3(String machineToken, String orderToken){
-        this.machineToken=machineToken;
+    public Scene3(Machine machine, String orderToken){
+        this.machine=machine;
         this.orderToken=orderToken;
     }
 
@@ -98,12 +98,12 @@ public class Scene3 {
         alert.setHeaderText(null);
         alert.setContentText("Unable to fetch Order!");
         alert.showAndWait();
-        Scene1 scene1 = new Scene1(machineToken);
+        Scene1 scene1 = new Scene1(this.machine);
         scene1.getScene(primaryStage);
     }
 
     private void nextScene(){
-        Scene4 scene4 = new Scene4(this.machineToken);
+        Scene4 scene4 = new Scene4(this.machine);
         scene4.getScene(primaryStage);
     }
 }
