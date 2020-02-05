@@ -1,14 +1,12 @@
 package sample;
 
-import javafx.event.ActionEvent;
+import javafx.concurrent.Task;
+import javafx.concurrent.WorkerStateEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
-import javafx.scene.control.Alert;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.ProgressIndicator;
+import javafx.scene.control.*;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
@@ -18,9 +16,12 @@ public class Scene3 {
 
     private Stage primaryStage;
     private String machineToken;
+    private String orderToken;
+    private Label label = new Label("Fetching Order!");
 
-    public Scene3(String machineToken){
+    public Scene3(String machineToken, String orderToken){
         this.machineToken=machineToken;
+        this.orderToken=orderToken;
     }
 
     public void getScene(Stage primaryStage){
@@ -34,45 +35,75 @@ public class Scene3 {
 
         ProgressIndicator progressIndicator = new ProgressIndicator();
 
-        Button failedBtn = new Button(); // temp button
-        failedBtn.setText("failed"); // temp button
-        failedBtn.setOnAction(new EventHandler<ActionEvent>() { // temp button
-            @Override // temp button
-            public void handle(ActionEvent event) { // temp button
-                failedScene(); // temp button
-            } // temp button
-        }); // temp button
-
-        Button passedbutton = new Button(); // temp button
-        passedbutton.setText("pass"); // temp button
-        passedbutton.setOnAction(new EventHandler<ActionEvent>() { // temp button
-            @Override // temp button
-            public void handle(ActionEvent event) { // temp button
-                nextScene(); // temp button
-            } // temp button
-        }); // temp button
-
-        vb.getChildren().add(new Label("Processing!"));
+        vb.getChildren().add(label);
         vb.getChildren().add(progressIndicator);
-        vb.getChildren().add(failedBtn);
-        vb.getChildren().add(passedbutton);
 
         Scene scene3 = new Scene(vb, WIDTH, HEIGHT);
 
         primaryStage.setScene(scene3);
+
+
+        Task<Void> nextSceneSleeper = new Task<Void>() {
+            @Override
+            protected Void call() throws Exception {
+                try {
+                    Thread.sleep(2500);
+                } catch (InterruptedException e) {
+                }
+                return null;
+            }
+        };
+        nextSceneSleeper.setOnSucceeded(new EventHandler<WorkerStateEvent>() {
+            @Override
+            public void handle(WorkerStateEvent event) {
+                nextScene();
+            }
+        });
+
+
+        Task<Void> sleeper = new Task<Void>() {
+            @Override
+            protected Void call() throws Exception {
+                try {
+                    Thread.sleep(500);
+                } catch (InterruptedException e) {
+                }
+                return null;
+            }
+        };
+        sleeper.setOnSucceeded(new EventHandler<WorkerStateEvent>() {
+            @Override
+            public void handle(WorkerStateEvent event) {
+                if (aquireOrder()){
+                    label.setText("Processing!!!!");
+                    new Thread(nextSceneSleeper).start();
+                }else{
+                    failedScene();
+                }
+            }
+        });
+        new Thread(sleeper).start();
+    }
+
+    private boolean aquireOrder(){
+        //TODO get order info from cloud
+        if ("051111407592".equals(orderToken)){
+            return true;
+        }
+        return false;
     }
 
     private void failedScene(){
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
         alert.setHeaderText(null);
-        alert.setContentText("Order Failed");
-        alert.show();
-        Scene1 scene1 = new Scene1(this.machineToken);
+        alert.setContentText("Unable to fetch Order!");
+        alert.showAndWait();
+        Scene1 scene1 = new Scene1(machineToken);
         scene1.getScene(primaryStage);
     }
 
     private void nextScene(){
-        Scene1 scene1 = new Scene1(this.machineToken);
-        scene1.getScene(primaryStage);
+        Scene4 scene4 = new Scene4(this.machineToken);
+        scene4.getScene(primaryStage);
     }
 }

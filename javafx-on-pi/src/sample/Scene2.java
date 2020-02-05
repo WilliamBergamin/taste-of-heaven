@@ -8,14 +8,17 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ProgressIndicator;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
+
 import static sample.Constants.*;
 
 public class Scene2 {
 
     private Stage primaryStage;
     private String machineToken;
+    private StringBuffer orderToken = new StringBuffer();
 
     public Scene2(String machineToken){
         this.machineToken=machineToken;
@@ -46,13 +49,29 @@ public class Scene2 {
         vb.getChildren().add(progressIndicator);
         vb.getChildren().add(btn);
 
-        Scene scene3 = new Scene(vb, WIDTH, HEIGHT);
+        Scene scene2 = new Scene(vb, WIDTH, HEIGHT);
 
-        primaryStage.setScene(scene3);
+        scene2.setOnKeyTyped(new EventHandler<KeyEvent>() {
+            @Override
+            public void handle(KeyEvent event) {
+                orderToken.append(event.getCharacter());
+                if (orderToken.length() == ORDERKEYLENGHT){
+                    System.out.println(orderToken.toString());
+                    nextScene(orderToken.toString());
+                }
+            }
+        });
+        primaryStage.setScene(scene2);
+
     }
 
     private void backScene(){
         Scene1 scene1 = new Scene1(this.machineToken);
         scene1.getScene(primaryStage);
+    }
+
+    private void nextScene(String orderToken){
+        Scene3 scene3 = new Scene3(this.machineToken, orderToken);
+        scene3.getScene(primaryStage);
     }
 }

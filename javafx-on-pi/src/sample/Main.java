@@ -28,28 +28,33 @@ public class Main extends Application {
         vb.setSpacing(10);
         vb.setAlignment(Pos.CENTER);
 
-        final TextField textField = new TextField();
-        textField.setMaxWidth(200);
+        final TextField machineTokenTextField = new TextField();
+        machineTokenTextField.setMaxWidth(200);
+        final TextField eventTokenTextField = new TextField();
+        eventTokenTextField.setMaxWidth(200);
         Button btn = new Button();
         btn.setText("enter");
         btn.setStyle(BUTTONSTYLE);
         btn.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
-                String machineToken = textField.getText();
-                if (!machineToken.isEmpty()) {
-                    nextScenes(machineToken);
+                String machineToken = machineTokenTextField.getText();
+                String eventToken = eventTokenTextField.getText();
+                if (!machineToken.isEmpty() && !eventToken.isEmpty()) {
+                    nextScenes(machineToken, eventToken);
                 }else{
                     Alert alert = new Alert(Alert.AlertType.INFORMATION);
                     alert.setHeaderText(null);
-                    alert.setContentText("We Need a Token!");
+                    alert.setContentText("We Need More Info!");
                     alert.show();
                 }
             }
         });
 
         vb.getChildren().add(new Label("Machine token: "));
-        vb.getChildren().add(textField);
+        vb.getChildren().add(machineTokenTextField);
+        vb.getChildren().add(new Label("Event token: "));
+        vb.getChildren().add(eventTokenTextField);
         vb.getChildren().add(btn);
 
         primaryStage.setTitle("taste-of-heaven");
@@ -57,7 +62,8 @@ public class Main extends Application {
         primaryStage.show();
     }
 
-    private void nextScenes(String machineToken){
+    private void nextScenes(String machineToken, String eventToken){
+        // TODO register machine to event before moving on
         Scene1 scene1 = new Scene1(machineToken);
         scene1.getScene(primaryStage);
     }
