@@ -7,8 +7,15 @@ import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
+
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
 
 import static sample.Constants.HEIGHT;
 import static sample.Constants.WIDTH;
@@ -17,7 +24,7 @@ public class Scene4 {
 
     private Stage primaryStage;
     private Machine machine;
-    private Label label = new Label("ENJOY YOUR BEVERAGE!");
+    private Image image;
 
     public Scene4(Machine machine){
         this.machine=machine;
@@ -27,23 +34,25 @@ public class Scene4 {
 
         this.primaryStage = primaryStage;
 
-        VBox vb = new VBox();
-        vb.setPadding(new Insets(10, 50, 50, 50));
-        vb.setSpacing(10);
-        vb.setAlignment(Pos.CENTER);
+        image = new Image(getClass().getResourceAsStream("static/drink-responsibly.png"));
 
-        vb.getChildren().add(label);
+        ImageView imageView = new ImageView(image);
+        imageView.setFitWidth(300);
+        imageView.setPreserveRatio(true);
+
+        CustomVBox vb = new CustomVBox();
+
+        vb.getChildren().add(imageView);
 
         Scene scene4 = new Scene(vb, WIDTH, HEIGHT);
 
         primaryStage.setScene(scene4);
 
-
         Task<Void> nextSceneSleeper = new Task<Void>() {
             @Override
             protected Void call() throws Exception {
                 try {
-                    Thread.sleep(5000);
+                    Thread.sleep(2500);
                 } catch (InterruptedException e) {
                 }
                 return null;

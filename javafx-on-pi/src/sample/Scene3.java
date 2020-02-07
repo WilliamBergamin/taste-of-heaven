@@ -3,12 +3,10 @@ package sample;
 import javafx.concurrent.Task;
 import javafx.concurrent.WorkerStateEvent;
 import javafx.event.EventHandler;
-import javafx.geometry.Insets;
-import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
-import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
+import org.json.JSONObject;
 
 import static sample.Constants.*;
 
@@ -17,7 +15,7 @@ public class Scene3 {
     private Stage primaryStage;
     private Machine machine;
     private String orderToken;
-    private Label label = new Label("Fetching Order!");
+    private Label label = new Label("Order Fetched!");
 
     public Scene3(Machine machine, String orderToken){
         this.machine=machine;
@@ -28,12 +26,12 @@ public class Scene3 {
 
         this.primaryStage = primaryStage;
 
-        VBox vb = new VBox();
-        vb.setPadding(new Insets(10, 50, 50, 50));
-        vb.setSpacing(10);
-        vb.setAlignment(Pos.CENTER);
+        CustomVBox vb = new CustomVBox();
 
         ProgressIndicator progressIndicator = new ProgressIndicator();
+        progressIndicator.setStyle(PROGRESSSTYLE);
+
+        label.setStyle(LABELSTYLE);
 
         vb.getChildren().add(label);
         vb.getChildren().add(progressIndicator);
@@ -47,7 +45,7 @@ public class Scene3 {
             @Override
             protected Void call() throws Exception {
                 try {
-                    Thread.sleep(2500);
+                    Thread.sleep(3000);
                 } catch (InterruptedException e) {
                 }
                 return null;
@@ -56,10 +54,15 @@ public class Scene3 {
         nextSceneSleeper.setOnSucceeded(new EventHandler<WorkerStateEvent>() {
             @Override
             public void handle(WorkerStateEvent event) {
-                nextScene();
+                ServerHelper helper = new ServerHelper();
+                JSONObject response = helper.postOrderCompleted(machine);
+                if (response == null){
+                    errorScene();
+                }else {
+                    nextScene();
+                }
             }
         });
-
 
         Task<Void> sleeper = new Task<Void>() {
             @Override
@@ -74,32 +77,20 @@ public class Scene3 {
         sleeper.setOnSucceeded(new EventHandler<WorkerStateEvent>() {
             @Override
             public void handle(WorkerStateEvent event) {
-                if (aquireOrder()){
-                    label.setText("Processing!!!!");
-                    new Thread(nextSceneSleeper).start();
-                }else{
-                    failedScene();
-                }
+                label.setText("Processing!!!!");
+                new Thread(nextSceneSleeper).start();
             }
         });
         new Thread(sleeper).start();
     }
 
-    private boolean aquireOrder(){
-        //TODO get order info from cloud
-        if ("051111407592".equals(orderToken)){
-            return true;
-        }
-        return false;
-    }
-
-    private void failedScene(){
+    private void errorScene(){
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
         alert.setHeaderText(null);
-        alert.setContentText("Unable to fetch Order!");
+        alert.setContentText("SOMETHING WENT TERRIBLY WRONG!");
         alert.showAndWait();
-        Scene1 scene1 = new Scene1(this.machine);
-        scene1.getScene(primaryStage);
+        SceneError sceneError = new SceneError(this.machine);
+        sceneError.getScene(primaryStage);
     }
 
     private void nextScene(){

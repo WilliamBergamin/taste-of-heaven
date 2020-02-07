@@ -5,10 +5,7 @@ import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
-import javafx.scene.control.Alert;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.ProgressIndicator;
+import javafx.scene.control.*;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
@@ -22,6 +19,8 @@ public class Scene2 {
     private Machine machine;
     private StringBuffer orderKey = new StringBuffer();
 
+    private final TextField tempTextField = new TextField();
+
     public Scene2(Machine machine){
         this.machine=machine;
     }
@@ -30,16 +29,15 @@ public class Scene2 {
 
         this.primaryStage = primaryStage;
 
-        VBox vb = new VBox();
-        vb.setPadding(new Insets(10, 50, 50, 50));
-        vb.setSpacing(10);
-        vb.setAlignment(Pos.CENTER);
+        CustomVBox vb = new CustomVBox();
 
         ProgressIndicator progressIndicator = new ProgressIndicator();
+        progressIndicator.setStyle(PROGRESSSTYLE);
 
         Button btn = new Button();
         btn.setText("Cancel");
         btn.setStyle(BUTTONSTYLE);
+        btn.setPadding(new Insets(10, 15, 10, 15));
         btn.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
@@ -47,9 +45,29 @@ public class Scene2 {
             }
         });
 
-        vb.getChildren().add(new Label("Scan bar code!"));
+        Button manualBtn = new Button();
+        manualBtn.setText("Manual Enter");
+        manualBtn.setStyle(BUTTONSTYLE);
+        manualBtn.setPadding(new Insets(10, 15, 10, 15));
+        manualBtn.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                orderKey.delete(0, orderKey.length());
+                orderKey.append(tempTextField.getText());
+                onOrderKeyEnter();
+            }
+        });
+
+        tempTextField.setMaxWidth(200);
+
+        Label label1 = new Label("Scan Barcode!");
+        label1.setStyle(LABELSTYLE);
+
+        vb.getChildren().add(label1);
         vb.getChildren().add(progressIndicator);
         vb.getChildren().add(btn);
+        vb.getChildren().add(tempTextField);
+        vb.getChildren().add(manualBtn);
 
         Scene scene2 = new Scene(vb, WIDTH, HEIGHT);
 
@@ -58,22 +76,26 @@ public class Scene2 {
             public void handle(KeyEvent event) {
                 orderKey.append(event.getCharacter());
                 if (orderKey.length() == ORDERKEYLENGHT){
-                    System.out.println(orderKey.toString());
-                    ServerHelper helper = new ServerHelper();
-                    JSONObject response = helper.getOrderInEvent(machine, orderKey.toString());
-                    if (response == null){
-                        Alert alert = new Alert(Alert.AlertType.INFORMATION);
-                        alert.setHeaderText(null);
-                        alert.setContentText("Invalid credentials!");
-                        alert.show();
-                    }else {
-                        nextScene(orderKey.toString());
-                    }
+                    onOrderKeyEnter();
                 }
             }
         });
         primaryStage.setScene(scene2);
 
+    }
+
+    private void onOrderKeyEnter(){
+        System.out.println(orderKey.toString());
+        ServerHelper helper = new ServerHelper();
+        JSONObject response = helper.getOrderInEvent(this.machine, orderKey.toString());
+        if (response == null){
+            Alert alert = new Alert(Alert.AlertType.INFORMATION);
+            alert.setHeaderText(null);
+            alert.setContentText("Invalide Order!");
+            alert.show();
+        }else {
+            nextScene(orderKey.toString());
+        }
     }
 
     private void backScene(){

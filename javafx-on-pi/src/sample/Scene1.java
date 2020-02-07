@@ -23,14 +23,12 @@ public class Scene1 {
 
         this.primaryStage = primaryStage;
 
-        VBox vb = new VBox();
-        vb.setPadding(new Insets(10, 50, 50, 50));
-        vb.setSpacing(10);
-        vb.setAlignment(Pos.CENTER);
+        CustomVBox vb = new CustomVBox();
 
         Button btn = new Button();
         btn.setText("Get Your Drink");
         btn.setStyle(BUTTONSTYLE);
+        btn.setPadding(new Insets(10, 15, 10, 15));
         btn.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
