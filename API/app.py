@@ -213,7 +213,7 @@ def post_machine_to_event(event_key):
     return json_response(json.dumps(event.to_dict()), status=200)
 
 
-@app.route('/api/v1/machine/order/<string:event_key>/<string:order_key>', methods=['GET'])
+@app.route('/api/v1/machine/order/<string:event_key>/<string:order_key>', methods=['GET', 'POST'])
 @auth.login_required
 def machine_get_order(event_key, order_key):
     """

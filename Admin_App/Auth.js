@@ -2,9 +2,7 @@ import Router from 'next/router'
 import fetch from 'isomorphic-unfetch';
 import Cookies from 'universal-cookie';
 
-const baseURL = "http://3.133.81.46:80/";
-
-var cookies;
+const baseURL = "http://3.133.81.46:80";
 
 class Auth {
 
@@ -24,23 +22,33 @@ class Auth {
         Router.push('/index')
     }
 
+    logout() {
+        // TODO add endpoint to void token
+        this.idToken = null;
+        this.expiresAt = 0;
+        this.cookies.set('token', this.idToken)
+        this.cookies.set('expiresAt', this.expiresAt)
+    }
+
     getIdToken() {
         return this.idToken;
     }
 
-    handleAuthentication(username, password) {
+    handleAuthentication(email, password) {
         return new Promise(async (resolve, reject) => {
             const response = await fetch(baseURL + '/api/v1/user/token', {
                 method: 'POST',
-                body: {
-                    "email": username,
+                body: JSON.stringify({
+                    "email": email,
                     "password": password
-                },
+                }),
                 headers: {
                     'Content-Type': 'application/json'
                 }
             });
+            console.log(response)
             const responseJson = await response.json();
+            console.log(responseJson);
             if (!responseJson || !responseJson.token) {
                 return reject();
             }

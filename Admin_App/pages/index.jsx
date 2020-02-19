@@ -5,35 +5,59 @@ import Link from 'next/link';
 import fetch from 'isomorphic-unfetch';
 import Paper from '@material-ui/core/Paper';
 import Button from '@material-ui/core/Button';
-import { ThemeProvider } from '@material-ui/styles';
-import theme from '../theme/Theme'
 import Zoom from '@material-ui/core/Zoom';
 import { Grid } from '@material-ui/core';
+import Alert from '@material-ui/lab/Alert';
 import useIndexStyle from '../styles/IndexStyle';
 import TextField from '@material-ui/core/TextField';
 import auth from '../Auth';
+import Router from 'next/router'
+import Snackbar from '@material-ui/core/Snackbar';
+import { makeStyles } from '@material-ui/core/styles';
+
 
 class Login extends React.Component {
   constructor(props) {
     super(props);
     auth.initialise(props);
     this.cursorInput = React.createRef();
-    this.state = {
-      password: "",
-      emial: "",
-    };
   }
 
-  handleChangePass = event => {
-    this.state.password = event.target.value;
+  state = {
+    password: "",
+    email: "",
+    open: false,
   };
 
+  handleError = () => {
+    this.setState({
+      open: true
+    });
+  };
+
+  handleChangePass = event => {
+    this.setState({
+      password: event.target.value
+    });
+  }
+
   handleChangeEmail = event => {
-    this.state.password = event.target.value;
+    this.setState({
+      email: event.target.value
+    });
+  };
+
+  handleClose = (event, reason) => {
+    if (reason === 'clickaway') {
+      return;
+    }
+    this.setState({
+      open: false
+    });
   };
 
   render() {
-    const { password, email } = this.state;
+    const { password, email, open } = this.state;
     return (
       <Zoom in timeout={{ enter: 1500 }}>
         <Grid container justify="center" style={{ width: '100%', marginTop: '20%' }}>
@@ -41,20 +65,21 @@ class Login extends React.Component {
             <Grid container justify="center" direction="column" alignItems="center">
               {
                 (auth.isAuthenticated())
-                  ? (
-                    <Link href="/p/[cursor]?numbero=10" as={`/p/${0}?numbero=${numberOrder}`}>
-                      <Button
-                        style={{ marginTop: '10%' }}
-                        variant="outlined"
-                        size="small"
-                        color="secondary"
-                      >
-                        Start
-                   </Button>
-                    </Link>
-                  )
+                  ? (Router.push('/p/1234'))
                   : (
                     <Grid container justify="center" direction="column" alignItems="center">
+                      <Grid item>
+                        <TextField
+                          style={{ marginTop: '3%', marginBottom: '3%' }}
+                          color="primary"
+                          id="outlined"
+                          label="Email"
+                          type="email"
+                          variant="outlined"
+                          value={email}
+                          onChange={this.handleChangeEmail}
+                        />
+                      </Grid>
                       <Grid item>
                         <TextField
                           style={{ marginTop: '3%', marginBottom: '3%' }}
@@ -63,19 +88,9 @@ class Login extends React.Component {
                           type="password"
                           autoComplete="current-password"
                           variant="outlined"
-                          color="white"
                           value={password}
                           onChange={this.handleChangePass}
                         />
-                      </Grid>
-                      <Grid item>
-                        <TextField
-                          style={{ marginTop: '3%', marginBottom: '3%' }}
-                          color="primary"
-                          id="outlined-search"
-                          label="Email"
-                          type="search"
-                          variant="outlined" />
                       </Grid>
                       <Grid item>
                         <Button
@@ -83,10 +98,22 @@ class Login extends React.Component {
                           variant="outlined"
                           size="small"
                           color="primary"
-                          onClick={() => auth.login()}
+                          onClick={() => {
+                            auth.handleAuthentication(email, password).then(function () {
+                              Router.push('/p/1234')
+                            },
+                              function () {
+                                this.handleError();
+                              })
+                          }}
                         >
                           Log In
-                 </Button>
+                        </Button>
+                        <Snackbar open={open} autoHideDuration={3000} onClose={this.handleClose}>
+                          <Alert variant="filled" severity="warning">
+                            Email or Password not valid!
+                          </Alert>
+                        </Snackbar>
                       </Grid>
                     </Grid>
 
