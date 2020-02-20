@@ -1,6 +1,4 @@
 import React from 'react'
-import Head from 'next/head'
-import Link from 'next/link';
 // eslint-disable-next-line no-unused-vars
 import fetch from 'isomorphic-unfetch';
 import Paper from '@material-ui/core/Paper';
@@ -13,7 +11,6 @@ import TextField from '@material-ui/core/TextField';
 import auth from '../Auth';
 import Router from 'next/router'
 import Snackbar from '@material-ui/core/Snackbar';
-import { makeStyles } from '@material-ui/core/styles';
 
 
 class Login extends React.Component {
@@ -65,13 +62,12 @@ class Login extends React.Component {
             <Grid container justify="center" direction="column" alignItems="center">
               {
                 (auth.isAuthenticated())
-                  ? (Router.push('/p/1234'))
+                  ? (Router.push('/eventSearch'))
                   : (
                     <Grid container justify="center" direction="column" alignItems="center">
                       <Grid item>
                         <TextField
                           style={{ marginTop: '3%', marginBottom: '3%' }}
-                          color="primary"
                           id="outlined"
                           label="Email"
                           type="email"
@@ -99,24 +95,22 @@ class Login extends React.Component {
                           size="small"
                           color="primary"
                           onClick={() => {
-                            auth.handleAuthentication(email, password).then(function () {
-                              Router.push('/p/1234')
-                            },
-                              function () {
-                                this.handleError();
-                              })
+                            auth.handleAuthentication(email, password).then(
+                              () => {
+                                Router.push('/eventSearch')
+                              },
+                              () => { this.handleError(); })
                           }}
                         >
                           Log In
                         </Button>
                         <Snackbar open={open} autoHideDuration={3000} onClose={this.handleClose}>
-                          <Alert variant="filled" severity="warning">
+                          <Alert variant="filled" onClose={this.handleClose} severity="warning">
                             Email or Password not valid!
                           </Alert>
                         </Snackbar>
                       </Grid>
                     </Grid>
-
                   )
               }
             </Grid>

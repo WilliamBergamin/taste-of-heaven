@@ -2,7 +2,7 @@ import theme from '../theme/Theme';
 
 const useIndexStyle = {
   paper: {
-    padding: '10px 10px',
+    padding: '1% 1%',
     display: 'flex',
     alignItems: 'center',
     background: theme.palette.secondary.main,

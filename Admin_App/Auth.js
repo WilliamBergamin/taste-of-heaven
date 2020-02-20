@@ -19,7 +19,7 @@ class Auth {
     }
 
     login() {
-        Router.push('/index')
+        Router.push('/')
     }
 
     logout() {
