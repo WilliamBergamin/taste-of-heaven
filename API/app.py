@@ -68,6 +68,28 @@ def post_event():
     new_event.create()
     return json_response(json.dumps(new_event.to_dict()), status=201)
 
+
+@app.route('/api/v1/events', methods=['GET'])
+@auth.login_required
+def get_events():
+    """
+    header Authorization: Token Authentication_user_token
+    {
+      "name":"your moms a hoe",
+      "location":"ur moms house"
+    }
+    """
+    if g.get('current_user', None) is None:
+        return json_error('No user found might have been a machine token',
+                          status=401)
+    if g.current_user.admin is False:
+        return json_error('User '+g.current_user._id+' cannot perform this action',
+                          status=401)
+    all_events = Event.find_all()
+    if all_events is None:
+        return json_error('Event not found', 'Event not found', 404)
+    return json_response(json.dumps(all_events), status=201)
+
 # ---------------------- USER END-POINTS ---------------------- #
 @app.route('/api/v1/user', methods=['POST'])
 def post_user():

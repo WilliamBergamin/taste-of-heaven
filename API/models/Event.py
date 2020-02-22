@@ -66,14 +66,14 @@ class Event():
     def save(self):
         query = {"_id": self._id}
         new_values = {"$set": {
-                'name': self.name,
-                'location': self.location,
-                'users': self.users,
-                'new_orders': self.new_orders,
-                'pending_orders': self.pending_orders,
-                'processed_orders': self.processed_orders,
-                'machines': self.machines
-            }
+            'name': self.name,
+            'location': self.location,
+            'users': self.users,
+            'new_orders': self.new_orders,
+            'pending_orders': self.pending_orders,
+            'processed_orders': self.processed_orders,
+            'machines': self.machines
+        }
         }
         events.update_one(query, new_values)
 
@@ -143,6 +143,25 @@ class Event():
         found_event.machines = found_event_data.get('machines')
         found_event._id = found_event_data.get('_id')
         return found_event
+
+    @classmethod
+    def find_all(cls):
+        found_event_data = events.find({})
+        if found_event_data is None:
+            return None
+        formated_event_data = []
+        for event in found_event_data:
+            found_event = cls(event.get('name'),
+                              event.get('location'))
+            found_event.users = event.get('users')
+            found_event.new_orders = event.get('new_orders')
+            found_event.pending_orders = event.get('pending_orders')
+            found_event.processed_orders = event.get(
+                'processed_orders')
+            found_event.machines = event.get('machines')
+            found_event._id = event.get('_id')
+            formated_event_data.append(found_event.to_dict(everyfeild=True))
+        return formated_event_data
 
     def to_dict(self, everyfeild=False):
         str_event_key = str(str(self._id)).encode('utf8')
