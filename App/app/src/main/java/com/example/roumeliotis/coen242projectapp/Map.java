@@ -3,29 +3,21 @@ package com.example.roumeliotis.coen242projectapp;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.View;
-import android.widget.ArrayAdapter;
 import android.widget.ImageButton;
-import android.widget.ListView;
 
-import java.util.ArrayList;
-import java.util.List;
+public class Map extends AppCompatActivity {
 
-// View all of your orders to gain access to input code
-public class Orders extends AppCompatActivity{
-
-    ListView ordersList;
     ServerHelper serverHelper;
     Manager Manager;
+    ImageButton backToOrder;
     String eventKey;
     User user;
-    ImageButton backToOrder;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.orders_page);
+        setContentView(R.layout.map_page);
 
         getSupportActionBar().setTitle(R.string.app_name);
         serverHelper = new ServerHelper();
@@ -35,16 +27,6 @@ public class Orders extends AppCompatActivity{
         eventKey = userInfo.getStringExtra("eventKey");
         backToOrder = findViewById(R.id.returnButton);
 
-        ordersList = findViewById(R.id.orderCodesList);
-
-        List<Order> orders = Manager.getOrdersByUserID(user.getid());
-        List<String> order_keys = new ArrayList<String>();
-        for (int i = 0; i < orders.size(); i++) {
-            Log.d("Orders", orders.get(i).toString());
-            order_keys.add(orders.get(i).getOrder_key());
-        }
-
-        ordersList.setAdapter(new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, order_keys));
         backToOrder.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -53,11 +35,12 @@ public class Orders extends AppCompatActivity{
         });
     }
 
+
     void goToCreateDrink() {
         Intent intent = new Intent();
         intent.putExtra("user", user);
         intent.putExtra("eventKey", eventKey);
-        intent.setClass(Orders.this, CreateDrink.class);
+        intent.setClass(Map.this, CreateDrink.class);
         startActivity(intent);
     }
-}
+};

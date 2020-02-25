@@ -37,24 +37,12 @@
             android:layout_below="@id/returnButton"
             android:layout_alignParentTop="true"
             android:layout_centerHorizontal="true"
-            android:text="View Order History"
+            android:text="Event Map"
             android:background="@color/background"
             android:textColor="@color/colorHotPink"
             android:textSize="20dp"
             android:fontFamily="@font/montserrat_black" />
 
-        <ListView
-            android:id="@+id/orderCodesList"
-            android:layout_width="300dp"
-            android:layout_height="500dp"
-            android:layout_below="@id/viewOrderHistory"
-            android:layout_alignParentTop="true"
-            android:layout_centerHorizontal="true"
-            android:layout_marginTop="86dp"
-            android:background="@color/background"
-            android:textColor="@color/colorDarkGrey"
-            android:textSize="18dp"
-            android:fontFamily="@font/montserrat_regular"/>
 
     </RelativeLayout>
 

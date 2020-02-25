@@ -1,9 +1,7 @@
 package com.example.roumeliotis.coen242projectapp;
 
-import android.app.ActivityOptions;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.app.ActionBar;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
@@ -35,6 +33,7 @@ public class CreateDrink extends AppCompatActivity implements OnItemSelectedList
     ServerHelper serverHelper;
     Manager Manager;
     Button payNowButton;
+    Button viewMap;
     String eventKey;
     User user;
 
@@ -93,9 +92,9 @@ public class CreateDrink extends AppCompatActivity implements OnItemSelectedList
                     toast.setGravity(Gravity.CENTER, 0, 0);
                     toast.show();
                 }
-                else{
+                else {
                     // Add order to the cart
-                    serverHelper.postNewOrder(user.getToken(), eventKey, alcohol, mixer, is_double, getApplicationContext(),  new VolleyCallback() {
+                    serverHelper.postNewOrder(user.getToken(), eventKey, alcohol, mixer, is_double, getApplicationContext(), new VolleyCallback() {
                         @Override
                         public void onSuccess(JSONObject response) {
                             try {
@@ -111,9 +110,9 @@ public class CreateDrink extends AppCompatActivity implements OnItemSelectedList
                                         response.getBoolean("payed"));
                                 Manager.insertOrder(newOrder);
                                 goToNextActivity();
-                            } catch(JSONException e){
+                            } catch (JSONException e) {
                                 e.printStackTrace();
-                                Toast toast=Toast.makeText(getApplicationContext(),"Something went wrong",Toast.LENGTH_SHORT);
+                                Toast toast = Toast.makeText(getApplicationContext(), "Something went wrong", Toast.LENGTH_SHORT);
                                 toast.setGravity(Gravity.CENTER, 0, 0);
                                 toast.show();
                             }
@@ -136,6 +135,23 @@ public class CreateDrink extends AppCompatActivity implements OnItemSelectedList
                 }
             }
         });
+
+        viewMap = findViewById(R.id.mapButton);
+        viewMap.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                goToMap();
+            }
+        });
+
+    }
+
+    void goToMap() {
+        Intent intent = new Intent();
+        intent.putExtra("user", user);
+        intent.putExtra("eventKey", eventKey);
+        intent.setClass(CreateDrink.this, Map.class);
+        startActivity(intent);
     }
 
 

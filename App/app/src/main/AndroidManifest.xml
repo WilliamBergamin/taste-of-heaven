@@ -45,6 +45,9 @@
         <activity
             android:name=".Orders"
             android:label="" />
+        <activity
+            android:name=".Map"
+            android:label="" />
     </application>
 
 </manifest>
