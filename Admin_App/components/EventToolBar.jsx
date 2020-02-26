@@ -1,9 +1,7 @@
 import React from "react";
 import AppBar from "@material-ui/core/AppBar";
 import Toolbar from "@material-ui/core/Toolbar";
-import Button from "@material-ui/core/Button";
-import TextField from "@material-ui/core/TextField";
-import SearchIcon from "@material-ui/icons/Search";
+import ArrowBackIcon from "@material-ui/icons/ArrowBack";
 import IconButton from "@material-ui/core/IconButton";
 import AddIcon from "@material-ui/icons/Add";
 import useScrollTrigger from "@material-ui/core/useScrollTrigger";
@@ -26,7 +24,8 @@ function ElevationScroll(props) {
   });
 }
 
-export default function ToolBar(props) {
+export default function EventToolBar(props) {
+  const { name } = props;
   return (
     <ElevationScroll>
       <AppBar color="secondary">
@@ -38,24 +37,24 @@ export default function ToolBar(props) {
             alignItems="center"
             style={{ width: "100%" }}
           >
-            <Grid item xs={4}>
-              <Link href="/eventSearch">
+            <Grid item xs={2}>
+              <Link href="/">
                 <IconButton>
-                  <AddIcon />
+                  <ArrowBackIcon />
                 </IconButton>
               </Link>
             </Grid>
-            <Grid container justify="center" xs={4}>
-              <Grid item xs={4} class={toolBarIndexStyle.centerItem}>
+            <Grid container justify="center" xs={8}>
+              <Grid item xs={8}>
                 <Typography variant="h6" color="primary" align="center">
-                  Events
+                  {name}
                 </Typography>
               </Grid>
             </Grid>
-            <Grid container justify="flex-end" xs={4}>
-              <Grid item xs={4} class={toolBarIndexStyle.rightItem}>
+            <Grid container justify="flex-end" xs={2}>
+              <Grid item xs={2} class={toolBarIndexStyle}>
                 <Link href="/">
-                  <IconButton onClick={() => auth.logout()}>
+                  <IconButton onClick={() => auth.logout()} align="right">
                     <ExitToAppIcon />
                   </IconButton>
                 </Link>

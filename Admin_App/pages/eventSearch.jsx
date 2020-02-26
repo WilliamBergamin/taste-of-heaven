@@ -3,6 +3,7 @@ import React from "react";
 import fetch from "isomorphic-unfetch";
 import Cookies from "universal-cookie";
 import { Grid } from "@material-ui/core";
+import Link from "next/link";
 import ToolBar from "../components/ToolBar";
 import auth from "../Auth";
 import YouMustLogIn from "../components/YouMustLogIn";
@@ -24,7 +25,7 @@ function ListItemLink(props) {
   return <ListItem button component="a" {...props} />;
 }
 
-class ContainerFeed extends React.Component {
+class eventSearch extends React.Component {
   constructor(props) {
     super(props);
     auth.initialise(props);
@@ -103,12 +104,24 @@ class ContainerFeed extends React.Component {
             }
           >
             {events.map(event => (
-              <ListItem button>
-                <ListItemIcon>
-                  <EventIcon />
-                </ListItemIcon>
-                <ListItemText primary={event.name} secondary={event.location} />
-              </ListItem>
+              <Link
+                key={event.event_key}
+                href={{
+                  pathname: "/event/[id]",
+                  query: { event: JSON.stringify(event) }
+                }}
+                as={`/event/${event.event_key}`}
+              >
+                <ListItem button>
+                  <ListItemIcon>
+                    <EventIcon />
+                  </ListItemIcon>
+                  <ListItemText
+                    primary={event.name}
+                    secondary={event.location}
+                  />
+                </ListItem>
+              </Link>
             ))}
           </List>
         </Paper>
@@ -117,4 +130,4 @@ class ContainerFeed extends React.Component {
   }
 }
 
-export default ContainerFeed;
+export default eventSearch;
