@@ -7,7 +7,8 @@ import EventToolBar from "../../components/EventToolBar";
 import auth from "../../Auth";
 import YouMustLogIn from "../../components/YouMustLogIn";
 import ListItem from "@material-ui/core/ListItem";
-import EventInfoCard from "../../components/EventInfoCard"
+import EventInfoCard from "../../components/EventInfoCard";
+import Router from "next/router";
 import useListStyle from "../../styles/eventSearchStyle";
 import Paper from "@material-ui/core/Paper";
 
@@ -21,46 +22,42 @@ class event extends React.Component {
   constructor(props) {
     super(props);
     auth.initialise(props);
-    this.state = {
-      event: this.props.event
-    };
-    for(let i=0; i<this.props.event.length; i=+1){
-      new Promis(resolve => {
-        fetch(baseURL + "/api/v1/machine/" + this.props.event.machines[i], {
-          method: "GET",
-          headers: {
-            Authorization: "Token " + auth.getIdToken()
-          }
-        })
-          .then(res => res.json())
-          .then(json => this.setState({ machines: this.state.machines.append(json) }));
-        resolve();
-      });
+    fetch(baseURL + "/api/v1/event/" + Router.query.eventKey, {
+      method: "GET",
+      headers: {
+        Authorization: "Token " + auth.getIdToken()
+      }
+    })
+      .then(res => res.json())
+      .then(json =>
+        this.state = {
+          event: json,
+          machines: []
+        }
+      );
+    for (let i = 0; i < this.props.event.length; i = +1) {
+      fetch(baseURL + "/api/v1/machine/" + this.state.event.machines[i], {
+        method: "GET",
+        headers: {
+          Authorization: "Token " + auth.getIdToken()
+        }
+      })
+        .then(res => res.json())
+        .then(json =>
+          this.setState({ machines: this.state.machines.append(json) })
+        );
     }
   }
 
-  state = {
-    machines: []
-  };
-
-  static async getInitialProps(ctx) {
-    return { event: JSON.parse(ctx.query.event) };
-  }
-
-  // componentDidMount() {
-  //   fetch(baseURL + "/api/v1/events", {
-  //     method: "GET",
-  //     headers: {
-  //       Authorization: "Token " + auth.getIdToken()
-  //     }
-  //   })
-  //     .then(res => res.json())
-  //     .then(json => this.setState({ allEvents: json, events: json }));
+  // static async getInitialProps(ctx) {
+  //   return { eventKey: JSON.parse(ctx.query.eventKey) };
   // }
 
   render() {
     const { event } = this.state;
+    const { machines } = this.state;
     console.log(event);
+    console.log(machines);
     return !auth.isAuthenticated() ? (
       <YouMustLogIn />
     ) : (

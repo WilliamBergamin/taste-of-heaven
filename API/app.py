@@ -74,10 +74,6 @@ def post_event():
 def get_events():
     """
     header Authorization: Token Authentication_user_token
-    {
-      "name":"your moms a hoe",
-      "location":"ur moms house"
-    }
     """
     if g.get('current_user', None) is None:
         return json_error('No user found might have been a machine token',
@@ -89,6 +85,28 @@ def get_events():
     if all_events is None:
         return json_error('Event not found', 'Event not found', 404)
     return json_response(json.dumps(all_events), status=201)
+
+
+@app.route('/api/v1/event/<string:event_key>', methods=['GET'])
+@auth.login_required
+def get_event(event_key):
+    """
+    header Authorization: Token Authentication_user_token
+    {
+      "name":"your moms a hoe",
+      "location":"ur moms house"
+    }
+    """
+    if g.get('current_user', None) is None:
+        return json_error('No user found might have been a machine token',
+                          status=401)
+    if g.current_user.admin is False:
+        return json_error('User '+g.current_user._id+' cannot perform this action',
+                          status=401)
+    event = Event.find(event_key)
+    if event is None:
+        return json_error('Event not found', 'Event not found', 404)
+    return json_response(json.dumps(event.to_dict(True)), status=201)
 
 # ---------------------- USER END-POINTS ---------------------- #
 @app.route('/api/v1/user', methods=['POST'])

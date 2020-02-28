@@ -160,7 +160,7 @@ class Event():
                 'processed_orders')
             found_event.machines = event.get('machines')
             found_event._id = event.get('_id')
-            formated_event_data.append(found_event.to_dict(everyfeild=True))
+            formated_event_data.append(found_event.to_dict())
         return formated_event_data
 
     def __getBase64(self, my_str):

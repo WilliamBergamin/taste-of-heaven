@@ -85,7 +85,7 @@ class eventSearch extends React.Component {
                 <Link
                   key={event.event_key}
                   href={{
-                    pathname: "/event/[id]",
+                    pathname: "/event/[eventKey]",
                     query: { event: JSON.stringify(event) }
                   }}
                   as={`/event/${event.event_key}`}
