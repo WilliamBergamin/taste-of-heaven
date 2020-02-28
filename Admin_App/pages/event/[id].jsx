@@ -24,12 +24,39 @@ class event extends React.Component {
     this.state = {
       event: this.props.event
     };
-    //   const cookies = new Cookies(req.cookies);
+    for(let i=0; i<this.props.event.length; i=+1){
+      new Promis(resolve => {
+        fetch(baseURL + "/api/v1/machine/" + this.props.event.machines[i], {
+          method: "GET",
+          headers: {
+            Authorization: "Token " + auth.getIdToken()
+          }
+        })
+          .then(res => res.json())
+          .then(json => this.setState({ machines: this.state.machines.append(json) }));
+        resolve();
+      });
+    }
   }
+
+  state = {
+    machines: []
+  };
 
   static async getInitialProps(ctx) {
     return { event: JSON.parse(ctx.query.event) };
   }
+
+  // componentDidMount() {
+  //   fetch(baseURL + "/api/v1/events", {
+  //     method: "GET",
+  //     headers: {
+  //       Authorization: "Token " + auth.getIdToken()
+  //     }
+  //   })
+  //     .then(res => res.json())
+  //     .then(json => this.setState({ allEvents: json, events: json }));
+  // }
 
   render() {
     const { event } = this.state;

@@ -163,18 +163,21 @@ class Event():
             formated_event_data.append(found_event.to_dict(everyfeild=True))
         return formated_event_data
 
+    def __getBase64(self, my_str):
+        return base64.urlsafe_b64encode(str(my_str).encode('utf8')).decode('utf8')
+
     def to_dict(self, everyfeild=False):
-        str_event_key = str(str(self._id)).encode('utf8')
+        str_event_key = str(self._id).encode('utf8')
         if everyfeild:
             return {
                 'event_key': base64.urlsafe_b64encode(str_event_key).decode('utf8'),
                 'name': self.name,
                 'location': self.location,
-                'users': [str(user) for user in self.users],
-                'new_orders': [str(new_order) for new_order in self.new_orders],
-                'pending_orders': [str(pending_order) for pending_order in self.pending_orders],
-                'processed_orders': [str(processed_order) for processed_order in self.processed_orders],
-                'machines': [str(machine) for machine in self.machines],
+                'users': [] if self.users is None else [self.__getBase64(user) for user in self.users],
+                'new_orders': [] if self.new_orders is None else [self.__getBase64(new_order) for new_order in self.new_orders],
+                'pending_orders': [] if self.pending_orders is None else [self.__getBase64(pending_order) for pending_order in self.pending_orders],
+                'processed_orders': [] if self.processed_orders is None else [self.__getBase64(processed_order) for processed_order in self.processed_orders],
+                'machines': [] if self.machines is None else [self.__getBase64(machine) for machine in self.machines]
             }
         return {
             'event_key': base64.urlsafe_b64encode(str_event_key).decode('utf8'),

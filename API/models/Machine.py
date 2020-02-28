@@ -1,6 +1,7 @@
 import bcrypt
 import datetime
 import base64
+from bson.objectid import ObjectId
 
 from init import mongo_db, app
 
@@ -9,6 +10,10 @@ machines = mongo_db.machines
 
 class Machine_Creation_Exception(Exception):
     message = "Cannot create machine"
+
+
+def __getBase64(my_str):
+    return base64.urlsafe_b64encode(str(my_str).encode('utf8')).decode('utf8')
 
 
 class Machine():
@@ -31,7 +36,7 @@ class Machine():
     }
 
     attribute_map = {
-        '_id': 'ID pf the user',
+        '_id': 'ID of the user',
         'machine_key': 'the unique key of the machine',
         'token': 'token used to validate the user is signed in',
         'selected_order': 'ID of the order that is being processes',
@@ -55,7 +60,7 @@ class Machine():
             raise Machine_Creation_Exception
         str_token = 'machine:'+str(datetime.datetime.now())
         self.token = 'machine'+base64.urlsafe_b64encode(
-                                    str_token.encode('utf8')).decode('utf8')
+            str_token.encode('utf8')).decode('utf8')
         new_machine = {
             'token': self.token,
             'selected_order': self.selected_order,
@@ -65,7 +70,7 @@ class Machine():
         }
         self._id = machines.insert_one(new_machine).inserted_id
         self.machine_key = base64.urlsafe_b64encode(
-                                str(self._id).encode('utf8')).decode('utf8')
+            str(self._id).encode('utf8')).decode('utf8')
 
     def set_selected_order(self, order):
         query = {
@@ -73,7 +78,7 @@ class Machine():
             "selected_order": None
         }
         updated_order = machines.update_one(query,
-                                          {'$set':{'selected_order': order._id}})
+                                            {'$set': {'selected_order': order._id}})
         if updated_order.modified_count > 0:
             self.selected_order = order._id
 
@@ -93,14 +98,15 @@ class Machine():
 
     @classmethod
     def find(cls, machine_key):
-        _id = base64.urlsafe_b64decode(machine_key.encode('utf8')).decode('utf8')
-        found_machine = machines.find_one({'_id': _id})
+        _id = base64.urlsafe_b64decode(
+            machine_key.encode('utf8')).decode('utf8')
+        found_machine = machines.find_one({'_id': ObjectId(_id)})
         if found_machine is None:
             return None
         machine = cls()
         machine._id = found_machine.get("_id")
         machine.machine_key = base64.urlsafe_b64encode(
-                                str(machine._id).encode('utf8')).decode('utf8')
+            str(machine._id).encode('utf8')).decode('utf8')
         machine.token = found_machine.get("token")
         machine.selected_order = found_machine.get("selected_order")
         machine.processed_orders = found_machine.get("processed_orders")
@@ -116,7 +122,7 @@ class Machine():
         machine = cls()
         machine._id = found_machine.get("_id")
         machine.machine_key = base64.urlsafe_b64encode(
-                                str(machine._id).encode('utf8')).decode('utf8')
+            str(machine._id).encode('utf8')).decode('utf8')
         machine.token = found_machine.get("token")
         machine.selected_order = found_machine.get("selected_order")
         machine.processed_orders = found_machine.get("processed_orders")
@@ -124,12 +130,23 @@ class Machine():
         machine.error = found_machine.get("error")
         return machine
 
-    def to_dict(self):
+    def __getBase64(self, my_str):
+        return base64.urlsafe_b64encode(str(my_str).encode('utf8')).decode('utf8')
+
+    def to_dict(self, withToken=True):
+        if withToken:
+            return {
+                'machine_key': self.machine_key,
+                'token': self.token,
+                'selected_order': [] if self.selected_order is None else [self.__getBase64(selected_order) for selected_order in self.selected_order],
+                'processed_orders': [] if self.processed_orders is None else [self.__getBase64(processed_order) for processed_order in self.processed_orders],
+                'state': self.state,
+                'error': self.error,
+            }
         return {
             'machine_key': self.machine_key,
-            'token': self.token,
-            'selected_order': self.selected_order,
-            'processed_orders': self.processed_orders,
+            'selected_order': [] if self.selected_order is None else [self.__getBase64(selected_order) for selected_order in self.selected_order],
+            'processed_orders': [] if self.processed_orders is None else [self.__getBase64(processed_order) for processed_order in self.processed_orders],
             'state': self.state,
             'error': self.error,
         }

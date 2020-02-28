@@ -42,7 +42,7 @@ def test():
     :return: Information about this application.
     :rtype: str
     """
-    return 'Taste of Heaven project up and running! \n Made by William Bergamin & Constantina Roumeliotis'
+    return 'Taste of Heaven project up and running!'
 
 # ---------------------- EVENT END-POINTS ---------------------- #
 @app.route('/api/v1/event', methods=['POST'])
@@ -217,6 +217,24 @@ def post_machine():
         return json_error('User: '+str(g.current_user._id)+' unautherised for this creation action',
                           status=401)
     return json_response(json.dumps(new_machine.to_dict()), status=200)
+
+
+@app.route('/api/v1/machine/<string:machine_key>', methods=['GET'])
+@auth.login_required
+def get_machine(machine_key):
+    """
+    header Authorization: Token Authentication_user_token
+    """
+    if g.get('current_user', None) is None:
+        return json_error('No user found might have been a machine token',
+                          status=401)
+    if g.current_user.admin is False:
+        return json_error('User '+g.current_user._id+' cannot perform this action',
+                          status=401)
+    found_machine = Machine.find(machine_key)
+    if found_machine is None:
+        return json_error('Machine not found', 'Machine not found', 404)
+    return json_response(json.dumps(found_machine.to_dict(withToken=False)), status=200)
 
 
 @app.route('/api/v1/machine/event/<string:event_key>', methods=['POST'])
