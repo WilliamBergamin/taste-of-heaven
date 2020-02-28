@@ -1,11 +1,8 @@
 import React from "react";
 import AppBar from "@material-ui/core/AppBar";
 import Toolbar from "@material-ui/core/Toolbar";
-import Button from "@material-ui/core/Button";
-import TextField from "@material-ui/core/TextField";
-import SearchIcon from "@material-ui/icons/Search";
 import IconButton from "@material-ui/core/IconButton";
-import AddIcon from "@material-ui/icons/Add";
+import LocalBarIcon from "@material-ui/icons/LocalBar";
 import useScrollTrigger from "@material-ui/core/useScrollTrigger";
 import ExitToAppIcon from "@material-ui/icons/ExitToApp";
 import toolBarIndexStyle from "../styles/toolBarIndexStyle";
@@ -39,9 +36,9 @@ export default function ToolBar(props) {
             style={{ width: "100%" }}
           >
             <Grid item xs={4}>
-              <Link href="/eventSearch">
+              <Link href="/">
                 <IconButton>
-                  <AddIcon />
+                  <LocalBarIcon />
                 </IconButton>
               </Link>
             </Grid>

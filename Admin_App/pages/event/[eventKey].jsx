@@ -6,57 +6,58 @@ import { Grid } from "@material-ui/core";
 import EventToolBar from "../../components/EventToolBar";
 import auth from "../../Auth";
 import YouMustLogIn from "../../components/YouMustLogIn";
-import ListItem from "@material-ui/core/ListItem";
 import EventInfoCard from "../../components/EventInfoCard";
-import Router from "next/router";
-import useListStyle from "../../styles/eventSearchStyle";
-import Paper from "@material-ui/core/Paper";
+import MachineCard from "../../components/MachineCard";
+import Fab from "@material-ui/core/Fab";
+import AddIcon from "@material-ui/icons/Add";
+import useFabStyle from "../../styles/fabStyle";
+import { withRouter } from "next/router";
 
 const baseURL = "http://3.133.81.46:80";
-
-function ListItemLink(props) {
-  return <ListItem button component="a" {...props} />;
-}
 
 class event extends React.Component {
   constructor(props) {
     super(props);
     auth.initialise(props);
-    fetch(baseURL + "/api/v1/event/" + Router.query.eventKey, {
+    const { router } = this.props;
+    const cookies = new Cookies(props.cookies);
+    let eventKey = router.query.eventKey;
+    if (eventKey == null) {
+      eventKey = cookies.get("lastEventKey");
+    } else {
+      cookies.set("lastEventKey", router.query.eventKey);
+    }
+    this.state = {
+      event: {},
+      machines: []
+    };
+    fetch(baseURL + "/api/v1/event/" + eventKey, {
       method: "GET",
       headers: {
         Authorization: "Token " + auth.getIdToken()
       }
     })
       .then(res => res.json())
-      .then(json =>
-        this.state = {
-          event: json,
-          machines: []
+      .then(json => {
+        for (let i = 0; i < json.machines.length; i = +1) {
+          fetch(baseURL + "/api/v1/machine/" + json.machines[i], {
+            method: "GET",
+            headers: {
+              Authorization: "Token " + auth.getIdToken()
+            }
+          })
+            .then(res => res.json())
+            .then(json =>
+              this.setState({ machines: this.state.machines.concat(json) })
+            );
         }
-      );
-    for (let i = 0; i < this.props.event.length; i = +1) {
-      fetch(baseURL + "/api/v1/machine/" + this.state.event.machines[i], {
-        method: "GET",
-        headers: {
-          Authorization: "Token " + auth.getIdToken()
-        }
-      })
-        .then(res => res.json())
-        .then(json =>
-          this.setState({ machines: this.state.machines.append(json) })
-        );
-    }
+        this.setState({ event: json });
+      });
   }
-
-  // static async getInitialProps(ctx) {
-  //   return { eventKey: JSON.parse(ctx.query.eventKey) };
-  // }
 
   render() {
     const { event } = this.state;
     const { machines } = this.state;
-    console.log(event);
     console.log(machines);
     return !auth.isAuthenticated() ? (
       <YouMustLogIn />
@@ -64,17 +65,28 @@ class event extends React.Component {
       <Grid
         container
         justify="center"
-        style={{ width: "100%", marginTop: "5rem" }}
+        spacing={2}
+        style={{ marginTop: "5rem" }}
       >
         <EventToolBar name={event.name} />
-        <EventInfoCard
-          name={event.name}
-          eventKey={event.event_key}
-          location={event.location}
-        />
+        <Grid item key={event.eventKey} xs={11} lg={4}>
+          <EventInfoCard
+            name={event.name}
+            eventKey={event.event_key}
+            location={event.location}
+          />
+        </Grid>
+        {machines.map(machine => (
+          <Grid item key={machine.machine_key} xs={11} lg={4}>
+            <MachineCard machine={machine} />
+          </Grid>
+        ))}
+        <Fab color="secondary" style={useFabStyle.fab} aria-label="add">
+          <AddIcon />
+        </Fab>
       </Grid>
     );
   }
 }
 
-export default event;
+export default withRouter(event);

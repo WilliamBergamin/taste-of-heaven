@@ -69,7 +69,7 @@ class Login extends React.Component {
               alignItems="center"
             >
               {auth.isAuthenticated() ? (
-                Router.push("/eventSearch")
+                Router.push("/events")
               ) : (
                 <Grid
                   container
@@ -109,7 +109,7 @@ class Login extends React.Component {
                       onClick={() => {
                         auth.handleAuthentication(email, password).then(
                           () => {
-                            Router.push("/eventSearch");
+                            Router.push("/events");
                           },
                           () => {
                             this.handleError();
