@@ -16,6 +16,7 @@ import useIndexStyle from "../styles/IndexStyle";
 import Fab from "@material-ui/core/Fab";
 import AddIcon from "@material-ui/icons/Add";
 import Paper from "@material-ui/core/Paper";
+import FormDialogFab from "../components/FormDialogFab";
 import TextField from "@material-ui/core/TextField";
 
 const baseURL = "http://3.133.81.46:80";
@@ -108,9 +109,7 @@ class eventSearch extends React.Component {
             </Paper>
           </Grid>
         </Grid>
-        <Fab color="secondary" style={useIndexStyle.fab} aria-label="add">
-          <AddIcon />
-        </Fab>
+        <FormDialogFab />
       </div>
     );
   }

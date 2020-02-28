@@ -9,8 +9,8 @@ import YouMustLogIn from "../../components/YouMustLogIn";
 import EventInfoCard from "../../components/EventInfoCard";
 import MachineCard from "../../components/MachineCard";
 import Fab from "@material-ui/core/Fab";
-import AddIcon from "@material-ui/icons/Add";
 import useFabStyle from "../../styles/fabStyle";
+import AddIcon from "@material-ui/icons/Add";
 import { withRouter } from "next/router";
 
 const baseURL = "http://3.133.81.46:80";
