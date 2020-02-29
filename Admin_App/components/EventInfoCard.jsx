@@ -5,6 +5,10 @@ import CardActions from "@material-ui/core/CardActions";
 import CardContent from "@material-ui/core/CardContent";
 import Button from "@material-ui/core/Button";
 import Typography from "@material-ui/core/Typography";
+import Dialog from "@material-ui/core/Dialog";
+import DialogActions from "@material-ui/core/DialogActions";
+import DialogContent from "@material-ui/core/DialogContent";
+import QRCode from "qrcode.react";
 
 const useStyles = makeStyles({
   root: {
@@ -25,6 +29,15 @@ export default function EventInfoCard(props) {
   const { name } = props;
   const { eventKey } = props;
   const { location } = props;
+  const [open, setOpen] = React.useState(false);
+
+  const handleClickOpen = () => {
+    setOpen(true);
+  };
+
+  const handleClose = () => {
+    setOpen(false);
+  };
 
   return (
     <Card className={classes.root} variant="outlined">
@@ -43,10 +56,29 @@ export default function EventInfoCard(props) {
         </Typography>
       </CardContent>
       <CardActions>
-        <Button variant="outlined" size="small" color="primary">
+        <Button
+          variant="outlined"
+          size="small"
+          color="primary"
+          onClick={handleClickOpen}
+        >
           QR code
         </Button>
       </CardActions>
+      <Dialog
+        open={open}
+        onClose={handleClose}
+        aria-labelledby="form-dialog-title"
+      >
+        <DialogContent>
+          <QRCode id={eventKey} value={eventKey} level={"H"} size={200} />
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={handleClose} color="primary">
+            Cancel
+          </Button>
+        </DialogActions>
+      </Dialog>
     </Card>
   );
 }
