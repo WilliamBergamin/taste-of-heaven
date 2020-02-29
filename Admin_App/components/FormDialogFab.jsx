@@ -29,7 +29,7 @@ export default function FormDialogFab() {
         aria-label="add"
         onClick={handleClickOpen}
       >
-        <AddIcon />
+        <AddIcon color="primary" />
       </Fab>
       <Dialog
         open={open}
@@ -38,7 +38,9 @@ export default function FormDialogFab() {
       >
         <DialogTitle id="form-dialog-title">New Machine</DialogTitle>
         <DialogContent>
-          <DialogContentText>bla bla bla</DialogContentText>
+          {
+            // <DialogContentText>bla bla bla</DialogContentText>
+          }
           <TextField
             autoFocus
             margin="dense"
@@ -57,10 +59,20 @@ export default function FormDialogFab() {
           />
         </DialogContent>
         <DialogActions>
-          <Button onClick={handleClose} color="primary">
+          <Button
+            onClick={handleClose}
+            variant="outlined"
+            size="small"
+            color="primary"
+          >
             Cancel
           </Button>
-          <Button onClick={handleClose} color="primary">
+          <Button
+            onClick={handleClose}
+            variant="outlined"
+            size="small"
+            color="primary"
+          >
             Create
           </Button>
         </DialogActions>

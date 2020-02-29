@@ -5,11 +5,15 @@ import CardActions from "@material-ui/core/CardActions";
 import CardContent from "@material-ui/core/CardContent";
 import Button from "@material-ui/core/Button";
 import Typography from "@material-ui/core/Typography";
-import { red, green } from "@material-ui/core/colors";
+import Dialog from "@material-ui/core/Dialog";
+import DialogActions from "@material-ui/core/DialogActions";
+import DialogContent from "@material-ui/core/DialogContent";
+import QRCode from "qrcode.react";
+import { Grid } from "@material-ui/core";
 
 const useStyles = makeStyles({
   root: {
-    minWidth: 275,
+    minWidth: 275
   },
   error: {
     minWidth: 275,
@@ -28,6 +32,15 @@ const useStyles = makeStyles({
 export default function MachineCard(props) {
   const classes = useStyles();
   const { machine } = props;
+  const [open, setOpen] = React.useState(false);
+
+  const handleClickOpen = () => {
+    setOpen(true);
+  };
+
+  const handleClose = () => {
+    setOpen(false);
+  };
 
   return (
     <Card
@@ -51,10 +64,46 @@ export default function MachineCard(props) {
         </Typography>
       </CardContent>
       <CardActions>
-        <Button variant="outlined" size="small" color="primary">
-          QR code
-        </Button>
+        <Grid
+          container
+          justify="center"
+          direction="row-reverse"
+          justify="flex-start"
+        >
+          <Button
+            variant="outlined"
+            size="small"
+            color="primary"
+            onClick={handleClickOpen}
+          >
+            QR code
+          </Button>
+        </Grid>
       </CardActions>
+      <Dialog
+        open={open}
+        onClose={handleClose}
+        aria-labelledby="form-dialog-title"
+      >
+        <DialogContent>
+          <QRCode
+            id={machine.machine_key}
+            value={machine.machine_key}
+            level={"H"}
+            size={200}
+          />
+        </DialogContent>
+        <DialogActions>
+          <Button
+            onClick={handleClose}
+            variant="outlined"
+            size="small"
+            color="primary"
+          >
+            close
+          </Button>
+        </DialogActions>
+      </Dialog>
     </Card>
   );
 }

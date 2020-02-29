@@ -9,6 +9,7 @@ import Dialog from "@material-ui/core/Dialog";
 import DialogActions from "@material-ui/core/DialogActions";
 import DialogContent from "@material-ui/core/DialogContent";
 import QRCode from "qrcode.react";
+import { Grid } from "@material-ui/core";
 
 const useStyles = makeStyles({
   root: {
@@ -56,14 +57,21 @@ export default function EventInfoCard(props) {
         </Typography>
       </CardContent>
       <CardActions>
-        <Button
-          variant="outlined"
-          size="small"
-          color="primary"
-          onClick={handleClickOpen}
+        <Grid
+          container
+          justify="center"
+          direction="row-reverse"
+          justify="flex-start"
         >
-          QR code
-        </Button>
+          <Button
+            variant="outlined"
+            size="small"
+            color="primary"
+            onClick={handleClickOpen}
+          >
+            QR code
+          </Button>
+        </Grid>
       </CardActions>
       <Dialog
         open={open}
@@ -74,8 +82,13 @@ export default function EventInfoCard(props) {
           <QRCode id={eventKey} value={eventKey} level={"H"} size={200} />
         </DialogContent>
         <DialogActions>
-          <Button onClick={handleClose} color="primary">
-            Cancel
+          <Button
+            onClick={handleClose}
+            variant="outlined"
+            size="small"
+            color="primary"
+          >
+            close
           </Button>
         </DialogActions>
       </Dialog>

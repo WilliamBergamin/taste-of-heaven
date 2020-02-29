@@ -82,7 +82,7 @@ class event extends React.Component {
           </Grid>
         ))}
         <Fab color="secondary" style={useFabStyle.fab} aria-label="add">
-          <AddIcon />
+          <AddIcon color="primary" />
         </Fab>
       </Grid>
     );
