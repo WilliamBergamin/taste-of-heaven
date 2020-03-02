@@ -55,6 +55,34 @@ class event extends React.Component {
       });
   }
 
+  handleNewMachine = responseJson => {
+    this.setState({
+      allEvents: this.state.allEvents.concat(responseJson),
+      events: this.state.events.concat(responseJson)
+    });
+  };
+
+  handleCreate(name, location) {
+    return new Promise(async (resolve, reject) => {
+      const response = await fetch(baseURL + "/api/v1/event", {
+        method: "POST",
+        body: JSON.stringify({
+          name: name,
+          location: location
+        }),
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: "Token " + auth.getIdToken()
+        }
+      });
+      const responseJson = await response.json();
+      if (!responseJson || !responseJson.name) {
+        return reject();
+      }
+      resolve(responseJson);
+    });
+  }
+
   render() {
     const { event } = this.state;
     const { machines } = this.state;

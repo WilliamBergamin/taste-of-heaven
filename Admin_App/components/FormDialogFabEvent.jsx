@@ -1,4 +1,6 @@
 import React from "react";
+// eslint-disable-next-line no-unused-vars
+import fetch from "isomorphic-unfetch";
 import Button from "@material-ui/core/Button";
 import TextField from "@material-ui/core/TextField";
 import Dialog from "@material-ui/core/Dialog";
@@ -9,9 +11,15 @@ import DialogTitle from "@material-ui/core/DialogTitle";
 import Fab from "@material-ui/core/Fab";
 import AddIcon from "@material-ui/icons/Add";
 import useFabStyle from "../styles/fabStyle";
+import Snackbar from "@material-ui/core/Snackbar";
+import Alert from "@material-ui/lab/Alert";
 
-export default function FormDialogFab() {
+export default function FormDialogFab(props) {
+  const { executeCreate, handleNewEvent } = props;
   const [open, setOpen] = React.useState(false);
+  const [error, setError] = React.useState(false);
+  const [name, setName] = React.useState("");
+  const [location, setLocation] = React.useState("");
 
   const handleClickOpen = () => {
     setOpen(true);
@@ -19,6 +27,25 @@ export default function FormDialogFab() {
 
   const handleClose = () => {
     setOpen(false);
+  };
+
+  const handleErrorClose = (event, reason) => {
+    if (reason === "clickaway") {
+      return;
+    }
+    setError(false);
+  };
+
+  const handleCreate = () => {
+    executeCreate(name, location).then(
+      result => {
+        handleNewEvent(result);
+        setOpen(false);
+      },
+      error => {
+        setError(true);
+      }
+    );
   };
 
   return (
@@ -38,9 +65,6 @@ export default function FormDialogFab() {
       >
         <DialogTitle id="form-dialog-title">New Machine</DialogTitle>
         <DialogContent>
-          {
-            // <DialogContentText>bla bla bla</DialogContentText>
-          }
           <TextField
             autoFocus
             margin="dense"
@@ -48,6 +72,9 @@ export default function FormDialogFab() {
             label="Name"
             type="text"
             fullWidth
+            onChange={event => {
+              setName(event.target.value);
+            }}
           />
           <TextField
             autoFocus
@@ -56,6 +83,9 @@ export default function FormDialogFab() {
             label="Location"
             type="text"
             fullWidth
+            onChange={event => {
+              setLocation(event.target.value);
+            }}
           />
         </DialogContent>
         <DialogActions>
@@ -68,7 +98,7 @@ export default function FormDialogFab() {
             Cancel
           </Button>
           <Button
-            onClick={handleClose}
+            onClick={handleCreate}
             variant="outlined"
             size="small"
             color="primary"
@@ -77,6 +107,11 @@ export default function FormDialogFab() {
           </Button>
         </DialogActions>
       </Dialog>
+      <Snackbar open={error} autoHideDuration={3000} onClose={handleErrorClose}>
+        <Alert variant="filled" onClose={handleErrorClose} severity="warning">
+          Error occured in event creation!
+        </Alert>
+      </Snackbar>
     </div>
   );
 }

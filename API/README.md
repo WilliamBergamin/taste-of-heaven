@@ -15,7 +15,7 @@ API is a powerful Restfull API that uses the flask framework, allows to manage u
     - [Add User to Event](#add-user-to-event)
     - [Create New Order](#create-new-order)
     - [Create New Machine](#create-new-machine)
-    - [Add Machine to Event](#add-machine-to-event)
+    <!-- - [Add Machine to Event](#add-machine-to-event) -->
     - [Machine Get Order in Event](#machine-get-order-in-event)
     - [Machine Post Order Completed](#machine-post-order-completed)
 
@@ -186,7 +186,7 @@ json = {
 ### Create New Machine
 
 ```JSON
-POST /api/v1/machine
+POST /api/v1/machine/<string:event_key>
 headers = Authorization: Token Authentication_user_token
 ```
 
@@ -202,7 +202,7 @@ json = {
 }
 ```
 
-[:top:](#table-of-contents)
+<!-- [:top:](#table-of-contents)
 
 ### Add Machine to Event
 
@@ -218,7 +218,7 @@ json = {
     "name": "",
     "location": ""
 }
-```
+``` -->
 
 [:top:](#table-of-contents)
 

@@ -219,9 +219,9 @@ def post_order():
     return json_response(json.dumps(new_order.to_dict()), status=200)
 
 # ---------------------- MACHINE END-POINTS ---------------------- #
-@app.route('/api/v1/machine', methods=['POST'])
+@app.route('/api/v1/machine/<string:event_key>', methods=['POST'])
 @auth.login_required
-def post_machine():
+def post_machine(event_key):
     """
     header Authorization: Token Authentication_user_token
     """
@@ -234,6 +234,10 @@ def post_machine():
     except Machine_Creation_Exception:
         return json_error('User: '+str(g.current_user._id)+' unautherised for this creation action',
                           status=401)
+    event = Event.find(event_key)
+    if event is None:
+        return json_error('Event not found', 'Event not found', 404)
+    event.add_machine(new_machine)
     return json_response(json.dumps(new_machine.to_dict()), status=200)
 
 
@@ -255,20 +259,20 @@ def get_machine(machine_key):
     return json_response(json.dumps(found_machine.to_dict(withToken=False)), status=200)
 
 
-@app.route('/api/v1/machine/event/<string:event_key>', methods=['POST'])
-@auth.login_required
-def post_machine_to_event(event_key):
-    """
-    header Authorization: Token Authentication_machine_token
-    /api/v1/user/event/<string:event_key>
-    """
-    if g.get('current_machine', None) is None:
-        return json_error('No machine found might have been a user token', status=401)
-    event = Event.find(event_key)
-    if event is None:
-        return json_error('Event not found', 'Event not found', 404)
-    event.add_machine(g.current_machine)
-    return json_response(json.dumps(event.to_dict()), status=200)
+# @app.route('/api/v1/machine/event/<string:event_key>', methods=['POST'])
+# @auth.login_required
+# def post_machine_to_event(event_key):
+#     """
+#     header Authorization: Token Authentication_machine_token
+#     /api/v1/user/event/<string:event_key>
+#     """
+#     if g.get('current_machine', None) is None:
+#         return json_error('No machine found might have been a user token', status=401)
+#     event = Event.find(event_key)
+#     if event is None:
+#         return json_error('Event not found', 'Event not found', 404)
+#     event.add_machine(g.current_machine)
+#     return json_response(json.dumps(event.to_dict()), status=200)
 
 
 @app.route('/api/v1/machine/order/<string:event_key>/<string:order_key>', methods=['GET', 'POST'])

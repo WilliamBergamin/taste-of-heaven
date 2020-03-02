@@ -13,10 +13,8 @@ import ListItemText from "@material-ui/core/ListItemText";
 import EventIcon from "@material-ui/icons/Event";
 import useListStyle from "../styles/eventSearchStyle";
 import useIndexStyle from "../styles/IndexStyle";
-import Fab from "@material-ui/core/Fab";
-import AddIcon from "@material-ui/icons/Add";
 import Paper from "@material-ui/core/Paper";
-import FormDialogFab from "../components/FormDialogFab";
+import FormDialogFab from "../components/FormDialogFabEvent";
 import TextField from "@material-ui/core/TextField";
 
 const baseURL = "http://3.133.81.46:80";
@@ -40,10 +38,37 @@ class eventSearch extends React.Component {
     events: []
   };
 
+  handleNewEvent = responseJson => {
+    this.setState({
+      allEvents: this.state.allEvents.concat(responseJson),
+      events: this.state.events.concat(responseJson)
+    });
+  };
+
+  handleCreate(name, location) {
+    return new Promise(async (resolve, reject) => {
+      const response = await fetch(baseURL + "/api/v1/event", {
+        method: "POST",
+        body: JSON.stringify({
+          name: name,
+          location: location
+        }),
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: "Token " + auth.getIdToken()
+        }
+      });
+      const responseJson = await response.json();
+      if (!responseJson || !responseJson.name) {
+        return reject();
+      }
+      resolve(responseJson);
+    });
+  }
+
   render() {
     const { events } = this.state;
     const { allEvents } = this.state;
-    console.log(allEvents);
     return !auth.isAuthenticated() ? (
       <YouMustLogIn />
     ) : (
@@ -77,7 +102,7 @@ class eventSearch extends React.Component {
                       onChange={event => {
                         this.setState({
                           events: allEvents.filter(myevent => {
-                            return myevent.name.startsWith(event.target.value);
+                            return myevent.name.toLowerCase().startsWith(event.target.value.toLowerCase());
                           })
                         });
                       }}
@@ -109,7 +134,10 @@ class eventSearch extends React.Component {
             </Paper>
           </Grid>
         </Grid>
-        <FormDialogFab />
+        <FormDialogFab
+          executeCreate={this.handleCreate}
+          handleNewEvent={this.handleNewEvent}
+        />
       </div>
     );
   }
