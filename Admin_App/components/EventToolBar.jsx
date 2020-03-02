@@ -3,7 +3,6 @@ import AppBar from "@material-ui/core/AppBar";
 import Toolbar from "@material-ui/core/Toolbar";
 import ArrowBackIcon from "@material-ui/icons/ArrowBack";
 import IconButton from "@material-ui/core/IconButton";
-import AddIcon from "@material-ui/icons/Add";
 import useScrollTrigger from "@material-ui/core/useScrollTrigger";
 import ExitToAppIcon from "@material-ui/icons/ExitToApp";
 import toolBarIndexStyle from "../styles/toolBarIndexStyle";

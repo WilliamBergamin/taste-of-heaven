@@ -1,16 +1,14 @@
 import React from "react";
-// eslint-disable-next-line no-unused-vars
-import fetch from "isomorphic-unfetch";
 import Paper from "@material-ui/core/Paper";
 import Button from "@material-ui/core/Button";
 import Zoom from "@material-ui/core/Zoom";
 import { Grid } from "@material-ui/core";
 import Alert from "@material-ui/lab/Alert";
-import useIndexStyle from "../styles/IndexStyle";
-import TextField from "@material-ui/core/TextField";
-import auth from "../Auth";
-import Router from "next/router";
 import Snackbar from "@material-ui/core/Snackbar";
+import TextField from "@material-ui/core/TextField";
+import Router from "next/router";
+import useIndexStyle from "../styles/IndexStyle";
+import auth from "../Auth";
 
 class Login extends React.Component {
   constructor(props) {
@@ -52,6 +50,10 @@ class Login extends React.Component {
     });
   };
 
+  handleAuthenticated = () => {
+    Router.push("/events");
+  };
+
   render() {
     const { password, email, open } = this.state;
     return (
@@ -69,7 +71,7 @@ class Login extends React.Component {
               alignItems="center"
             >
               {auth.isAuthenticated() ? (
-                Router.push("/events")
+                this.handleAuthenticated()
               ) : (
                 <Grid
                   container
@@ -98,6 +100,18 @@ class Login extends React.Component {
                       variant="outlined"
                       value={password}
                       onChange={this.handleChangePass}
+                      onKeyDown={e => {
+                        if (e.keyCode === 13) {
+                          auth.handleAuthentication(email, password).then(
+                            () => {
+                              Router.push("/events");
+                            },
+                            () => {
+                              this.handleError();
+                            }
+                          );
+                        }
+                      }}
                     />
                   </Grid>
                   <Grid item>

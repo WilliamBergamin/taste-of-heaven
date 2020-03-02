@@ -1,0 +1,22 @@
+FROM node:alpine
+
+ENV PATH=$PATH:/usr/local/bin
+ENV APP_HOME /next_js
+
+RUN mkdir -p $APP_HOME 
+WORKDIR $APP_HOME
+
+COPY package-lock.json ./package-lock.json
+COPY package.json ./package.json
+COPY Auth.js ./Auth.js
+COPY .env ./.env
+COPY next.config.js ./next.config.js
+COPY /components ./components
+COPY /pages ./pages
+COPY /styles ./styles
+COPY /theme ./theme
+
+RUN npm install
+RUN npm audit fix
+RUN npm run build
+CMD ["npm", "start"]

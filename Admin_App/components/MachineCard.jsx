@@ -8,8 +8,9 @@ import Typography from "@material-ui/core/Typography";
 import Dialog from "@material-ui/core/Dialog";
 import DialogActions from "@material-ui/core/DialogActions";
 import DialogContent from "@material-ui/core/DialogContent";
-import QRCode from "qrcode.react";
 import { Grid } from "@material-ui/core";
+import QRCode from "qrcode.react";
+import CircularIndeterminate from "../components/CircularIndeterminate";
 
 const useStyles = makeStyles({
   root: {
@@ -31,8 +32,18 @@ const useStyles = makeStyles({
 
 export default function MachineCard(props) {
   const classes = useStyles();
-  const { machine } = props;
+  const { machineKey, auth } = props;
   const [open, setOpen] = React.useState(false);
+  const [machine, setMachine] = React.useState(null);
+
+  fetch(process.env.SERVER_BASE_URL + "/api/v1/machine/" + machineKey, {
+    method: "GET",
+    headers: {
+      Authorization: "Token " + auth.getIdToken()
+    }
+  })
+    .then(res => res.json())
+    .then(json => setMachine(json));
 
   const handleClickOpen = () => {
     setOpen(true);
@@ -42,7 +53,9 @@ export default function MachineCard(props) {
     setOpen(false);
   };
 
-  return (
+  return machine === null ? (
+    <CircularIndeterminate />
+  ) : (
     <Card
       className={machine.state === "ok" ? classes.root : classes.error}
       variant="outlined"
@@ -88,7 +101,7 @@ export default function MachineCard(props) {
         <DialogContent>
           <QRCode
             id={machine.machine_key}
-            value={machine.machine_key}
+            value={machine.token}
             level={"H"}
             size={200}
           />

@@ -1,29 +1,35 @@
 import React from "react";
-// eslint-disable-next-line no-unused-vars
 import fetch from "isomorphic-unfetch";
 import { Grid } from "@material-ui/core";
-import Link from "next/link";
-import ToolBar from "../components/ToolBar";
-import auth from "../Auth";
-import YouMustLogIn from "../components/YouMustLogIn";
+import TextField from "@material-ui/core/TextField";
 import List from "@material-ui/core/List";
 import ListItem from "@material-ui/core/ListItem";
 import ListItemIcon from "@material-ui/core/ListItemIcon";
 import ListItemText from "@material-ui/core/ListItemText";
 import EventIcon from "@material-ui/icons/Event";
+import Paper from "@material-ui/core/Paper";
+import Link from "next/link";
+import ToolBar from "../components/ToolBar";
+import auth from "../Auth";
+import YouMustLogIn from "../components/YouMustLogIn";
 import useListStyle from "../styles/eventSearchStyle";
 import useIndexStyle from "../styles/IndexStyle";
-import Paper from "@material-ui/core/Paper";
 import FormDialogFab from "../components/FormDialogFabEvent";
-import TextField from "@material-ui/core/TextField";
-
-const baseURL = "http://3.133.81.46:80";
+import CircularIndeterminate from "../components/CircularIndeterminate";
 
 class eventSearch extends React.Component {
   constructor(props) {
     super(props);
     auth.initialise(props);
-    fetch(baseURL + "/api/v1/events", {
+  }
+
+  state = {
+    allEvents: [],
+    events: null
+  };
+
+  componentDidMount() {
+    fetch(process.env.SERVER_BASE_URL + "/api/v1/events", {
       method: "GET",
       headers: {
         Authorization: "Token " + auth.getIdToken()
@@ -32,11 +38,6 @@ class eventSearch extends React.Component {
       .then(res => res.json())
       .then(json => this.setState({ allEvents: json, events: json }));
   }
-
-  state = {
-    allEvents: [],
-    events: []
-  };
 
   handleNewEvent = responseJson => {
     this.setState({
@@ -47,7 +48,7 @@ class eventSearch extends React.Component {
 
   handleCreate(name, location) {
     return new Promise(async (resolve, reject) => {
-      const response = await fetch(baseURL + "/api/v1/event", {
+      const response = await fetch(process.env.SERVER_BASE_URL + "/api/v1/event", {
         method: "POST",
         body: JSON.stringify({
           name: name,
@@ -74,7 +75,7 @@ class eventSearch extends React.Component {
     ) : (
       <div>
         <Grid container justify="center" style={{ marginTop: "5rem" }}>
-          <Grid item xs={11} lg={8}>
+          <Grid item={true} xs={11} lg={8}>
             <Paper style={useListStyle.paper}>
               <ToolBar />
               <List
@@ -102,7 +103,9 @@ class eventSearch extends React.Component {
                       onChange={event => {
                         this.setState({
                           events: allEvents.filter(myevent => {
-                            return myevent.name.toLowerCase().startsWith(event.target.value.toLowerCase());
+                            return myevent.name
+                              .toLowerCase()
+                              .startsWith(event.target.value.toLowerCase());
                           })
                         });
                       }}
@@ -110,26 +113,30 @@ class eventSearch extends React.Component {
                   </Grid>
                 }
               >
-                {events.map(event => (
-                  <Link
-                    key={event.event_key}
-                    href={{
-                      pathname: "/event/[eventKey]",
-                      query: { event: JSON.stringify(event) }
-                    }}
-                    as={`/event/${event.event_key}`}
-                  >
-                    <ListItem button>
-                      <ListItemIcon>
-                        <EventIcon />
-                      </ListItemIcon>
-                      <ListItemText
-                        primary={event.name}
-                        secondary={event.location}
-                      />
-                    </ListItem>
-                  </Link>
-                ))}
+                {events === null ? (
+                  <CircularIndeterminate />
+                ) : (
+                  events.map(event => (
+                    <Link
+                      key={event.event_key}
+                      href={{
+                        pathname: "/event/[eventKey]",
+                        query: { event: JSON.stringify(event) }
+                      }}
+                      as={`/event/${event.event_key}`}
+                    >
+                      <ListItem button>
+                        <ListItemIcon>
+                          <EventIcon />
+                        </ListItemIcon>
+                        <ListItemText
+                          primary={event.name}
+                          secondary={event.location}
+                        />
+                      </ListItem>
+                    </Link>
+                  ))
+                )}
               </List>
             </Paper>
           </Grid>

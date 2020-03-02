@@ -1,6 +1,4 @@
 import React from "react";
-// eslint-disable-next-line no-unused-vars
-import fetch from "isomorphic-unfetch";
 import Button from "@material-ui/core/Button";
 import TextField from "@material-ui/core/TextField";
 import Dialog from "@material-ui/core/Dialog";
@@ -63,8 +61,14 @@ export default function FormDialogFab(props) {
         onClose={handleClose}
         aria-labelledby="form-dialog-title"
       >
-        <DialogTitle id="form-dialog-title">New Machine</DialogTitle>
+        <DialogTitle id="form-dialog-title">
+          You are Creating a new machine!
+        </DialogTitle>
         <DialogContent>
+          <DialogContentText id="alert-dialog-description">
+            Are you sure you want to create a new event, this action cannot be
+            undone by a user with your priviledges?
+          </DialogContentText>
           <TextField
             autoFocus
             margin="dense"

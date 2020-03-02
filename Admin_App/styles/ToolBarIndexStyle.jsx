@@ -1,5 +1,3 @@
-import theme from "../theme/Theme";
-
 const toolBarIndexStyle = {
   rightItem: {
     alignItems: "right"

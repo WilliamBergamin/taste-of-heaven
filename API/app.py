@@ -92,10 +92,6 @@ def get_events():
 def get_event(event_key):
     """
     header Authorization: Token Authentication_user_token
-    {
-      "name":"your moms a hoe",
-      "location":"ur moms house"
-    }
     """
     if g.get('current_user', None) is None:
         return json_error('No user found might have been a machine token',

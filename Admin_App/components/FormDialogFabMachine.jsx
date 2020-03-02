@@ -1,8 +1,5 @@
 import React from "react";
-// eslint-disable-next-line no-unused-vars
-import fetch from "isomorphic-unfetch";
 import Button from "@material-ui/core/Button";
-import TextField from "@material-ui/core/TextField";
 import Dialog from "@material-ui/core/Dialog";
 import DialogActions from "@material-ui/core/DialogActions";
 import DialogContent from "@material-ui/core/DialogContent";
@@ -18,8 +15,6 @@ export default function FormDialogFabMachine(props) {
   const { executeCreate, handleNewMachine } = props;
   const [open, setOpen] = React.useState(false);
   const [error, setError] = React.useState(false);
-  const [name, setName] = React.useState("");
-  const [location, setLocation] = React.useState("");
 
   const handleClickOpen = () => {
     setOpen(true);
@@ -37,9 +32,9 @@ export default function FormDialogFabMachine(props) {
   };
 
   const handleCreate = () => {
-    executeCreate(name, location).then(
+    executeCreate().then(
       result => {
-        handleNewEvent(result);
+        handleNewMachine(result);
         setOpen(false);
       },
       error => {
@@ -63,30 +58,14 @@ export default function FormDialogFabMachine(props) {
         onClose={handleClose}
         aria-labelledby="form-dialog-title"
       >
-        <DialogTitle id="form-dialog-title">New Machine</DialogTitle>
+        <DialogTitle id="form-dialog-title">
+          You are Creating a new machine!
+        </DialogTitle>
         <DialogContent>
-          <TextField
-            autoFocus
-            margin="dense"
-            id="name"
-            label="Name"
-            type="text"
-            fullWidth
-            onChange={event => {
-              setName(event.target.value);
-            }}
-          />
-          <TextField
-            autoFocus
-            margin="dense"
-            id="location"
-            label="Location"
-            type="text"
-            fullWidth
-            onChange={event => {
-              setLocation(event.target.value);
-            }}
-          />
+          <DialogContentText id="alert-dialog-description">
+            Are you sure you want to create a new machine for this event, this
+            action cannot be undone by a user with your priviledges?
+          </DialogContentText>
         </DialogContent>
         <DialogActions>
           <Button
@@ -109,7 +88,7 @@ export default function FormDialogFabMachine(props) {
       </Dialog>
       <Snackbar open={error} autoHideDuration={3000} onClose={handleErrorClose}>
         <Alert variant="filled" onClose={handleErrorClose} severity="warning">
-          Error occured in event creation!
+          Error occured during machine creation!
         </Alert>
       </Snackbar>
     </div>

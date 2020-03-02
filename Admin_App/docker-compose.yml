@@ -1,0 +1,14 @@
+version: "3.3"
+
+networks:
+  frontend:
+
+services:
+  next_js:
+    image: kingwill/projects:taste-of-heaven-next_js-1.0
+    container_name: "next_js"
+    ports:
+      - 81:3000
+    restart: always
+    networks:
+      - frontend

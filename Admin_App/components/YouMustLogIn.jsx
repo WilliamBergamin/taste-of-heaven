@@ -1,6 +1,4 @@
 import React from "react";
-// eslint-disable-next-line no-unused-vars
-import fetch from "isomorphic-unfetch";
 import { Grid } from "@material-ui/core";
 import Link from "next/link";
 import Button from "@material-ui/core/Button";

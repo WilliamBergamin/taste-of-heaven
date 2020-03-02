@@ -2,8 +2,6 @@ import Router from "next/router";
 import fetch from "isomorphic-unfetch";
 import Cookies from "universal-cookie";
 
-const baseURL = "http://3.133.81.46:80";
-
 class Auth {
   constructor() {
     this.cookies = null;
@@ -35,7 +33,7 @@ class Auth {
 
   handleAuthentication(email, password) {
     return new Promise(async (resolve, reject) => {
-      const response = await fetch(baseURL + "/api/v1/user/token", {
+      const response = await fetch(process.env.SERVER_BASE_URL + "/api/v1/user/token", {
         method: "POST",
         body: JSON.stringify({
           email: email,
