@@ -29,7 +29,8 @@ class event extends React.Component {
     }
     this.state = {
       event: {},
-      machines: []
+      machines: [],
+      eventKey: eventKey
     };
     fetch(baseURL + "/api/v1/event/" + eventKey, {
       method: "GET",
@@ -62,26 +63,23 @@ class event extends React.Component {
     });
   };
 
-  handleCreate(name, location) {
+  handleCreateMachine = (name, location) => {
+    const eventKey = this.state.eventKey;
     return new Promise(async (resolve, reject) => {
-      const response = await fetch(baseURL + "/api/v1/event", {
+      const response = await fetch(baseURL + "/api/v1/machine/" + eventKey, {
         method: "POST",
-        body: JSON.stringify({
-          name: name,
-          location: location
-        }),
         headers: {
           "Content-Type": "application/json",
           Authorization: "Token " + auth.getIdToken()
         }
       });
       const responseJson = await response.json();
-      if (!responseJson || !responseJson.name) {
+      if (!responseJson || !responseJson.token) {
         return reject();
       }
       resolve(responseJson);
     });
-  }
+  };
 
   render() {
     const { event } = this.state;

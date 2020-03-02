@@ -256,7 +256,7 @@ def get_machine(machine_key):
     found_machine = Machine.find(machine_key)
     if found_machine is None:
         return json_error('Machine not found', 'Machine not found', 404)
-    return json_response(json.dumps(found_machine.to_dict(withToken=False)), status=200)
+    return json_response(json.dumps(found_machine.to_dict(withToken=True)), status=200)
 
 
 # @app.route('/api/v1/machine/event/<string:event_key>', methods=['POST'])
