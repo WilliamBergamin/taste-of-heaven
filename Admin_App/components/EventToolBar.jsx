@@ -43,20 +43,24 @@ export default function EventToolBar(props) {
                 </IconButton>
               </Link>
             </Grid>
-            <Grid container justify="center" xs={8}>
-              <Grid item xs={8}>
-                <Typography variant="h6" color="primary" align="center">
-                  {name}
-                </Typography>
+            <Grid item xs={8}>
+              <Grid container justify="center">
+                <Grid item>
+                  <Typography variant="h6" color="primary" align="center">
+                    {name}
+                  </Typography>
+                </Grid>
               </Grid>
             </Grid>
-            <Grid container justify="flex-end" xs={2}>
-              <Grid item xs={2} class={toolBarIndexStyle}>
-                <Link href="/">
-                  <IconButton onClick={() => auth.logout()} align="right">
-                    <ExitToAppIcon />
-                  </IconButton>
-                </Link>
+            <Grid item xs={2}>
+              <Grid container justify="flex-end">
+                <Grid item style={toolBarIndexStyle}>
+                  <Link href="/">
+                    <IconButton onClick={() => auth.logout()} align="right">
+                      <ExitToAppIcon />
+                    </IconButton>
+                  </Link>
+                </Grid>
               </Grid>
             </Grid>
           </Grid>

@@ -35,28 +35,32 @@ export default function ToolBar(props) {
             alignItems="center"
             style={{ width: "100%" }}
           >
-            <Grid item xs={4}>
+            <Grid item xs={2}>
               <Link href="/">
                 <IconButton>
                   <LocalBarIcon />
                 </IconButton>
               </Link>
             </Grid>
-            <Grid container justify="center" xs={4}>
-              <Grid item xs={4} class={toolBarIndexStyle.centerItem}>
+            <Grid item xs={8}>
+            <Grid container justify="center">
+              <Grid item >
                 <Typography variant="h6" color="primary" align="center">
                   Events
                 </Typography>
               </Grid>
             </Grid>
-            <Grid container justify="flex-end" xs={4}>
-              <Grid item xs={4} class={toolBarIndexStyle.rightItem}>
+            </Grid>
+            <Grid item xs={2}>
+            <Grid container justify="flex-end">
+              <Grid item style={toolBarIndexStyle}>
                 <Link href="/">
                   <IconButton onClick={() => auth.logout()}>
                     <ExitToAppIcon />
                   </IconButton>
                 </Link>
               </Grid>
+            </Grid>
             </Grid>
           </Grid>
         </Toolbar>

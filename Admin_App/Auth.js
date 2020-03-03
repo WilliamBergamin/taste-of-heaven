@@ -1,4 +1,3 @@
-import Router from "next/router";
 import fetch from "isomorphic-unfetch";
 import Cookies from "universal-cookie";
 
@@ -13,10 +12,6 @@ class Auth {
     this.cookies = new Cookies(req.cookies);
     this.idToken = this.cookies.get("token");
     this.expiresAt = this.cookies.get("expiresAt");
-  }
-
-  login() {
-    Router.push("/");
   }
 
   logout() {

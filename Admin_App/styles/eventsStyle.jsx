@@ -1,12 +1,13 @@
 import theme from "../theme/Theme";
 
-const useListStyle = {
-  paper: {
+const useEventsStyle = {
+  EventsPaper: {
     padding: "1%",
-    display: "flex",
+    display: "wrap",
     alignItems: "center",
+    marginTop: "5rem",
     background: theme.palette.secondary.main
-  }
+  },
 };
 
-export default useListStyle;
+export default useEventsStyle;

@@ -52,56 +52,75 @@ class Login extends React.Component {
 
   handleAuthenticated = () => {
     Router.push("/events");
+    return null;
   };
 
   render() {
     const { password, email, open } = this.state;
-    return (
-      <Zoom in timeout={{ enter: 1500 }}>
-        <Grid
-          container
-          justify="center"
-          style={{ width: "100%", marginTop: "20%" }}
-        >
-          <Paper style={useIndexStyle.paper}>
+    return auth.isAuthenticated() ?
+      (this.handleAuthenticated()) : (
+        <div style={{display: 'flex',  justifyContent:'center', alignItems:'center', height: '100vh'}}>
+          <Zoom in timeout={{ enter: 1500 }}>
             <Grid
               container
               justify="center"
-              direction="column"
-              alignItems="center"
             >
-              {auth.isAuthenticated() ? (
-                this.handleAuthenticated()
-              ) : (
-                <Grid
-                  container
-                  justify="center"
-                  direction="column"
-                  alignItems="center"
-                >
-                  <Grid item>
-                    <TextField
-                      style={{ marginTop: "3%", marginBottom: "3%" }}
-                      id="outlined"
-                      label="Email"
-                      type="email"
-                      variant="outlined"
-                      value={email}
-                      onChange={this.handleChangeEmail}
-                    />
-                  </Grid>
-                  <Grid item>
-                    <TextField
-                      style={{ marginTop: "3%", marginBottom: "3%" }}
-                      id="outlined-password-input"
-                      label="Password"
-                      type="password"
-                      autoComplete="current-password"
-                      variant="outlined"
-                      value={password}
-                      onChange={this.handleChangePass}
-                      onKeyDown={e => {
-                        if (e.keyCode === 13) {
+              <Grid item lg={2} md={4} sm={6} xs={10}>
+                <Paper style={useIndexStyle.paper}>
+                <img
+                src="/static/logo.png"
+                width="200"
+                height="auto"
+                alt=""
+                style={{display: "block",
+                  marginLeft: "auto",
+                  marginRight: "auto",
+                  width: "50%;"}}
+              />
+                      <TextField
+                        style={{ marginTop: "3%", marginBottom: "3%" }}
+                        id="outlined"
+                        label="Email"
+                        type="email"
+                        fullWidth
+                        value={email}
+                        onChange={this.handleChangeEmail}
+                      />
+                      <TextField
+                        style={{ marginTop: "3%", marginBottom: "3%"}}
+                        id="outlined-password-input"
+                        label="Password"
+                        type="password"
+                        autoComplete="current-password"
+                        fullWidth
+                        value={password}
+                        onChange={this.handleChangePass}
+                        onKeyDown={e => {
+                          if (e.keyCode === 13) {
+                            auth.handleAuthentication(email, password).then(
+                              () => {
+                                Router.push("/events");
+                              },
+                              () => {
+                                this.handleError();
+                              }
+                            );
+                          }
+                        }}
+                      />
+                  <Grid
+                    container
+                    justify="center"
+                    direction="column"
+                    alignItems="center"
+                  >
+                    <Grid item>
+                      <Button
+                        style={{ marginTop: "10%" }}
+                        variant="outlined"
+                        size="small"
+                        color="primary"
+                        onClick={() => {
                           auth.handleAuthentication(email, password).then(
                             () => {
                               Router.push("/events");
@@ -110,50 +129,31 @@ class Login extends React.Component {
                               this.handleError();
                             }
                           );
-                        }
-                      }}
-                    />
-                  </Grid>
-                  <Grid item>
-                    <Button
-                      style={{ marginTop: "10%" }}
-                      variant="outlined"
-                      size="small"
-                      color="primary"
-                      onClick={() => {
-                        auth.handleAuthentication(email, password).then(
-                          () => {
-                            Router.push("/events");
-                          },
-                          () => {
-                            this.handleError();
-                          }
-                        );
-                      }}
-                    >
-                      Log In
-                    </Button>
-                    <Snackbar
-                      open={open}
-                      autoHideDuration={3000}
-                      onClose={this.handleClose}
-                    >
-                      <Alert
-                        variant="filled"
-                        onClose={this.handleClose}
-                        severity="warning"
+                        }}
                       >
-                        Email or Password not valid!
-                      </Alert>
-                    </Snackbar>
+                        Log In
+                    </Button>
+                    </Grid>
                   </Grid>
-                </Grid>
-              )}
+                </Paper>
+              </Grid>
             </Grid>
-          </Paper>
-        </Grid>
-      </Zoom>
-    );
+          </Zoom>
+          <Snackbar
+            open={open}
+            autoHideDuration={3000}
+            onClose={this.handleClose}
+          >
+            <Alert
+              variant="filled"
+              onClose={this.handleClose}
+              severity="warning"
+            >
+              Email or Password not valid!
+            </Alert>
+          </Snackbar>
+        </div>);
+
   }
 }
 export default Login;

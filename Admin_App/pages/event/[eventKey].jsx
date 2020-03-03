@@ -73,13 +73,13 @@ class event extends React.Component {
       <YouMustLogIn />
     ) : (
       <div>
+        <EventToolBar name={event.name} />
         <Grid
           container
           justify="center"
           spacing={2}
           style={{ marginTop: "5rem" }}
         >
-          <EventToolBar name={event.name} />
           <Grid item key={event.eventKey} xs={11} lg={4}>
             <EventInfoCard
               name={event.name}
