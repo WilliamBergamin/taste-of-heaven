@@ -8,7 +8,7 @@ services:
     image: kingwill/projects:taste-of-heaven-next_js-1.0
     container_name: "admin_app"
     ports:
-      - 81:3000
+      - 80:3000
     restart: always
     networks:
       - frontend
