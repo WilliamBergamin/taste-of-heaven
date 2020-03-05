@@ -34,6 +34,13 @@ public class Main extends Application {
         Button btn = new Button();
         btn.setText("enter");
         btn.setStyle(BUTTONSTYLE);
+        btn.pressedProperty().addListener((observable, wasPressed, pressed) -> {
+            if (pressed) {
+                btn.setStyle(PRESSEDBUTTONSTYLE);
+            } else {
+                btn.setStyle(BUTTONSTYLE);
+            }
+        });
         btn.setPadding(new Insets(10, 15, 10, 15));
 
         btn.setOnAction(new EventHandler<ActionEvent>() {
@@ -55,13 +62,14 @@ public class Main extends Application {
                         Machine.setEventKey(eventKey);
                         try {
                             Machine.initializeFromJSON(response);
+                            nextScenes();
                         } catch (JSONException e) {
+                            System.out.println(e);
                             Alert alert = new Alert(Alert.AlertType.INFORMATION);
                             alert.setHeaderText(null);
                             alert.setContentText("Something went very wrong!");
                             alert.show();
                         }
-                        nextScenes();
                     }
                 }else{
                     Alert alert = new Alert(Alert.AlertType.INFORMATION);

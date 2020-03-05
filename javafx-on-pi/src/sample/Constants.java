@@ -7,11 +7,24 @@ public class Constants {
     public final static int ORDERKEYLENGHT = 32;
 
     public final static String BUTTONSTYLE =
-            "-fx-background-color: #7e7e7e;\n" +
+            "-fx-background-color: white;\n" +
             "-fx-background-radius: 30;\n" +
             "-fx-background-insets: 0;\n" +
                     "-fx-font-size: 15;\n" +
-            "-fx-text-fill: white;";
+            "-fx-text-fill: #7e7e7e;\n" +
+                    "-fx-font-family: 'Courier New';\n"+
+                    "-fx-border-color: #7e7e7e;\n"+
+                    "-fx-border-radius: 30;";
+
+    public final static String PRESSEDBUTTONSTYLE =
+            "-fx-background-color: #f2f2f2;\n" +
+            "-fx-background-radius: 30;\n" +
+            "-fx-background-insets: 0;\n" +
+            "-fx-font-size: 15;\n" +
+                    "-fx-font-family: 'Courier New';\n"+
+            "-fx-text-fill: #7e7e7e;;\n"+
+                    "-fx-border-color: #7e7e7e;;\n"+
+                    "-fx-border-radius: 30;";
 
     public final static  String PROGRESSSTYLE = "-fx-progress-color: black;";
 

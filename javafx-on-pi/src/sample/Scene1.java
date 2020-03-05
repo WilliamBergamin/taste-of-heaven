@@ -26,6 +26,13 @@ public class Scene1 {
         Button btn = new Button();
         btn.setText("Get Your Drink");
         btn.setStyle(BUTTONSTYLE);
+        btn.pressedProperty().addListener((observable, wasPressed, pressed) -> {
+            if (pressed) {
+                btn.setStyle(PRESSEDBUTTONSTYLE);
+            } else {
+                btn.setStyle(BUTTONSTYLE);
+            }
+        });
         btn.setPadding(new Insets(10, 15, 10, 15));
         btn.setOnAction(new EventHandler<ActionEvent>() {
             @Override

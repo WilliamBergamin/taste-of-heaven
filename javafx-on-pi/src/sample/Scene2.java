@@ -33,6 +33,13 @@ public class Scene2 {
         Button btn = new Button();
         btn.setText("Cancel");
         btn.setStyle(BUTTONSTYLE);
+        btn.pressedProperty().addListener((observable, wasPressed, pressed) -> {
+            if (pressed) {
+                btn.setStyle(PRESSEDBUTTONSTYLE);
+            } else {
+                btn.setStyle(BUTTONSTYLE);
+            }
+        });
         btn.setPadding(new Insets(10, 15, 10, 15));
         btn.setOnAction(new EventHandler<ActionEvent>() {
             @Override
@@ -44,6 +51,13 @@ public class Scene2 {
         Button manualBtn = new Button();
         manualBtn.setText("Manual Enter");
         manualBtn.setStyle(BUTTONSTYLE);
+        manualBtn.pressedProperty().addListener((observable, wasPressed, pressed) -> {
+            if (pressed) {
+                manualBtn.setStyle(PRESSEDBUTTONSTYLE);
+            } else {
+                manualBtn.setStyle(BUTTONSTYLE);
+            }
+        });
         manualBtn.setPadding(new Insets(10, 15, 10, 15));
         manualBtn.setOnAction(new EventHandler<ActionEvent>() {
             @Override

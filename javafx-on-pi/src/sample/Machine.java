@@ -12,7 +12,7 @@ public class Machine {
     private static String machineToken;
     private static String eventKey;
     private static String machineKey;
-    private static ArrayList<String> selectedOrder;
+    private static String selectedOrder;
     private static ArrayList<String> processedOrders;
     private static String state;
     private static String error;
@@ -20,22 +20,18 @@ public class Machine {
     private static BackgroundUpdater backgroundUpdater;
 
     static{
-        selectedOrder = new ArrayList<String>();
         processedOrders = new ArrayList<String>();
         backgroundUpdater = new BackgroundUpdater();
     }
 
     public static void initializeFromJSON(JSONObject json) throws JSONException {
+        System.out.println(json.toString());
         Machine.state = json.getString("state");
         Machine.machineKey = json.getString("machine_key");
         Machine.error = json.getString("error");
-        Machine.selectedOrder = new ArrayList<String>();
+        Machine.selectedOrder = json.getString("selected_order");
         Machine.processedOrders = new ArrayList<String>();
-        JSONArray tmpJSONArray = json.getJSONArray("selected_order");
-        for (int i=0;i<tmpJSONArray.length();i++){
-            Machine.selectedOrder.add(tmpJSONArray.get(i).toString());
-        }
-        tmpJSONArray = json.getJSONArray("processed_orders");
+        JSONArray tmpJSONArray = json.getJSONArray("processed_orders");
         for (int i=0;i<tmpJSONArray.length();i++){
             Machine.processedOrders.add(tmpJSONArray.get(i).toString());
         }
@@ -66,7 +62,7 @@ public class Machine {
         return eventKey;
     }
 
-    public static ArrayList<String> getSelectedOrder() {
+    public static String getSelectedOrder() {
         return selectedOrder;
     }
 
@@ -90,7 +86,7 @@ public class Machine {
         Machine.eventKey = eventKey;
     }
 
-    public static void setSelectedOrder(ArrayList<String> selectedOrder) {
+    public static void setSelectedOrder(String selectedOrder) {
         Machine.selectedOrder = selectedOrder;
     }
 
