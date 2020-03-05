@@ -270,6 +270,16 @@ def get_machine(machine_key):
 #     event.add_machine(g.current_machine)
 #     return json_response(json.dumps(event.to_dict()), status=200)
 
+@app.route('/api/v1/machine/', methods=['GET', 'POST'])
+@auth.login_required
+def machine_get_data():
+    """
+    header Authorization: Token Authentication_machine_token
+    """
+    if g.get('current_machine', None) is None:
+        return json_error('No machine found might have been a user token', status=401)
+    return json_response(json.dumps(g.current_machine.to_dict()), status=200)
+
 
 @app.route('/api/v1/machine/order/<string:event_key>/<string:order_key>', methods=['GET', 'POST'])
 @auth.login_required
