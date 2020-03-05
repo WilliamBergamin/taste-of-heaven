@@ -16,7 +16,8 @@ public class Constants {
     public final static  String PROGRESSSTYLE = "-fx-progress-color: black;";
 
     public final static  String LABELSTYLE =
-            "-fx-font-size: 15;\n" +
-                    "-fx-text-fill: #7e7e7e;\n";
+            "-fx-font-size: 40;\n" +
+                    "-fx-text-fill: #7e7e7e;\n"+
+                    "-fx-font-family: 'Savoye LET';\n";
 
 }
