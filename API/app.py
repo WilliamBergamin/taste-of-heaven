@@ -281,6 +281,28 @@ def machine_get_data():
     return json_response(json.dumps(g.current_machine.to_dict()), status=200)
 
 
+@app.route('/api/v1/machine/', methods=['POST'])
+@auth.login_required
+def machine_update():
+    """
+    header Authorization: Token Authentication_machine_token
+    {
+      "state": "error",
+      "error": "something broken",
+      "location":" ur moms house"
+    }
+    """
+    if request.content_type != JSON_MIME_TYPE:
+        return json_error('Invalid Content Type', 'Invalid Content Type', 400)
+    if g.get('current_machine', None) is None:
+        return json_error('No machine found might have been a user token', status=401)
+    data = request.json
+    g.current_machine.set_state_error_location(state=data.get('state'),
+                                               error=data.get('error'),
+                                               location=data.get('location'))
+    return json_response(json.dumps(g.current_machine.to_dict()), status=200)
+
+
 @app.route('/api/v1/machine/order/<string:event_key>/<string:order_key>', methods=['GET', 'POST'])
 @auth.login_required
 def machine_get_order(event_key, order_key):

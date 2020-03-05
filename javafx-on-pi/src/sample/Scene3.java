@@ -13,12 +13,10 @@ import static sample.Constants.*;
 public class Scene3 {
 
     private Stage primaryStage;
-    private Machine machine;
     private String orderToken;
     private Label label = new Label("Order Fetched!");
 
-    public Scene3(Machine machine, String orderToken){
-        this.machine=machine;
+    public Scene3(String orderToken){
         this.orderToken=orderToken;
     }
 
@@ -55,7 +53,7 @@ public class Scene3 {
             @Override
             public void handle(WorkerStateEvent event) {
                 ServerHelper helper = new ServerHelper();
-                JSONObject response = helper.postOrderCompleted(machine);
+                JSONObject response = helper.postOrderCompleted();
                 if (response == null){
                     errorScene();
                 }else {
@@ -89,12 +87,12 @@ public class Scene3 {
         alert.setHeaderText(null);
         alert.setContentText("SOMETHING WENT TERRIBLY WRONG!");
         alert.showAndWait();
-        SceneError sceneError = new SceneError(this.machine);
+        SceneError sceneError = new SceneError();
         sceneError.getScene(primaryStage);
     }
 
     private void nextScene(){
-        Scene4 scene4 = new Scene4(this.machine);
+        Scene4 scene4 = new Scene4();
         scene4.getScene(primaryStage);
     }
 }

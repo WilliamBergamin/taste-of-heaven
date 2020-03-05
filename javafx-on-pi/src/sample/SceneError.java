@@ -15,17 +15,12 @@ import static sample.Constants.WIDTH;
 
 public class SceneError {
 
-    private Stage primaryStage;
-    private Machine machine;
     private Label label = new Label("THIS MACHINE IS OUT OF SERVICE!");
 
-    public SceneError(Machine machine){
-        this.machine=machine;
+    public SceneError(){
     }
 
     public void getScene(Stage primaryStage){
-
-        this.primaryStage = primaryStage;
 
         CustomVBox vb = new CustomVBox();
 

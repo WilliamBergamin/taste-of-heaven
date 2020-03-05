@@ -1,23 +1,16 @@
 package sample;
 
 import javafx.application.Application;
-import javafx.beans.binding.Bindings;
 import javafx.event.EventHandler;
-import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
-import javafx.scene.layout.Background;
-import javafx.scene.layout.BackgroundFill;
-import javafx.scene.layout.CornerRadii;
-import javafx.scene.layout.VBox;
-import javafx.scene.paint.Color;
-import javafx.scene.text.Font;
 import javafx.stage.Stage;
 import javafx.scene.control.Label;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 import javafx.event.ActionEvent;
 import javafx.geometry.Insets;
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import static sample.Constants.*;
@@ -50,14 +43,25 @@ public class Main extends Application {
                 String eventKey = eventTokenTextField.getText();
                 if (!machineToken.isEmpty() && !eventKey.isEmpty()) {
                     ServerHelper helper = new ServerHelper();
-                    JSONObject response = helper.addMachineToEvent(machineToken, eventKey);
+                    JSONObject response = helper.getMachineData(machineToken);
+                    //TODO store data of machine
                     if (response == null){
                         Alert alert = new Alert(Alert.AlertType.INFORMATION);
                         alert.setHeaderText(null);
                         alert.setContentText("Invalid credentials!");
                         alert.show();
                     }else {
-                        nextScenes(new Machine(machineToken, eventKey));
+                        Machine.setMachineToken(machineToken);
+                        Machine.setEventKey(eventKey);
+                        try {
+                            Machine.initializeFromJSON(response);
+                        } catch (JSONException e) {
+                            Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                            alert.setHeaderText(null);
+                            alert.setContentText("Something went very wrong!");
+                            alert.show();
+                        }
+                        nextScenes();
                     }
                 }else{
                     Alert alert = new Alert(Alert.AlertType.INFORMATION);
@@ -88,13 +92,13 @@ public class Main extends Application {
 
     private void testScenes(Machine machine){
         // TODO register machine to event before moving on
-        Scene4 scene4 = new Scene4(machine);
+        Scene4 scene4 = new Scene4();
         scene4.getScene(primaryStage);
     }
 
-    private void nextScenes(Machine machine){
+    private void nextScenes(){
         // TODO register machine to event before moving on
-        Scene1 scene1 = new Scene1(machine);
+        Scene1 scene1 = new Scene1();
         scene1.getScene(primaryStage);
     }
 

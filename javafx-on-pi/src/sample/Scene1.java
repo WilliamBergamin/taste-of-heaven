@@ -13,10 +13,8 @@ import static sample.Constants.*;
 public class Scene1 {
 
     private Stage primaryStage;
-    private Machine machine;
 
-    public Scene1(Machine machine){
-        this.machine = machine;
+    public Scene1(){
     }
 
     public void getScene(Stage primaryStage){
@@ -44,7 +42,7 @@ public class Scene1 {
     }
 
     private void nextScene(){
-        Scene2 scene2 = new Scene2(this.machine);
+        Scene2 scene2 = new Scene2();
         scene2.getScene(primaryStage);
     }
 }

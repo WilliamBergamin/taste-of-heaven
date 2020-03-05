@@ -32,7 +32,8 @@ class Machine():
         'selected_order': 'str',
         'processed_orders': 'str',
         'state': 'str',
-        'error': 'str'
+        'error': 'str',
+        'location': 'str'
     }
 
     attribute_map = {
@@ -42,7 +43,8 @@ class Machine():
         'selected_order': 'ID of the order that is being processes',
         'processed_orders': 'list of orde IDs that have been processed',
         'state': 'state of the machine',
-        'error': 'error that might have occured on the machine'
+        'error': 'error that might have occured on the machine',
+        'location': 'location of the machine'
     }
 
     states = ['ok', 'empty', 'error']
@@ -54,6 +56,7 @@ class Machine():
         self.processed_orders = []
         self.state = self.states[0]
         self.error = None
+        self.location = None
 
     def create(self, user):
         if not user.admin:
@@ -71,6 +74,22 @@ class Machine():
         self._id = machines.insert_one(new_machine).inserted_id
         self.machine_key = base64.urlsafe_b64encode(
             str(self._id).encode('utf8')).decode('utf8')
+
+    def set_state_error_location(self, state, error, location):
+        if state not in self.states & error is None:
+            state = self.states[2]
+            error = "State received not valid"
+        query = {
+            "_id": self._id,
+        }
+        updated_order = machines.update_one(query,
+                                            {'$set': {"state": state,
+                                                      "error": error,
+                                                      "location": location, }})
+        if updated_order.modified_count > 0:
+            self.state = state
+            self.error = error
+            self.location = location
 
     def set_selected_order(self, order):
         query = {
@@ -138,14 +157,14 @@ class Machine():
             return {
                 'machine_key': self.machine_key,
                 'token': self.token,
-                'selected_order': [] if self.selected_order is None else [self.__getBase64(selected_order) for selected_order in self.selected_order],
+                'selected_order': None if self.selected_order is None else self.__getBase64(self.selected_order),
                 'processed_orders': [] if self.processed_orders is None else [self.__getBase64(processed_order) for processed_order in self.processed_orders],
                 'state': self.state,
                 'error': self.error,
             }
         return {
             'machine_key': self.machine_key,
-            'selected_order': [] if self.selected_order is None else [self.__getBase64(selected_order) for selected_order in self.selected_order],
+            'selected_order': None if self.selected_order is None else self.__getBase64(self.selected_order),
             'processed_orders': [] if self.processed_orders is None else [self.__getBase64(processed_order) for processed_order in self.processed_orders],
             'state': self.state,
             'error': self.error,

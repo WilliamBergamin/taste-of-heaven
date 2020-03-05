@@ -14,12 +14,12 @@ public class ServerHelper {
     private String baseURL = "http://3.133.81.46:80";
     public ServerHelper(){}
 
-    public JSONObject addMachineToEvent(String MachineToken, String eventKey){
+    public JSONObject getMachineData(String MachineToken){
         URL url;
         HttpURLConnection connection = null;
         try {
             //Create connection
-            url = new URL(this.baseURL +"/api/v1/machine/event/"+eventKey);
+            url = new URL(this.baseURL +"/api/v1/machine/");
             connection = (HttpURLConnection)url.openConnection();
             connection.setRequestMethod("POST");
             connection.setRequestProperty("Content-Type",
@@ -59,15 +59,15 @@ public class ServerHelper {
         }
     }
 
-    public JSONObject getOrderInEvent(Machine machine, String orderKey){
+    public JSONObject getOrderInEvent(String orderKey){
         URL url;
         HttpURLConnection connection = null;
         try {
             //Create connection
-            url = new URL(this.baseURL +"/api/v1/machine/order/"+machine.getEventKey()+"/"+orderKey);
+            url = new URL(this.baseURL +"/api/v1/machine/order/"+Machine.getEventKey()+"/"+orderKey);
             connection = (HttpURLConnection)url.openConnection();
             connection.setRequestMethod("GET");
-            connection.setRequestProperty("Authorization","Token "+machine.getMachineToken());
+            connection.setRequestProperty("Authorization","Token "+Machine.getMachineToken());
 
             connection.setUseCaches(false);
             connection.setDoInput(true);
@@ -103,17 +103,17 @@ public class ServerHelper {
         }
     }
 
-    public JSONObject postOrderCompleted(Machine machine){
+    public JSONObject postOrderCompleted(){
         URL url;
         HttpURLConnection connection = null;
         try {
             //Create connection
-            url = new URL(this.baseURL +"/api/v1/machine/order/done/"+machine.getEventKey());
+            url = new URL(this.baseURL +"/api/v1/machine/order/done/"+Machine.getEventKey());
             connection = (HttpURLConnection)url.openConnection();
             connection.setRequestMethod("POST");
             connection.setRequestProperty("Content-Type",
                     "application/json");
-            connection.setRequestProperty("Authorization","Token "+machine.getMachineToken());
+            connection.setRequestProperty("Authorization","Token "+Machine.getMachineToken());
 
             connection.setUseCaches(false);
             connection.setDoInput(true);
