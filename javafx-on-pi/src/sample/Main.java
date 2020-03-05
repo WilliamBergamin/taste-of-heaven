@@ -74,7 +74,6 @@ public class Main extends Application {
 
         Label label1 = new Label("Machine Token");
         label1.setStyle(LABELSTYLE);
-        System.out.print(javafx.scene.text.Font.getFamilies());
 
         Label label2 = new Label("Event Key");
         label2.setStyle(LABELSTYLE);

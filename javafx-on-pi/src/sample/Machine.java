@@ -6,6 +6,7 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 
+
 public class Machine {
 
     private static String machineToken;
@@ -15,10 +16,13 @@ public class Machine {
     private static ArrayList<String> processedOrders;
     private static String state;
     private static String error;
+    private static String location;
+    private static BackgroundUpdater backgroundUpdater;
 
     static{
         selectedOrder = new ArrayList<String>();
         processedOrders = new ArrayList<String>();
+        backgroundUpdater = new BackgroundUpdater();
     }
 
     public static void initializeFromJSON(JSONObject json) throws JSONException {
@@ -35,6 +39,15 @@ public class Machine {
         for (int i=0;i<tmpJSONArray.length();i++){
             Machine.processedOrders.add(tmpJSONArray.get(i).toString());
         }
+        Machine.backgroundUpdater.start();
+    }
+
+    public static String getLocation() {
+        return location;
+    }
+
+    public static void setLocation(String location) {
+        Machine.location = location;
     }
 
     public static String getMachineKey() {

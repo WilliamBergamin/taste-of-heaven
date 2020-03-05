@@ -70,6 +70,7 @@ class Machine():
             'processed_orders': self.processed_orders,
             'state': self.state,
             'error': self.error,
+            'location': self.location,
         }
         self._id = machines.insert_one(new_machine).inserted_id
         self.machine_key = base64.urlsafe_b64encode(
@@ -131,6 +132,7 @@ class Machine():
         machine.processed_orders = found_machine.get("processed_orders")
         machine.state = found_machine.get("state")
         machine.error = found_machine.get("error")
+        machine.location = found_machine.get("location", None)
         return machine
 
     @classmethod
@@ -147,6 +149,7 @@ class Machine():
         machine.processed_orders = found_machine.get("processed_orders")
         machine.state = found_machine.get("state")
         machine.error = found_machine.get("error")
+        machine.location = found_machine.get("location", None)
         return machine
 
     def __getBase64(self, my_str):
@@ -161,6 +164,7 @@ class Machine():
                 'processed_orders': [] if self.processed_orders is None else [self.__getBase64(processed_order) for processed_order in self.processed_orders],
                 'state': self.state,
                 'error': self.error,
+                'location': self.location,
             }
         return {
             'machine_key': self.machine_key,
@@ -168,4 +172,5 @@ class Machine():
             'processed_orders': [] if self.processed_orders is None else [self.__getBase64(processed_order) for processed_order in self.processed_orders],
             'state': self.state,
             'error': self.error,
+            'location': self.location,
         }

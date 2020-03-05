@@ -23,7 +23,7 @@ public class ServerHelper {
             connection = (HttpURLConnection)url.openConnection();
             connection.setRequestMethod("POST");
             connection.setRequestProperty("Content-Type",
-                                            "application/json");
+                    "application/json");
             connection.setRequestProperty("Authorization","Token "+MachineToken);
 
             connection.setUseCaches(false);
@@ -58,6 +58,59 @@ public class ServerHelper {
             }
         }
     }
+
+    public JSONObject postUpdateStatus(){
+        URL url;
+        HttpURLConnection connection = null;
+        try {
+            //Create connection
+            url = new URL(this.baseURL +"/api/v1/machine/");
+            connection = (HttpURLConnection)url.openConnection();
+            connection.setRequestMethod("POST");
+            connection.setRequestProperty("Content-Type",
+                    "application/json");
+            connection.setRequestProperty("Authorization","Token "+Machine.getMachineToken());
+
+            connection.setUseCaches(false);
+            connection.setDoInput(true);
+            connection.setDoOutput(true);
+
+            JSONObject obj = new JSONObject();
+
+            obj.put("state", Machine.getState());
+            obj.put("error", Machine.getError());
+            obj.put("location", Machine.getLocation());
+
+            //Send request
+            DataOutputStream wr = new DataOutputStream (
+                    connection.getOutputStream ());
+            wr.writeBytes(obj.toString());
+            wr.flush();
+            wr.close();
+
+            //Get Response
+            InputStream is = connection.getInputStream();
+            BufferedReader rd = new BufferedReader(new InputStreamReader(is));
+            String line;
+            StringBuffer response = new StringBuffer();
+            while((line = rd.readLine()) != null) {
+                response.append(line);
+                response.append('\r');
+            }
+            rd.close();
+            return new JSONObject(response.toString());
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        } finally {
+
+            if(connection != null) {
+                connection.disconnect();
+            }
+        }
+    }
+
 
     public JSONObject getOrderInEvent(String orderKey){
         URL url;
