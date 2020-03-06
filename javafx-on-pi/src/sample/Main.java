@@ -28,11 +28,27 @@ public class Main extends Application {
 
         final TextField machineTokenTextField = new TextField();
         machineTokenTextField.setMaxWidth(200);
+        machineTokenTextField.setStyle(TEXTFEILDSTYLE);
+        machineTokenTextField.focusedProperty().addListener((observable, wasPressed, pressed) -> {
+            if (pressed) {
+                machineTokenTextField.setStyle(TEXTFEILDFOCUSEDSTYLE);
+            } else {
+                machineTokenTextField.setStyle(TEXTFEILDSTYLE);
+            }
+        });
         final TextField eventTokenTextField = new TextField();
         eventTokenTextField.setMaxWidth(200);
+        eventTokenTextField.setStyle(TEXTFEILDSTYLE);
+        eventTokenTextField.focusedProperty().addListener((observable, wasPressed, pressed) -> {
+            if (pressed) {
+                eventTokenTextField.setStyle(TEXTFEILDFOCUSEDSTYLE);
+            } else {
+                eventTokenTextField.setStyle(TEXTFEILDSTYLE);
+            }
+        });
 
         Button btn = new Button();
-        btn.setText("enter");
+        btn.setText("ENTER");
         btn.setStyle(BUTTONSTYLE);
         btn.pressedProperty().addListener((observable, wasPressed, pressed) -> {
             if (pressed) {

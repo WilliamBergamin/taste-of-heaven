@@ -25,7 +25,6 @@ public class Machine {
     }
 
     public static void initializeFromJSON(JSONObject json) throws JSONException {
-        System.out.println(json.toString());
         Machine.state = json.getString("state");
         Machine.machineKey = json.getString("machine_key");
         Machine.error = json.getString("error");
