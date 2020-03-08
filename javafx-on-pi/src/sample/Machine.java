@@ -22,13 +22,14 @@ public class Machine {
     static{
         processedOrders = new ArrayList<String>();
         backgroundUpdater = new BackgroundUpdater();
+        location = null;
     }
 
     public static void initializeFromJSON(JSONObject json) throws JSONException {
         Machine.state = json.getString("state");
         Machine.machineKey = json.getString("machine_key");
-        Machine.error = json.getString("error");
-        Machine.selectedOrder = json.getString("selected_order");
+        Machine.error = json.optString("error", null);
+        Machine.selectedOrder = json.optString("selected_order", null);
         Machine.processedOrders = new ArrayList<String>();
         JSONArray tmpJSONArray = json.getJSONArray("processed_orders");
         for (int i=0;i<tmpJSONArray.length();i++){

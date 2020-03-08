@@ -80,6 +80,7 @@ public class Main extends Application {
                             Machine.initializeFromJSON(response);
                             nextScenes();
                         } catch (JSONException e) {
+                            e.printStackTrace();
                             System.out.println(e);
                             Alert alert = new Alert(Alert.AlertType.INFORMATION);
                             alert.setHeaderText(null);
@@ -101,6 +102,8 @@ public class Main extends Application {
 
         Label label2 = new Label("Event Key");
         label2.setStyle(LABELSTYLE);
+
+        System.out.println(javafx.scene.text.Font.getFamilies());
 
         vb.getChildren().add(label1);
         vb.getChildren().add(machineTokenTextField);
