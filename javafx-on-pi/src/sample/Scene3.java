@@ -44,6 +44,7 @@ public class Scene3 {
             protected Void call() throws Exception {
                 try {
                     Thread.sleep(3000);
+                    //TODO send order through uart that watit for the response
                 } catch (InterruptedException e) {
                 }
                 return null;
@@ -52,8 +53,7 @@ public class Scene3 {
         nextSceneSleeper.setOnSucceeded(new EventHandler<WorkerStateEvent>() {
             @Override
             public void handle(WorkerStateEvent event) {
-                ServerHelper helper = new ServerHelper();
-                JSONObject response = helper.postOrderCompleted();
+                JSONObject response = ServerHelper.postOrderCompleted();
                 if (response == null){
                     errorScene();
                 }else {

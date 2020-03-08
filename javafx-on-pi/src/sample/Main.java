@@ -65,8 +65,7 @@ public class Main extends Application {
                 String machineToken = machineTokenTextField.getText();
                 String eventKey = eventTokenTextField.getText();
                 if (!machineToken.isEmpty() && !eventKey.isEmpty()) {
-                    ServerHelper helper = new ServerHelper();
-                    JSONObject response = helper.getMachineData(machineToken);
+                    JSONObject response = ServerHelper.getMachineData(machineToken);
                     //TODO store data of machine
                     if (response == null){
                         Alert alert = new Alert(Alert.AlertType.INFORMATION);
@@ -102,8 +101,6 @@ public class Main extends Application {
 
         Label label2 = new Label("Event Key");
         label2.setStyle(LABELSTYLE);
-
-        System.out.println(javafx.scene.text.Font.getFamilies());
 
         vb.getChildren().add(label1);
         vb.getChildren().add(machineTokenTextField);

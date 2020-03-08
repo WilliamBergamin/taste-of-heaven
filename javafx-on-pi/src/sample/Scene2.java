@@ -95,9 +95,7 @@ public class Scene2 {
     }
 
     private void onOrderKeyEnter(){
-        System.out.println(orderKey.toString());
-        ServerHelper helper = new ServerHelper();
-        JSONObject response = helper.getOrderInEvent(orderKey.toString());
+        JSONObject response = ServerHelper.getOrderInEvent(orderKey.toString());
         if (response == null){
             Alert alert = new Alert(Alert.AlertType.INFORMATION);
             alert.setHeaderText(null);

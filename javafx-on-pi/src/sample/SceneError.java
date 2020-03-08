@@ -30,6 +30,5 @@ public class SceneError {
 
         primaryStage.setScene(sceneError);
 
-        //TODO set state of machine
     }
 }

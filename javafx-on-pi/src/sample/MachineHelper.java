@@ -8,196 +8,89 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import com.pi4j.io.serial.*;
+import com.pi4j.util.CommandArgumentParser;
+import com.pi4j.util.Console;
+
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.concurrent.Semaphore;
 
 public class MachineHelper {
 
-    private String baseURL = "http://3.133.81.46:80";
-    public MachineHelper(){}
+    private static final Serial serial;
+    private static SerialConfig config;
+    private static Semaphore mutex;
 
-    public JSONObject getMachineData(String MachineToken){
-        URL url;
-        HttpURLConnection connection = null;
+    static{
+        mutex = new Semaphore(1);
+        serial = SerialFactory.createInstance();
+        serial.addListener(new SerialDataEventListener() {
+            @Override
+            public void dataReceived(SerialDataEvent event) {
+                try {
+                    System.out.println(event.getHexByteString());
+                    System.out.println(event.getAsciiString());
+                    //TODO set a single listener that masks what gets received and set the appropiatre values
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+        config = new SerialConfig();
+        config.device(RaspberryPiSerial.S0_COM_PORT)
+                .baud(Baud._9600)
+                .dataBits(DataBits._8)
+                .parity(Parity.NONE)
+                .stopBits(StopBits._1)
+                .flowControl(FlowControl.NONE);
         try {
-            //Create connection
-            url = new URL(this.baseURL +"/api/v1/machine/");
-            connection = (HttpURLConnection)url.openConnection();
-            connection.setRequestMethod("POST");
-            connection.setRequestProperty("Content-Type",
-                    "application/json");
-            connection.setRequestProperty("Authorization","Token "+MachineToken);
-
-            connection.setUseCaches(false);
-            connection.setDoInput(true);
-            connection.setDoOutput(true);
-
-            //Send request
-            DataOutputStream wr = new DataOutputStream (
-                    connection.getOutputStream ());
-            wr.flush();
-            wr.close();
-
-            //Get Response
-            InputStream is = connection.getInputStream();
-            BufferedReader rd = new BufferedReader(new InputStreamReader(is));
-            String line;
-            StringBuffer response = new StringBuffer();
-            while((line = rd.readLine()) != null) {
-                response.append(line);
-                response.append('\r');
-            }
-            rd.close();
-            return new JSONObject(response.toString());
-
-        } catch (Exception e) {
+            serial.open(config);
+        } catch (IOException e) {
             e.printStackTrace();
-            return null;
-        } finally {
-
-            if(connection != null) {
-                connection.disconnect();
-            }
+            System.out.println(" ==>> SERIAL SETUP FAILED : " + e.getMessage());
         }
     }
 
-    public JSONObject postUpdateStatus(){
-        URL url;
-        HttpURLConnection connection = null;
+    public static void getStatus() {
         try {
-            //Create connection
-            url = new URL(this.baseURL +"/api/v1/machine/");
-            connection = (HttpURLConnection)url.openConnection();
-            connection.setRequestMethod("POST");
-            connection.setRequestProperty("Content-Type",
-                    "application/json");
-            connection.setRequestProperty("Authorization","Token "+Machine.getMachineToken());
-
-            connection.setUseCaches(false);
-            connection.setDoInput(true);
-            connection.setDoOutput(true);
-
-            JSONObject obj = new JSONObject();
-
-            obj.put("state", Machine.getState());
-            obj.put("error", Machine.getError());
-            obj.put("location", Machine.getLocation());
-
-            //Send request
-            DataOutputStream wr = new DataOutputStream (
-                    connection.getOutputStream ());
-            wr.writeBytes(obj.toString());
-            wr.flush();
-            wr.close();
-
-            //Get Response
-            InputStream is = connection.getInputStream();
-            BufferedReader rd = new BufferedReader(new InputStreamReader(is));
-            String line;
-            StringBuffer response = new StringBuffer();
-            while((line = rd.readLine()) != null) {
-                response.append(line);
-                response.append('\r');
-            }
-            rd.close();
-            return new JSONObject(response.toString());
-
-        } catch (Exception e) {
+            mutex.acquire();
+            // retrrun the status
+        } catch (InterruptedException e) {
             e.printStackTrace();
-            return null;
         } finally {
-
-            if(connection != null) {
-                connection.disconnect();
-            }
+            mutex.release();
         }
+
+    }
+
+    public static void sendNewOrder() {
+        try {
+            mutex.acquire();
+            // write a formatted string to the serial transmit buffer
+            serial.write("CURRENT TIME: " + new Date().toString());
+
+            // write a individual bytes to the serial transmit buffer
+            serial.write((byte) 13);
+            serial.write((byte) 10);
+
+            // write a simple string to the serial transmit buffer
+            serial.write("Second Line");
+
+            // write a individual characters to the serial transmit buffer
+            serial.write('\r');
+            serial.write('\n');
+
+            // write a string terminating with CR+LF to the serial transmit buffer
+            serial.writeln("Third Line");
+        } catch (InterruptedException | IOException e) {
+            e.printStackTrace();
+        } finally {
+            mutex.release();
+        }
+
     }
 
 
-    public JSONObject getOrderInEvent(String orderKey){
-        URL url;
-        HttpURLConnection connection = null;
-        try {
-            //Create connection
-            url = new URL(this.baseURL +"/api/v1/machine/order/"+Machine.getEventKey()+"/"+orderKey);
-            connection = (HttpURLConnection)url.openConnection();
-            connection.setRequestMethod("GET");
-            connection.setRequestProperty("Authorization","Token "+Machine.getMachineToken());
-
-            connection.setUseCaches(false);
-            connection.setDoInput(true);
-            connection.setDoOutput(true);
-
-            //Send request
-            DataOutputStream wr = new DataOutputStream(
-                    connection.getOutputStream());
-            wr.flush();
-            wr.close();
-
-            //Get Response
-            InputStream is = connection.getInputStream();
-            BufferedReader rd = new BufferedReader(new InputStreamReader(is));
-            String line;
-            StringBuffer response = new StringBuffer();
-            while((line = rd.readLine()) != null) {
-                response.append(line);
-                response.append('\r');
-            }
-            rd.close();
-            return new JSONObject(response.toString());
-
-        } catch (Exception e) {
-            System.out.println(e.getMessage());
-            e.printStackTrace();
-            return null;
-        } finally {
-
-            if(connection != null) {
-                connection.disconnect();
-            }
-        }
-    }
-
-    public JSONObject postOrderCompleted(){
-        URL url;
-        HttpURLConnection connection = null;
-        try {
-            //Create connection
-            url = new URL(this.baseURL +"/api/v1/machine/order/done/"+Machine.getEventKey());
-            connection = (HttpURLConnection)url.openConnection();
-            connection.setRequestMethod("POST");
-            connection.setRequestProperty("Content-Type",
-                    "application/json");
-            connection.setRequestProperty("Authorization","Token "+Machine.getMachineToken());
-
-            connection.setUseCaches(false);
-            connection.setDoInput(true);
-            connection.setDoOutput(true);
-
-            //Send request
-            DataOutputStream wr = new DataOutputStream (
-                    connection.getOutputStream ());
-            wr.flush();
-            wr.close();
-
-            //Get Response
-            InputStream is = connection.getInputStream();
-            BufferedReader rd = new BufferedReader(new InputStreamReader(is));
-            String line;
-            StringBuffer response = new StringBuffer();
-            while((line = rd.readLine()) != null) {
-                response.append(line);
-                response.append('\r');
-            }
-            rd.close();
-            return new JSONObject(response.toString());
-
-        } catch (Exception e) {
-            e.printStackTrace();
-            return null;
-        } finally {
-
-            if(connection != null) {
-                connection.disconnect();
-            }
-        }
-    }
 }

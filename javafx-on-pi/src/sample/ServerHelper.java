@@ -11,15 +11,15 @@ import java.net.URL;
 
 public class ServerHelper {
 
-    private String baseURL = "http://3.133.81.46:80";
+    private final static String baseURL = "http://3.133.81.46:80";
     public ServerHelper(){}
 
-    public JSONObject getMachineData(String MachineToken){
+    public  static JSONObject getMachineData(String MachineToken){
         URL url;
         HttpURLConnection connection = null;
         try {
             //Create connection
-            url = new URL(this.baseURL +"/api/v1/machine/");
+            url = new URL(baseURL +"/api/v1/machine/");
             connection = (HttpURLConnection)url.openConnection();
             connection.setRequestMethod("POST");
             connection.setRequestProperty("Content-Type",
@@ -59,12 +59,12 @@ public class ServerHelper {
         }
     }
 
-    public JSONObject postUpdateStatus(){
+    public static JSONObject postUpdateStatus(){
         URL url;
         HttpURLConnection connection = null;
         try {
             //Create connection
-            url = new URL(this.baseURL +"/api/v1/machine/");
+            url = new URL(baseURL +"/api/v1/machine/");
             connection = (HttpURLConnection)url.openConnection();
             connection.setRequestMethod("POST");
             connection.setRequestProperty("Content-Type",
@@ -112,12 +112,12 @@ public class ServerHelper {
     }
 
 
-    public JSONObject getOrderInEvent(String orderKey){
+    public static JSONObject getOrderInEvent(String orderKey){
         URL url;
         HttpURLConnection connection = null;
         try {
             //Create connection
-            url = new URL(this.baseURL +"/api/v1/machine/order/"+Machine.getEventKey()+"/"+orderKey);
+            url = new URL(baseURL +"/api/v1/machine/order/"+Machine.getEventKey()+"/"+orderKey);
             connection = (HttpURLConnection)url.openConnection();
             connection.setRequestMethod("GET");
             connection.setRequestProperty("Authorization","Token "+Machine.getMachineToken());
@@ -156,12 +156,12 @@ public class ServerHelper {
         }
     }
 
-    public JSONObject postOrderCompleted(){
+    public static JSONObject postOrderCompleted(){
         URL url;
         HttpURLConnection connection = null;
         try {
             //Create connection
-            url = new URL(this.baseURL +"/api/v1/machine/order/done/"+Machine.getEventKey());
+            url = new URL(baseURL +"/api/v1/machine/order/done/"+Machine.getEventKey());
             connection = (HttpURLConnection)url.openConnection();
             connection.setRequestMethod("POST");
             connection.setRequestProperty("Content-Type",
