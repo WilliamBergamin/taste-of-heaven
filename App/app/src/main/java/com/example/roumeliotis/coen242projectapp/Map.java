@@ -7,7 +7,6 @@ import android.widget.ImageButton;
 
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
-import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
@@ -47,9 +46,7 @@ public class Map extends AppCompatActivity implements OnMapReadyCallback{
 
     @Override
     public void onMapReady(GoogleMap map) {
-        LatLng eV = new LatLng(45.495483, -73.577603);
-        map.addMarker(new MarkerOptions().position(eV).title("Machine"));
-        map.moveCamera(CameraUpdateFactory.newLatLngZoom(eV, 15));
+        map.addMarker(new MarkerOptions().position(new LatLng(0, 0)).title("Marker"));
     }
 
     void goToCreateDrink() {
