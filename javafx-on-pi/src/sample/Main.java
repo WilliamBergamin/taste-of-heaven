@@ -23,7 +23,7 @@ public class Main extends Application {
     private GpioPinDigitalOutput pin;
 
     @Override
-    public void start(Stage primaryStage) throws Exception{
+    public void start(Stage primaryStage){
 
         this.pin = this.gpio.provisionDigitalOutputPin(RaspiPin.GPIO_16, "GPIO for barcode reader", PinState.HIGH);
         this.pin.setShutdownOptions(true, PinState.LOW);
