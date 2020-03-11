@@ -15,9 +15,6 @@ public class Scene1 {
 
     private Stage primaryStage;
 
-    public Scene1(){
-    }
-
     public void getScene(Stage primaryStage){
 
         this.primaryStage = primaryStage;

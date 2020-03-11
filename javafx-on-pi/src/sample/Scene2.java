@@ -1,5 +1,6 @@
 package sample;
 
+import com.pi4j.io.gpio.*;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
@@ -15,13 +16,17 @@ public class Scene2 {
 
     private Stage primaryStage;
     private StringBuffer orderKey = new StringBuffer();
+    private final GpioController gpio = GpioFactory.getInstance();
+    private GpioPinDigitalOutput pin;
 
     private final TextField tempTextField = new TextField();
 
-    public Scene2(){
-    }
 
     public void getScene(Stage primaryStage){
+
+        // PI GPIO configuration
+        this.pin = this.gpio.provisionDigitalOutputPin(RaspiPin.GPIO_16, "GPIO for barcode reader", PinState.HIGH);
+        this.pin.setShutdownOptions(true, PinState.LOW);
 
         this.primaryStage = primaryStage;
 
@@ -107,11 +112,15 @@ public class Scene2 {
     }
 
     private void backScene(){
+        pin.low();
+        gpio.shutdown();
         Scene1 scene1 = new Scene1();
         scene1.getScene(primaryStage);
     }
 
     private void nextScene(String orderToken){
+        pin.low();
+        gpio.shutdown();
         Scene3 scene3 = new Scene3(orderToken);
         scene3.getScene(primaryStage);
     }
