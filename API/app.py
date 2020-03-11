@@ -152,7 +152,7 @@ def get_token():
 
 
 @app.route('/api/v1/admin/token', methods=['GET', 'POST'])
-def get_token():
+def get_admin_token():
     """
     {
       "email":"cool@gmail.com",
