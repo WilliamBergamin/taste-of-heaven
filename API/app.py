@@ -151,6 +151,32 @@ def get_token():
     return json_response(json.dumps(user.to_dict()), status=200)
 
 
+@app.route('/api/v1/admin/token', methods=['GET', 'POST'])
+def get_token():
+    """
+    {
+      "email":"cool@gmail.com",
+      "password":"ur moms house"
+    }
+    """
+    if request.content_type != JSON_MIME_TYPE:
+        return json_error('Invalid Content Type', 'Invalid Content Type', 400)
+    data = request.json
+    user = User.find(data.get('email', None))
+    if user is None:
+        return json_error('User was not found with given email',
+                          'The authentification failed', status=401)
+    if user.admin is False:
+        return json_error('User was not found with given email',
+                          'The authentification failed', status=401)
+    user.get_token(data.get("password", None))
+    user.save()
+    if user.token is None:
+        return json_error('The authentification failed',
+                          'The authentification failed', status=401)
+    return json_response(json.dumps(user.to_dict()), status=200)
+
+
 @app.route('/api/v1/user', methods=['GET'])
 @auth.login_required
 def get_user():
@@ -254,21 +280,6 @@ def get_machine(machine_key):
         return json_error('Machine not found', 'Machine not found', 404)
     return json_response(json.dumps(found_machine.to_dict(withToken=True)), status=200)
 
-
-# @app.route('/api/v1/machine/event/<string:event_key>', methods=['POST'])
-# @auth.login_required
-# def post_machine_to_event(event_key):
-#     """
-#     header Authorization: Token Authentication_machine_token
-#     /api/v1/user/event/<string:event_key>
-#     """
-#     if g.get('current_machine', None) is None:
-#         return json_error('No machine found might have been a user token', status=401)
-#     event = Event.find(event_key)
-#     if event is None:
-#         return json_error('Event not found', 'Event not found', 404)
-#     event.add_machine(g.current_machine)
-#     return json_response(json.dumps(event.to_dict()), status=200)
 
 @app.route('/api/v1/machine/', methods=['GET', 'POST'])
 @auth.login_required
