@@ -13,12 +13,10 @@ import static sample.Constants.*;
 public class Scene3 {
 
     private Stage primaryStage;
-    private Machine machine;
     private String orderToken;
     private Label label = new Label("Order Fetched!");
 
-    public Scene3(Machine machine, String orderToken){
-        this.machine=machine;
+    public Scene3(String orderToken){
         this.orderToken=orderToken;
     }
 
@@ -46,6 +44,7 @@ public class Scene3 {
             protected Void call() throws Exception {
                 try {
                     Thread.sleep(3000);
+                    //TODO send order through uart that watit for the response
                 } catch (InterruptedException e) {
                 }
                 return null;
@@ -54,8 +53,7 @@ public class Scene3 {
         nextSceneSleeper.setOnSucceeded(new EventHandler<WorkerStateEvent>() {
             @Override
             public void handle(WorkerStateEvent event) {
-                ServerHelper helper = new ServerHelper();
-                JSONObject response = helper.postOrderCompleted(machine);
+                JSONObject response = ServerHelper.postOrderCompleted();
                 if (response == null){
                     errorScene();
                 }else {
@@ -89,12 +87,12 @@ public class Scene3 {
         alert.setHeaderText(null);
         alert.setContentText("SOMETHING WENT TERRIBLY WRONG!");
         alert.showAndWait();
-        SceneError sceneError = new SceneError(this.machine);
+        SceneError sceneError = new SceneError();
         sceneError.getScene(primaryStage);
     }
 
     private void nextScene(){
-        Scene4 scene4 = new Scene4(this.machine);
+        Scene4 scene4 = new Scene4();
         scene4.getScene(primaryStage);
     }
 }

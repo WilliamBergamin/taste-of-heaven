@@ -3,19 +3,10 @@ package sample;
 import javafx.concurrent.Task;
 import javafx.concurrent.WorkerStateEvent;
 import javafx.event.EventHandler;
-import javafx.geometry.Insets;
-import javafx.geometry.Pos;
 import javafx.scene.Scene;
-import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
-
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.IOException;
 
 import static sample.Constants.HEIGHT;
 import static sample.Constants.WIDTH;
@@ -23,11 +14,9 @@ import static sample.Constants.WIDTH;
 public class Scene4 {
 
     private Stage primaryStage;
-    private Machine machine;
     private Image image;
 
-    public Scene4(Machine machine){
-        this.machine=machine;
+    public Scene4(){
     }
 
     public void getScene(Stage primaryStage){
@@ -69,7 +58,7 @@ public class Scene4 {
     }
 
     private void nextScene(){
-        Scene1 scene1 = new Scene1(this.machine);
+        Scene1 scene1 = new Scene1();
         scene1.getScene(primaryStage);
     }
 }

@@ -1,22 +1,16 @@
 package sample;
 
 import javafx.application.Application;
-import javafx.beans.binding.Bindings;
 import javafx.event.EventHandler;
-import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
-import javafx.scene.layout.Background;
-import javafx.scene.layout.BackgroundFill;
-import javafx.scene.layout.CornerRadii;
-import javafx.scene.layout.VBox;
-import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import javafx.scene.control.Label;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 import javafx.event.ActionEvent;
 import javafx.geometry.Insets;
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import static sample.Constants.*;
@@ -34,12 +28,35 @@ public class Main extends Application {
 
         final TextField machineTokenTextField = new TextField();
         machineTokenTextField.setMaxWidth(200);
+        machineTokenTextField.setStyle(TEXTFEILDSTYLE);
+        machineTokenTextField.focusedProperty().addListener((observable, wasPressed, pressed) -> {
+            if (pressed) {
+                machineTokenTextField.setStyle(TEXTFEILDFOCUSEDSTYLE);
+            } else {
+                machineTokenTextField.setStyle(TEXTFEILDSTYLE);
+            }
+        });
         final TextField eventTokenTextField = new TextField();
         eventTokenTextField.setMaxWidth(200);
+        eventTokenTextField.setStyle(TEXTFEILDSTYLE);
+        eventTokenTextField.focusedProperty().addListener((observable, wasPressed, pressed) -> {
+            if (pressed) {
+                eventTokenTextField.setStyle(TEXTFEILDFOCUSEDSTYLE);
+            } else {
+                eventTokenTextField.setStyle(TEXTFEILDSTYLE);
+            }
+        });
 
         Button btn = new Button();
-        btn.setText("enter");
+        btn.setText("ENTER");
         btn.setStyle(BUTTONSTYLE);
+        btn.pressedProperty().addListener((observable, wasPressed, pressed) -> {
+            if (pressed) {
+                btn.setStyle(PRESSEDBUTTONSTYLE);
+            } else {
+                btn.setStyle(BUTTONSTYLE);
+            }
+        });
         btn.setPadding(new Insets(10, 15, 10, 15));
 
         btn.setOnAction(new EventHandler<ActionEvent>() {
@@ -48,15 +65,27 @@ public class Main extends Application {
                 String machineToken = machineTokenTextField.getText();
                 String eventKey = eventTokenTextField.getText();
                 if (!machineToken.isEmpty() && !eventKey.isEmpty()) {
-                    ServerHelper helper = new ServerHelper();
-                    JSONObject response = helper.addMachineToEvent(machineToken, eventKey);
+                    JSONObject response = ServerHelper.getMachineData(machineToken);
+                    //TODO store data of machine
                     if (response == null){
                         Alert alert = new Alert(Alert.AlertType.INFORMATION);
                         alert.setHeaderText(null);
                         alert.setContentText("Invalid credentials!");
                         alert.show();
                     }else {
-                        nextScenes(new Machine(machineToken, eventKey));
+                        Machine.setMachineToken(machineToken);
+                        Machine.setEventKey(eventKey);
+                        try {
+                            Machine.initializeFromJSON(response);
+                            nextScenes();
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                            System.out.println(e);
+                            Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                            alert.setHeaderText(null);
+                            alert.setContentText("Something went very wrong!");
+                            alert.show();
+                        }
                     }
                 }else{
                     Alert alert = new Alert(Alert.AlertType.INFORMATION);
@@ -86,13 +115,13 @@ public class Main extends Application {
 
     private void testScenes(Machine machine){
         // TODO register machine to event before moving on
-        Scene4 scene4 = new Scene4(machine);
+        Scene4 scene4 = new Scene4();
         scene4.getScene(primaryStage);
     }
 
-    private void nextScenes(Machine machine){
+    private void nextScenes(){
         // TODO register machine to event before moving on
-        Scene1 scene1 = new Scene1(machine);
+        Scene1 scene1 = new Scene1();
         scene1.getScene(primaryStage);
     }
 
