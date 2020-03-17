@@ -1,6 +1,5 @@
 package sample;
 
-import com.pi4j.io.gpio.*;
 import javafx.application.Application;
 import javafx.event.EventHandler;
 import javafx.scene.Scene;
@@ -19,14 +18,11 @@ import static sample.Constants.*;
 public class Main extends Application {
 
     private Stage primaryStage;
-    private final GpioController gpio = GpioFactory.getInstance();
-    private GpioPinDigitalOutput pin;
 
     @Override
     public void start(Stage primaryStage){
 
-        this.pin = this.gpio.provisionDigitalOutputPin(RaspiPin.GPIO_16, "GPIO for barcode reader", PinState.HIGH);
-        this.pin.setShutdownOptions(true, PinState.LOW);
+        ScannerHelper.scannerOn();
 
         this.primaryStage = primaryStage;
 
@@ -120,8 +116,7 @@ public class Main extends Application {
     }
 
     private void nextScenes(){
-        pin.low();
-        gpio.shutdown();
+        ScannerHelper.scannerOff();
         Scene1 scene1 = new Scene1();
         scene1.getScene(primaryStage);
     }
