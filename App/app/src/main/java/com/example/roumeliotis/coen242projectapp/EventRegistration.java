@@ -43,7 +43,7 @@ public class EventRegistration extends AppCompatActivity {
         getEventButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                event_key = getEventCode.getText().toString();
+                event_key = getEventCode.getText().toString().trim();
                 if(("").equals(event_key)){
                     Toast toast=Toast.makeText(getApplicationContext(),"Invalid input",Toast.LENGTH_SHORT);
                     toast.setGravity(Gravity.CENTER, 0, 0);
