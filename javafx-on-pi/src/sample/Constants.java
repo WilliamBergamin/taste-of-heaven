@@ -5,6 +5,8 @@ public class Constants {
     public final static int HEIGHT = 480;
 
     public final static int ORDERKEYLENGHT = 32;
+    public final static int EVENTKEYLENGTH = 32;
+    public final static int MACHINETOKENLENGTH = 55;
 
     public final static String BUTTONSTYLE =
             "-fx-background-color: white;\n" +

@@ -36,6 +36,7 @@ public class Machine {
             Machine.processedOrders.add(tmpJSONArray.get(i).toString());
         }
         Machine.backgroundUpdater.start();
+        MachineMicrocontrolerHelper.init();
     }
 
     public static String getLocation() {

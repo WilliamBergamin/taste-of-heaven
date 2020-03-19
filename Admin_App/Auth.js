@@ -28,7 +28,7 @@ class Auth {
 
   handleAuthentication(email, password) {
     return new Promise(async (resolve, reject) => {
-      const response = await fetch(process.env.SERVER_BASE_URL + "/api/v1/user/token", {
+      const response = await fetch(process.env.SERVER_BASE_URL + "/api/v1/admin/token", {
         method: "POST",
         body: JSON.stringify({
           email: email,
