@@ -5,9 +5,11 @@ import android.util.Log;
 
 import static com.android.volley.Request.*;
 
+import com.android.volley.DefaultRetryPolicy;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
+import com.android.volley.toolbox.RequestFuture;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -34,6 +36,7 @@ public class ServerHelper {
         final JsonObjectRequest request = new JsonObjectRequest(Method.POST, base_url + "api/v1/user/token", jsonRequest, new Response.Listener<JSONObject>() {
             @Override
             public void onResponse(JSONObject response) {
+                Log.d(TAG,"Response: " +response.toString());
                 callback.onSuccess(response);
             }
         }, new Response.ErrorListener() {
@@ -72,6 +75,7 @@ public class ServerHelper {
         final JsonObjectRequest request = new JsonObjectRequest(Method.POST, base_url + "api/v1/user", jsonRequest, new Response.Listener<JSONObject>() {
             @Override
             public void onResponse(JSONObject response) {
+                Log.d(TAG,"Response: \n" +response.toString());
                 callback.onSuccess(response);
             }
         }
@@ -172,6 +176,7 @@ public class ServerHelper {
         final JsonObjectRequest request = new JsonObjectRequest(Method.GET, base_url + "api/v1/user", null, new Response.Listener<JSONObject>() {
             @Override
             public void onResponse(JSONObject response) {
+                Log.d(TAG,"Response: \n" +response.toString());
                 callback.onSuccess(response);
             }
         }, new Response.ErrorListener() {
@@ -191,7 +196,23 @@ public class ServerHelper {
         };
 
         Log.d(TAG, "Request: " + request.toString());
-
+        request.setRetryPolicy(new DefaultRetryPolicy(10000,0,0));
         VolleySingleton.getInstance(context).addToQueue(request);
     }
+
+    // Get User using a Volley Future
+//    public void getUserFuture(final String userToken, final Context context, final RequestFuture future){
+//        final JsonObjectRequest request = new JsonObjectRequest( Method.GET, base_url + "api/v1/user", null, future, future){ //no semicolon or coma this is to add headers
+//            @Override
+//            public Map<String, String> getHeaders() {
+//                Map<String, String> params = new HashMap<String, String>();
+//                params.put("Content-Type", "application/json");
+//                params.put("Authorization", "Token "+userToken);
+//                return params;
+//            }
+//        };
+//
+//        Log.d(TAG, "Request: " + request.toString());
+//        VolleySingleton.getInstance(context).addToQueue(request);
+//    }
 }

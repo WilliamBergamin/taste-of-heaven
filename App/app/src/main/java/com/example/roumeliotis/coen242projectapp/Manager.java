@@ -33,7 +33,7 @@ public class Manager extends SQLiteOpenHelper{
                 ManagerConfigs.USER_NAME_COLUMN + " TEXT NOT NULL, " +
                 ManagerConfigs.USER_EMAIL_COLUMN + " TEXT NOT NULL UNIQUE, " +
                 ManagerConfigs.USER_PASSWORD_COLUMN + " TEXT NOT NULL," +
-                ManagerConfigs.USER_TOKEN_COLUMN + " TEXT )";
+                ManagerConfigs.USER_TOKEN_COLUMN + " TEXT UNIQUE)";
 
         Log.d(TAG, CREATE_USER_TABLE);
         db.execSQL(CREATE_USER_TABLE);
@@ -83,7 +83,7 @@ public class Manager extends SQLiteOpenHelper{
         contentValues.put(ManagerConfigs.USER_NAME_COLUMN, user.getName());
         contentValues.put(ManagerConfigs.USER_EMAIL_COLUMN, user.getEmail());
         contentValues.put(ManagerConfigs.USER_PASSWORD_COLUMN, user.getPassword());
-        contentValues.put(ManagerConfigs.USER_PASSWORD_COLUMN, user.getToken());
+        contentValues.put(ManagerConfigs.USER_TOKEN_COLUMN, user.getToken());
 
         try {
             id = sqLiteDatabase.replaceOrThrow(ManagerConfigs.TABLE_USER, null, contentValues);
@@ -94,6 +94,27 @@ public class Manager extends SQLiteOpenHelper{
             sqLiteDatabase.close();
         }
         Log.d(TAG, "success");
+        return id;
+    }
+
+    public long getUserIdFromToken(String token){
+        Log.d(TAG, "getUserIdFromToken");
+        SQLiteDatabase sqLiteDatabase = this.getWritableDatabase();
+        long id = -1;
+        try {
+            String SELECT_QUERY = String.format("SELECT * FROM %s WHERE %s = %s",ManagerConfigs.TABLE_USER,
+                ManagerConfigs.USER_TOKEN_COLUMN, token);
+            Cursor cursor = sqLiteDatabase.rawQuery(SELECT_QUERY, null);
+
+            while(cursor.moveToNext()){
+                id = cursor.getLong(cursor.getColumnIndex(ManagerConfigs.USER_ID_COLUMN));
+            }
+        }
+        catch (Exception e){
+            Log.d(TAG,"Exception: " + e.getMessage());
+        } finally {
+            sqLiteDatabase.close();
+        }
         return id;
     }
 
@@ -132,7 +153,7 @@ public class Manager extends SQLiteOpenHelper{
 
     public List<Order> getOrdersByUserID(long user_id){
 
-        Log.d(TAG, "getGameByID");
+        Log.d(TAG, "getOrdersByUserID");
         SQLiteDatabase sqLiteDatabase = this.getReadableDatabase();
 
         Cursor cursor = null;
