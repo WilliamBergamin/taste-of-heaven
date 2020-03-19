@@ -2,6 +2,7 @@ package sample;
 
 import com.pi4j.io.serial.*;
 import netscape.javascript.JSObject;
+import org.json.JSONObject;
 
 import java.io.IOException;
 import java.util.Date;
@@ -49,7 +50,7 @@ public class MachineMicrocontrolerHelper {
             }
         });
         config.device(RaspberryPiSerial.S0_COM_PORT)
-                .baud(Baud._9600)
+                .baud(Baud._230400)
                 .dataBits(DataBits._8)
                 .parity(Parity.NONE)
                 .stopBits(StopBits._1)
@@ -74,25 +75,16 @@ public class MachineMicrocontrolerHelper {
         return null;
     }
 
-    public static void sendNewOrder(JSObject orderData) {
+    public static void sendNewOrder(JSONObject orderData) {
         try {
             mutex.acquire();
+            System.out.println("writting to micro");
             // write a formatted string to the serial transmit buffer
             serial.write("CURRENT TIME: " + new Date().toString());
 
             // write a individual bytes to the serial transmit buffer
             serial.write((byte) 13);
-            serial.write((byte) 10);
 
-            // write a simple string to the serial transmit buffer
-            serial.write("Second Line");
-
-            // write a individual characters to the serial transmit buffer
-            serial.write('\r');
-            serial.write('\n');
-
-            // write a string terminating with CR+LF to the serial transmit buffer
-            serial.writeln("Third Line");
         } catch (InterruptedException | IOException e) {
             e.printStackTrace();
         } finally {

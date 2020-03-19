@@ -1,6 +1,8 @@
 package sample;
 
 import javafx.application.Application;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.event.EventHandler;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
@@ -12,6 +14,8 @@ import javafx.event.ActionEvent;
 import javafx.geometry.Insets;
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import java.sql.ClientInfoStatus;
 
 import static sample.Constants.*;
 
@@ -29,6 +33,14 @@ public class Main extends Application {
         CustomVBox vb = new CustomVBox();
 
         final TextField machineTokenTextField = new TextField();
+        machineTokenTextField.textProperty().addListener(new ChangeListener<String>(){
+            @Override
+            public void changed(ObservableValue<? extends String> observableValue, String s, String t1) {
+                if (machineTokenTextField.getText().length() > MACHINETOKENLENGTH){
+                    machineTokenTextField.setText(machineTokenTextField.getText().substring(0, MACHINETOKENLENGTH));
+                }
+            }
+        });
         machineTokenTextField.setMaxWidth(200);
         machineTokenTextField.setStyle(TEXTFEILDSTYLE);
         machineTokenTextField.focusedProperty().addListener((observable, wasPressed, pressed) -> {
@@ -39,6 +51,14 @@ public class Main extends Application {
             }
         });
         final TextField eventTokenTextField = new TextField();
+        eventTokenTextField.textProperty().addListener(new ChangeListener<String>(){
+            @Override
+            public void changed(ObservableValue<? extends String> observableValue, String s, String t1) {
+                if (eventTokenTextField.getText().length() > EVENTKEYLENGTH){
+                    eventTokenTextField.setText(eventTokenTextField.getText().substring(0, EVENTKEYLENGTH));
+                }
+            }
+        });
         eventTokenTextField.setMaxWidth(200);
         eventTokenTextField.setStyle(TEXTFEILDSTYLE);
         eventTokenTextField.focusedProperty().addListener((observable, wasPressed, pressed) -> {
@@ -113,6 +133,7 @@ public class Main extends Application {
         primaryStage.setTitle("taste-of-heaven");
         primaryStage.setScene(new Scene(vb, WIDTH, HEIGHT));
         primaryStage.show();
+
     }
 
     private void nextScenes(){

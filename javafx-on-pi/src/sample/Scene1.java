@@ -1,5 +1,7 @@
 package sample;
 
+import javafx.concurrent.Task;
+import javafx.concurrent.WorkerStateEvent;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
@@ -9,6 +11,8 @@ import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.stage.Stage;
+import org.json.JSONObject;
+
 import static sample.Constants.*;
 
 public class Scene1 {
@@ -54,6 +58,20 @@ public class Scene1 {
 
         Scene scene1 = new Scene(vb, WIDTH, HEIGHT);
 
+        Task<Void> nextSceneSleeper = new Task<Void>() {
+            @Override
+            protected Void call() throws Exception {
+                try {
+                    while(true) {
+                        Thread.sleep(2000);
+                        MachineMicrocontrolerHelper.sendNewOrder(new JSONObject());
+                    }
+                } catch (InterruptedException e) {
+                }
+                return null;
+            }
+        };
+        new Thread(nextSceneSleeper).start();
         primaryStage.setScene(scene1);
     }
 

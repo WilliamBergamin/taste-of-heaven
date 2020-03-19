@@ -101,6 +101,7 @@ public class Scene2 {
             alert.setHeaderText(null);
             alert.setContentText("Invalide Order!");
             alert.show();
+            orderKey.delete(0, ORDERKEYLENGHT);
         }else {
             nextScene(orderKey.toString());
         }
