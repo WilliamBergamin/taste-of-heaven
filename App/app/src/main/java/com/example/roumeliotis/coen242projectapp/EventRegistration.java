@@ -2,7 +2,6 @@ package com.example.roumeliotis.coen242projectapp;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -79,7 +78,7 @@ public class EventRegistration extends AppCompatActivity {
         Intent intent = new Intent();
         intent.putExtra("eventKey", event);
         intent.putExtra("user", user);
-        intent.setClass(EventRegistration.this, CreateDrink.class);
+        intent.setClass(EventRegistration.this, LandingPage.class);
         startActivity(intent);
     }
 }
