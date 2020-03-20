@@ -30,7 +30,7 @@ import java.util.concurrent.TimeoutException;
 // Log in to your account
 public class Login extends AppCompatActivity{
 
-    //TODO reset the orders with the ones pulled from the server on create
+    //TODO reset the orders with the ones pulled from the server on login
 
     EditText getEmail;
     EditText getPassword;
@@ -131,8 +131,6 @@ public class Login extends AppCompatActivity{
                 public void onSuccess(JSONObject response) {
                     SharedPreferences prefs = getSharedPreferences("preferences", MODE_PRIVATE);
                     String token = prefs.getString("token",null);
-                    Log.d(TAG, "Response : "+response.toString());
-
                     try {
                         User loggedInUser = new User(Manager.getUserIdFromToken(token),
                                 response.getString("name"),

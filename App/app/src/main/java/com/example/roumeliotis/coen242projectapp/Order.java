@@ -114,7 +114,7 @@ public class Order implements Parcelable {
                 + ("None".equals(mixer) || "None".equals(alcohol) ? "" : " and ")
                 + ("None".equals(this.mixer) ? "" : this.mixer )
                 + ("None".equals(this.alcohol) ? "\n" : (doubleAlcohol ? "\nDouble":"\nSingle") )
-                + "\nAt\n " + this.order_key;
+                + "\nKey:\n " + this.order_key;
     }
 
 }

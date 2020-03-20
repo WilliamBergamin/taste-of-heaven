@@ -102,7 +102,7 @@ public class Manager extends SQLiteOpenHelper{
         SQLiteDatabase sqLiteDatabase = this.getWritableDatabase();
         long id = -1;
         try {
-            String SELECT_QUERY = String.format("SELECT * FROM %s WHERE %s = %s",ManagerConfigs.TABLE_USER,
+            String SELECT_QUERY = String.format("SELECT %s FROM %s WHERE %s == \"%s\";",ManagerConfigs.USER_ID_COLUMN, ManagerConfigs.TABLE_USER,
                 ManagerConfigs.USER_TOKEN_COLUMN, token);
             Cursor cursor = sqLiteDatabase.rawQuery(SELECT_QUERY, null);
 
