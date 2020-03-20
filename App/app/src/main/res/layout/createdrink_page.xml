@@ -16,107 +16,125 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:paddingBottom="16dp"
         android:paddingLeft="16dp"
+        android:paddingTop="16dp"
         android:paddingRight="16dp"
-        android:paddingTop="16dp">
+        android:paddingBottom="16dp">
+
 
         <TextView
             android:id="@+id/createyourdrink"
             android:layout_width="300dp"
-            android:layout_height="50dp"
-            android:layout_marginTop="50dp"
-            android:layout_alignParentTop="true"
+            android:layout_height="wrap_content"
             android:layout_centerHorizontal="true"
-            android:text="Create your drink"
+            android:layout_marginTop="30dp"
             android:background="@color/background"
+            android:fontFamily="@font/montserrat_black"
+            android:text="Create your drink"
             android:textColor="@color/colorHotPink"
-            android:textSize="20dp"
-            android:fontFamily="@font/montserrat_black"/>
+            android:textSize="20dp" />
 
         <TextView
             android:id="@+id/alcohol"
             android:layout_width="300dp"
             android:layout_height="wrap_content"
-            android:layout_alignParentTop="true"
             android:layout_centerHorizontal="true"
-            android:layout_marginTop="86dp"
+            android:layout_below="@id/createyourdrink"
+            android:layout_marginTop="20dp"
             android:background="@color/background"
+            android:fontFamily="@font/montserrat_regular"
             android:text="Alcohol"
             android:textColor="@color/colorHotPink"
-            android:textSize="18dp"
-            android:fontFamily="@font/montserrat_regular" />
+            android:textSize="18dp" />
+
         <Spinner
             android:id="@+id/alcoholDropdown"
             android:layout_width="300dp"
             android:layout_height="50dp"
-            android:layout_below="@+id/alcohol"
+            android:layout_below="@id/alcohol"
+            android:layout_marginTop="0dp"
             android:layout_centerHorizontal="true"
             android:background="@android:drawable/btn_dropdown"
-            android:spinnerMode="dropdown"
-            android:fontFamily="@font/montserrat_regular"/>
+            android:fontFamily="@font/montserrat_regular"
+            android:spinnerMode="dropdown" />
 
         <TextView
             android:id="@+id/mixer"
             android:layout_width="300dp"
             android:layout_height="wrap_content"
-            android:layout_alignParentTop="true"
             android:layout_centerHorizontal="true"
-            android:layout_marginTop="214dp"
+            android:layout_below="@id/alcohol"
+            android:layout_marginTop="60dp"
             android:background="@color/background"
+            android:fontFamily="@font/montserrat_regular"
             android:text="Mixer"
             android:textColor="@color/colorHotPink"
-            android:textSize="18dp"
-            android:fontFamily="@font/montserrat_regular"/>
+            android:textSize="18dp" />
+
         <Spinner
             android:id="@+id/mixerDropdown"
             android:layout_width="300dp"
-            android:layout_height="50dp"
+            android:layout_height="wrap_content"
             android:layout_below="@+id/mixer"
+            android:layout_marginTop="0dp"
             android:layout_centerHorizontal="true"
             android:background="@android:drawable/btn_dropdown"
-            android:spinnerMode="dropdown"
-            android:fontFamily="@font/montserrat_regular"/>
+            android:fontFamily="@font/montserrat_regular"
+            android:spinnerMode="dropdown" />
 
         <CheckBox
             android:id="@+id/doubleCheckbox"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
-            android:layout_alignEnd="@+id/createyourdrink"
             android:layout_below="@id/mixerDropdown"
-            android:text="Double Alcohol"
+            android:layout_alignEnd="@+id/createyourdrink"
+            android:layout_marginTop="10dp"
             android:buttonTint="@color/colorHotPink"
-            android:textColor="@color/colorHotPink"
-            android:fontFamily="@font/montserrat_regular"/>
+            android:fontFamily="@font/montserrat_regular"
+            android:text="Double Alcohol"
+            android:textColor="@color/colorHotPink" />
 
         <Button
             android:id="@+id/payNowButton"
             android:layout_width="300dp"
             android:layout_height="50dp"
-            android:layout_marginTop="58dp"
-            android:layout_centerHorizontal="true"
             android:layout_below="@id/doubleCheckbox"
-            android:background = "@drawable/roundedbutton"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="30dp"
+            android:background="@drawable/roundedbutton"
+            android:fontFamily="@font/montserrat_regular"
             android:text="Place Order"
             android:textAlignment="center"
             android:textColor="#FFFFFF"
-            android:textSize="20dp"
-            android:fontFamily="@font/montserrat_regular"/>
+            android:textSize="20dp" />
 
         <Button
             android:id="@+id/mapButton"
-            android:layout_width="117dp"
-            android:layout_height="27dp"
-            android:layout_alignTop="@+id/payNowButton"
-            android:layout_marginStart="-120dp"
-            android:layout_marginTop="54dp"
-            android:layout_toEndOf="@+id/payNowButton"
-            android:background="@color/background"
+            android:layout_width="300dp"
+            android:layout_height="50dp"
+            android:layout_below="@id/viewOrderButton"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="10dp"
+            android:background="@drawable/roundedbutton"
             android:fontFamily="@font/montserrat_regular"
             android:text="View Map"
-            android:textColor="@color/colorHotPink"
-            android:textSize="16dp" />
+            android:textAlignment="center"
+            android:textColor="#FFFFFF"
+            android:textSize="20dp" />
+
+        <Button
+            android:id="@+id/viewOrderButton"
+            android:layout_width="300dp"
+            android:layout_height="50dp"
+            android:layout_below="@id/payNowButton"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="10dp"
+            android:background="@drawable/roundedbutton"
+            android:fontFamily="@font/montserrat_regular"
+            android:text="View Orders"
+            android:textAlignment="center"
+            android:textColor="#FFFFFF"
+            android:textSize="20dp" />
 
 
     </RelativeLayout>

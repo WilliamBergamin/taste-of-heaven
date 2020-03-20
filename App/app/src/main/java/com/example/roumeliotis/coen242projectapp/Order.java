@@ -107,4 +107,14 @@ public class Order implements Parcelable {
         parcel.writeByte((byte) (doubleAlcohol ? 1 : 0));     //if doubleAlcohol == true, byte == 1
     }
 
+    //Used to print the orders
+    @Override
+    public String toString(){
+        return ("None".equals(this.alcohol) ? "" : this.alcohol )
+                + ("None".equals(mixer) || "None".equals(alcohol) ? "" : " and ")
+                + ("None".equals(this.mixer) ? "" : this.mixer )
+                + ("None".equals(this.alcohol) ? "\n" : (doubleAlcohol ? "\nDouble":"\nSingle") )
+                + "\nAt\n " + this.order_key;
+    }
+
 }

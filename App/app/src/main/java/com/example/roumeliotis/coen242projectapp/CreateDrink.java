@@ -28,12 +28,15 @@ import java.util.List;
 public class CreateDrink extends AppCompatActivity implements OnItemSelectedListener{
         //Activity implements OnItemSelectedListener {
 
+    //TODO Add button to to go past orders
+
     private Spinner spinnerAlcohol;
     private Spinner spinnerMixer;
     ServerHelper serverHelper;
     Manager Manager;
     Button payNowButton;
     Button viewMap;
+    Button viewOrders;
     String eventKey;
     User user;
 
@@ -94,7 +97,7 @@ public class CreateDrink extends AppCompatActivity implements OnItemSelectedList
                 }
                 else {
                     // Add order to the cart
-                    serverHelper.postNewOrder(user.getToken(), eventKey, alcohol, mixer, is_double, getApplicationContext(), new VolleyCallback() {
+                    serverHelper.postNewOrder(user.getToken(), eventKey, mixer, alcohol, is_double, getApplicationContext(), new VolleyCallback() {
                         @Override
                         public void onSuccess(JSONObject response) {
                             try {
@@ -141,6 +144,14 @@ public class CreateDrink extends AppCompatActivity implements OnItemSelectedList
             @Override
             public void onClick(View view) {
                 goToMap();
+            }
+        });
+
+        viewOrders = findViewById(R.id.viewOrderButton);
+        viewOrders.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View view){
+                goToNextActivity();
             }
         });
 

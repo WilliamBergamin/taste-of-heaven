@@ -30,6 +30,8 @@ import java.util.concurrent.TimeoutException;
 // Log in to your account
 public class Login extends AppCompatActivity{
 
+    //TODO reset the orders with the ones pulled from the server on create
+
     EditText getEmail;
     EditText getPassword;
     TextView getLoginPrompt;

@@ -140,10 +140,12 @@
 
         <ImageView
             android:id="@+id/loadImage"
-            android:layout_width="393dp"
-            android:layout_height="331dp"
+            android:layout_width="400dp"
+            android:layout_height="400dp"
+            android:layout_centerHorizontal="true"
+            android:layout_centerVertical="true"
             android:visibility="visible"
-            app:srcCompat="@drawable/placeholder" />
+            app:srcCompat="@drawable/logo" />
     </RelativeLayout>
 
 </android.support.v4.widget.DrawerLayout>

@@ -38,13 +38,13 @@ public class Orders extends AppCompatActivity{
         ordersList = findViewById(R.id.orderCodesList);
 
         List<Order> orders = Manager.getOrdersByUserID(user.getid());
-        List<String> order_keys = new ArrayList<String>();
+        List<String> orderStrings = new ArrayList<String>();
         for (int i = 0; i < orders.size(); i++) {
             Log.d("Orders", orders.get(i).toString());
-            order_keys.add(orders.get(i).getOrder_key());
+            orderStrings.add(orders.get(i).toString());
         }
 
-        ordersList.setAdapter(new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, order_keys));
+        ordersList.setAdapter(new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, orderStrings));
         backToOrder.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
