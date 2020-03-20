@@ -27,7 +27,7 @@
             android:layout_width="300dp"
             android:layout_height="wrap_content"
             android:layout_centerHorizontal="true"
-            android:layout_marginTop="30dp"
+            android:layout_marginTop="40dp"
             android:background="@color/background"
             android:fontFamily="@font/montserrat_black"
             android:text="Create your drink"
@@ -40,7 +40,7 @@
             android:layout_height="wrap_content"
             android:layout_centerHorizontal="true"
             android:layout_below="@id/createyourdrink"
-            android:layout_marginTop="20dp"
+            android:layout_marginTop="30dp"
             android:background="@color/background"
             android:fontFamily="@font/montserrat_regular"
             android:text="Alcohol"
@@ -107,35 +107,6 @@
             android:textAlignment="center"
             android:textColor="#FFFFFF"
             android:textSize="20dp" />
-
-        <Button
-            android:id="@+id/mapButton"
-            android:layout_width="300dp"
-            android:layout_height="50dp"
-            android:layout_below="@id/viewOrderButton"
-            android:layout_centerHorizontal="true"
-            android:layout_marginTop="10dp"
-            android:background="@drawable/roundedbutton"
-            android:fontFamily="@font/montserrat_regular"
-            android:text="View Map"
-            android:textAlignment="center"
-            android:textColor="#FFFFFF"
-            android:textSize="20dp" />
-
-        <Button
-            android:id="@+id/viewOrderButton"
-            android:layout_width="300dp"
-            android:layout_height="50dp"
-            android:layout_below="@id/payNowButton"
-            android:layout_centerHorizontal="true"
-            android:layout_marginTop="10dp"
-            android:background="@drawable/roundedbutton"
-            android:fontFamily="@font/montserrat_regular"
-            android:text="View Orders"
-            android:textAlignment="center"
-            android:textColor="#FFFFFF"
-            android:textSize="20dp" />
-
 
     </RelativeLayout>
 

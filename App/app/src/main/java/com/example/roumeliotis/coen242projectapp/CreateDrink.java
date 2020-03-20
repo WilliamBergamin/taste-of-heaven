@@ -35,8 +35,6 @@ public class CreateDrink extends AppCompatActivity implements OnItemSelectedList
     ServerHelper serverHelper;
     Manager Manager;
     Button payNowButton;
-    Button viewMap;
-    Button viewOrders;
     String eventKey;
     User user;
 
@@ -138,23 +136,6 @@ public class CreateDrink extends AppCompatActivity implements OnItemSelectedList
                 }
             }
         });
-
-        viewMap = findViewById(R.id.mapButton);
-        viewMap.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                goToMap();
-            }
-        });
-
-        viewOrders = findViewById(R.id.viewOrderButton);
-        viewOrders.setOnClickListener(new View.OnClickListener(){
-            @Override
-            public void onClick(View view){
-                goToNextActivity();
-            }
-        });
-
     }
 
     void goToMap() {
