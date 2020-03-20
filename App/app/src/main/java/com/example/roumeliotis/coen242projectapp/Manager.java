@@ -97,6 +97,12 @@ public class Manager extends SQLiteOpenHelper{
         return id;
     }
 
+    public void clearDrinks(){
+        Log.d(TAG, "clearDrinks");
+        SQLiteDatabase sqLiteDatabase = this.getWritableDatabase();
+        sqLiteDatabase.execSQL("DELETE FROM "+ ManagerConfigs.TABLE_ORDER);
+    }
+
     public long getUserIdFromToken(String token){
         Log.d(TAG, "getUserIdFromToken");
         SQLiteDatabase sqLiteDatabase = this.getWritableDatabase();

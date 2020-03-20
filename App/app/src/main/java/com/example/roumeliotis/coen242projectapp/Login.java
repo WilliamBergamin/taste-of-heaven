@@ -19,6 +19,7 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.RequestFuture;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -97,6 +98,7 @@ public class Login extends AppCompatActivity{
                                 loggedInUser.setid(Manager.insertUser(loggedInUser));
                                 SharedPreferences prefs = getSharedPreferences("preferences", MODE_PRIVATE);
                                 prefs.edit().putString("token", response.getString("token")).commit();
+                                fillDrinkTable(response);
                                 goToNextActivity(loggedInUser);
                             } catch(JSONException e){
                                 e.printStackTrace();
@@ -137,6 +139,7 @@ public class Login extends AppCompatActivity{
                                 response.getString("email"),
                                 "password",
                                 response.getString("token"));
+                        fillDrinkTable(response);
                         goToNextActivity(loggedInUser);
                     }
                     catch (JSONException error){    //Will hit here if the JSON response was an error
@@ -187,5 +190,22 @@ public class Login extends AppCompatActivity{
         intent.putExtra("loggedInUser", loggedInUser);
         intent.setClass(Login.this, EventRegistration.class);
         startActivity(intent);
+    }
+
+    void fillDrinkTable(JSONObject response){
+//        Manager.clearDrinks();
+//        try {
+//            JSONArray orders = response.getJSONArray("orders");
+//            for (int i = 0; i < orders.length(); i++){
+//                Manager.insertOrder(new Order(
+//                    orders.getJSONObject(i).get
+//                ));
+//            }
+//        }
+//        catch (JSONException error){
+//            Toast toast = Toast.makeText(getApplicationContext(), "Something went wrong", Toast.LENGTH_LONG);
+//            toast.setGravity(Gravity.CENTER, 0, 0);
+//            toast.show();
+//        }
     }
 }

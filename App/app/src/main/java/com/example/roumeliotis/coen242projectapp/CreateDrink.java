@@ -28,8 +28,6 @@ import java.util.List;
 public class CreateDrink extends AppCompatActivity implements OnItemSelectedListener{
         //Activity implements OnItemSelectedListener {
 
-    //TODO Add button to to go past orders
-
     private Spinner spinnerAlcohol;
     private Spinner spinnerMixer;
     ServerHelper serverHelper;
