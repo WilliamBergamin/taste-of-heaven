@@ -4,6 +4,8 @@ import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Gravity;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.ViewGroup;
 import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.Button;
@@ -136,6 +138,41 @@ public class CreateDrink extends AppCompatActivity implements OnItemSelectedList
         });
     }
 
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.options_menu, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        //Toast.makeText(this, "Selected Item: " +item.getTitle(), Toast.LENGTH_SHORT).show();
+        switch (item.getItemId()) {
+            case R.id.event:
+                goToEventReg();
+                return true;
+            case R.id.drink:
+                goToCreateOrder();
+                return true;
+            case R.id.map:
+                goToMap();
+                return true;
+            case R.id.orders:
+                goToViewPastOrders();
+                return true;
+            default:
+                return super.onContextItemSelected(item);
+        }
+    }
+
+    void goToNextActivity() {
+        Intent intent = new Intent();
+        intent.putExtra("eventKey", eventKey);
+        intent.putExtra("user", user);
+        intent.setClass(CreateDrink.this, Orders.class);
+        startActivity(intent);
+    }
+
     void goToMap() {
         Intent intent = new Intent();
         intent.putExtra("user", user);
@@ -144,12 +181,27 @@ public class CreateDrink extends AppCompatActivity implements OnItemSelectedList
         startActivity(intent);
     }
 
+    void goToCreateOrder() {
+        Intent intent = new Intent();
+        intent.putExtra("eventKey", eventKey);
+        intent.putExtra("user", user);
+        intent.setClass(CreateDrink.this, CreateDrink.class);
+        startActivity(intent);
+    }
 
-    void goToNextActivity() {
+    void goToViewPastOrders(){
         Intent intent = new Intent();
         intent.putExtra("eventKey", eventKey);
         intent.putExtra("user", user);
         intent.setClass(CreateDrink.this, Orders.class);
+        startActivity(intent);
+    }
+
+    void goToEventReg(){
+        Intent intent = new Intent();
+        intent.putExtra("eventKey", eventKey);
+        intent.putExtra("user", user);
+        intent.setClass(CreateDrink.this, EventRegistration.class);
         startActivity(intent);
     }
 

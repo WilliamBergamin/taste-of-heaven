@@ -74,11 +74,12 @@ public class EventRegistration extends AppCompatActivity {
         });
     }
 
+
     void goToNextActivity(String event, User user) {
         Intent intent = new Intent();
         intent.putExtra("eventKey", event);
         intent.putExtra("user", user);
-        intent.setClass(EventRegistration.this, LandingPage.class);
+        intent.setClass(EventRegistration.this, CreateDrink.class);
         startActivity(intent);
     }
 }
