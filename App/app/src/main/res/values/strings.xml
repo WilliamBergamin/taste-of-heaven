@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">Taste of Heaven</string>
+    <string name="title_activity_qr_event_reg">QrEventReg</string>
 </resources>

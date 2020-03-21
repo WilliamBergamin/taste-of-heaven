@@ -193,6 +193,7 @@ public class Login extends AppCompatActivity{
     }
 
     void fillDrinkTable(JSONObject response){
+        Log.d(TAG, "fillDrinkTable");
 //        Manager.clearDrinks();
 //        try {
 //            JSONArray orders = response.getJSONArray("orders");

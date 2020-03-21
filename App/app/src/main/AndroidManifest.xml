@@ -1,8 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
-<manifest xmlns:android="http://schemas.android.com/apk/res/android" xmlns:tools="http://schemas.android.com/tools"
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     package="com.example.roumeliotis.coen242projectapp">
 
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.CAMERA" />
+    <uses-permission android:name="android.hardware.camera" />
+    <uses-permission android:name="android.hardware.camera.autofocus" />
 
     <application
         android:allowBackup="true"
@@ -12,6 +16,10 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.AppCompat.Light.DarkActionBar"
         android:usesCleartextTraffic="true">
+        <activity
+            android:name=".QrEventReg"
+            android:label="@string/title_activity_qr_event_reg"
+            android:theme="@style/NoActionBar"></activity>
 
         <uses-library
             android:name="org.apache.http.legacy"
@@ -51,8 +59,7 @@
 
         <meta-data
             android:name="com.google.android.geo.API_KEY"
-            android:value="AIzaSyATaaM2cSgZWWFLStbxB8v8Xq0mhY_oT3w"/>
-
+            android:value="AIzaSyATaaM2cSgZWWFLStbxB8v8Xq0mhY_oT3w" />
     </application>
 
 </manifest>
