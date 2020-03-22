@@ -100,8 +100,8 @@ public class Orders extends AppCompatActivity{
 
     void goToEventReg(){
         Intent intent = new Intent();
-        intent.putExtra("eventKey", eventKey);
-        //intent.putExtra("user", user);
+        //intent.putExtra("eventKey", eventKey);
+        intent.putExtra("user", user);
         intent.setClass(Orders.this, EventRegistration.class);
         startActivity(intent);
     }
