@@ -38,7 +38,6 @@ public class Orders extends AppCompatActivity{
         List<Order> orders = Manager.getOrdersByUserID(user.getid());
         List<String> orderStrings = new ArrayList<String>();
         for (int i = 0; i < orders.size(); i++) {
-            Log.d("Orders", orders.get(i).toString());
             orderStrings.add(orders.get(i).toString());
         }
 

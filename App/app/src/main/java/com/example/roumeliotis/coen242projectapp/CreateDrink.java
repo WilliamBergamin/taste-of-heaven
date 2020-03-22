@@ -2,6 +2,7 @@ package com.example.roumeliotis.coen242projectapp;
 
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -37,6 +38,7 @@ public class CreateDrink extends AppCompatActivity implements OnItemSelectedList
     Button payNowButton;
     String eventKey;
     User user;
+    final String TAG = "CreateDrink";
 
     @Override
     protected void onCreate(Bundle savedInstanceState){
