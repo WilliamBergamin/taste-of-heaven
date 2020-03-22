@@ -177,11 +177,10 @@ public class Manager extends SQLiteOpenHelper{
                 String machine_id = cursor.getString((cursor.getColumnIndex(ManagerConfigs.ORDER_MACHINE_ID)));
                 String mixer = cursor.getString((cursor.getColumnIndex(ManagerConfigs.ORDER_MIXER_COLUMN)));
                 String alcohol = cursor.getString((cursor.getColumnIndex(ManagerConfigs.ORDER_ALCOHOL_COLUMN)));
-                boolean doubleAlcohol = Boolean.getBoolean(cursor.getString((cursor.getColumnIndex(ManagerConfigs.ORDER_ALCOHOL_COLUMN))));
+                boolean doubleAlcohol = "1".equals(cursor.getString(cursor.getColumnIndex(ManagerConfigs.ORDER_DOUBLE_COLUMN)));
                 double price = cursor.getDouble((cursor.getColumnIndex(ManagerConfigs.ORDER_PRICE_COLUMN)));
                 String state = cursor.getString((cursor.getColumnIndex(ManagerConfigs.ORDER_STATE_COLUMN)));
                 Boolean paid = Boolean.getBoolean(cursor.getString((cursor.getColumnIndex(ManagerConfigs.ORDER_PAID_COLUMN))));
-
                 orders.add(new Order(order_id, user_id, order_key, machine_id, mixer, alcohol, doubleAlcohol, price, state, paid));
             }
 

@@ -51,7 +51,6 @@ public class Orders extends AppCompatActivity{
         List<String> orderStrings = new ArrayList<String>();
         List<ImageView> qrImages = new ArrayList<ImageView>();
         for (int i = 0; i < orders.size(); i++) {
-            Log.d("Orders", orders.get(i).toString());
             orderStrings.add(orders.get(i).toString());
             qrgEncoder = new QRGEncoder(orders.get(i).getOrder_key(), null, QRGContents.Type.TEXT, 325);
             try {

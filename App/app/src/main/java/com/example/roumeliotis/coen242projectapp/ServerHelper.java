@@ -148,6 +148,7 @@ public class ServerHelper {
         final JsonObjectRequest request = new JsonObjectRequest(Method.POST, base_url + "api/v1/order", jsonRequest, new Response.Listener<JSONObject>() {
             @Override
             public void onResponse(JSONObject response) {
+                Log.d(TAG, "Response " + response.toString());
                 callback.onSuccess(response);
             }
         }, new Response.ErrorListener() {
