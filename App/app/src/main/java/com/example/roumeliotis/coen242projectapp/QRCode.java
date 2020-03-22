@@ -1,68 +1,49 @@
 package com.example.roumeliotis.coen242projectapp;
 
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
-import android.widget.AdapterView;
-import android.widget.AdapterView.OnItemClickListener;
-import android.widget.ArrayAdapter;
 import android.widget.ImageView;
-import android.widget.ListView;
 
-import java.util.ArrayList;
-import java.util.List;
+import androidmads.library.qrgenearator.QRGContents;
+import androidmads.library.qrgenearator.QRGEncoder;
 
-// View all of your orders to gain access to input code
-public class Orders extends AppCompatActivity{
+public class QRCode extends AppCompatActivity {
 
-    ListView ordersList;
-    ServerHelper serverHelper;
-    Manager Manager;
+    Bitmap bitmap;
+    ImageView qrImage;
     String eventKey;
     User user;
-    List<String> orderKey = new ArrayList<String>();
+    String orderKey;
+    Manager Manager;
+    QRGEncoder qrgEncoder; // = new QRGEncoder(inputValue, null, QRGContents.Type.TEXT, smallerDimension);
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.orders_page);
+        setContentView(R.layout.qr_page);
 
         getSupportActionBar().setTitle(R.string.app_name);
-        serverHelper = new ServerHelper();
         Manager = new Manager(this);
         Intent userInfo = getIntent();
         user = userInfo.getParcelableExtra("user");
         eventKey = userInfo.getStringExtra("eventKey");
+        orderKey = userInfo.getStringExtra("orderKey");
+        qrImage = (ImageView) findViewById(R.id.QR_Image);
 
-        ordersList = findViewById(R.id.orderCodesList);
-
-        List<Order> orders = Manager.getOrdersByUserID(user.getid());
-        List<String> orderStrings = new ArrayList<String>();
-        List<ImageView> qrImages = new ArrayList<ImageView>();
-        for (int i = 0; i < orders.size(); i++) {
-            orderStrings.add(orders.get(i).toString());
-            orderKey.add(orders.get(i).toString());
+        qrgEncoder = new QRGEncoder(eventKey, null, QRGContents.Type.TEXT, 700);
+        try {
+            // Getting QR-Code as Bitmap
+            bitmap = qrgEncoder.encodeAsBitmap();
+            // Setting Bitmap to ImageView
+            qrImage.setImageBitmap(bitmap);
         }
-
-        ordersList.setAdapter(new ArrayAdapter<String>(this, R.layout.row, orderStrings));
-
-        ordersList.setOnItemClickListener(new OnItemClickListener()
-        {
-            public void onItemClick(AdapterView<?> arg0,View arg1, int position, long arg3)
-            {
-                String ord = orderKey.get(position).toString();
-                Intent intent = new Intent();
-                intent.putExtra("eventKey", eventKey);
-                intent.putExtra("user", user);
-                intent.putExtra("orderKey", ord);
-                intent.setClass(Orders.this, QRCode.class);
-                startActivity(intent);
-            }
-        });
-
+        catch(Exception e) {
+            //Log.v(e, e.toString());
+        }
     }
 
     @Override
@@ -98,7 +79,7 @@ public class Orders extends AppCompatActivity{
         Intent intent = new Intent();
         intent.putExtra("user", user);
         intent.putExtra("eventKey", eventKey);
-        intent.setClass(Orders.this, Map.class);
+        intent.setClass(QRCode.this, Map.class);
         startActivity(intent);
     }
 
@@ -106,7 +87,7 @@ public class Orders extends AppCompatActivity{
         Intent intent = new Intent();
         intent.putExtra("eventKey", eventKey);
         intent.putExtra("user", user);
-        intent.setClass(Orders.this, CreateDrink.class);
+        intent.setClass(QRCode.this, CreateDrink.class);
         startActivity(intent);
     }
 
@@ -114,7 +95,7 @@ public class Orders extends AppCompatActivity{
         Intent intent = new Intent();
         intent.putExtra("eventKey", eventKey);
         intent.putExtra("user", user);
-        intent.setClass(Orders.this, Orders.class);
+        intent.setClass(QRCode.this, Orders.class);
         startActivity(intent);
     }
 
@@ -122,7 +103,7 @@ public class Orders extends AppCompatActivity{
         Intent intent = new Intent();
         //intent.putExtra("eventKey", eventKey);
         intent.putExtra("user", user);
-        intent.setClass(Orders.this, EventRegistration.class);
+        intent.setClass(QRCode.this, EventRegistration.class);
         startActivity(intent);
     }
 }

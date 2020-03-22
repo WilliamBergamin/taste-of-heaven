@@ -57,6 +57,9 @@
         <activity
             android:name=".Map"
             android:label="" />
+        <activity
+            android:name=".QRCode"
+            android:label="" />
 
         <meta-data
             android:name="com.google.android.geo.API_KEY"

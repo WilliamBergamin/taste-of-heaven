@@ -20,25 +20,25 @@
         android:paddingRight="16dp"
         android:paddingTop="16dp">
 
-         <TextView
-            android:id="@+id/viewOrderHistory"
+        <TextView
+            android:id="@+id/ScanToPickup"
             android:layout_width="300dp"
             android:layout_height="50dp"
             android:layout_marginTop="40dp"
             android:layout_alignParentTop="true"
             android:layout_centerHorizontal="true"
-            android:text="View Order History"
+            android:text="Scan To Pickup Drink"
             android:background="@color/background"
             android:textColor="@color/colorHotPink"
             android:textSize="20dp"
             android:fontFamily="@font/montserrat_black" />
 
-        <ListView
-            android:id="@+id/orderCodesList"
-            android:layout_width="300dp"
-            android:layout_height="wrap_content"
-            android:layout_alignLeft="@id/viewOrderHistory"
-            android:layout_below="@id/viewOrderHistory"/>
+        <ImageView
+            android:id="@+id/QR_Image"
+            android:layout_below="@id/ScanToPickup"
+            android:layout_alignLeft="@id/ScanToPickup"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
 
 
     </RelativeLayout>
