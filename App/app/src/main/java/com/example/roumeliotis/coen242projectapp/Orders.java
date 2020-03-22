@@ -41,7 +41,7 @@ public class Orders extends AppCompatActivity{
             orderStrings.add(orders.get(i).toString());
         }
 
-        ordersList.setAdapter(new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, orderStrings));
+        ordersList.setAdapter(new ArrayAdapter<String>(this, R.layout.row, orderStrings));
     }
 
     @Override
@@ -99,8 +99,8 @@ public class Orders extends AppCompatActivity{
 
     void goToEventReg(){
         Intent intent = new Intent();
-        intent.putExtra("eventKey", eventKey);
-        //intent.putExtra("user", user);
+        //intent.putExtra("eventKey", eventKey);
+        intent.putExtra("user", user);
         intent.setClass(Orders.this, EventRegistration.class);
         startActivity(intent);
     }
