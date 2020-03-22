@@ -20,7 +20,7 @@
         android:paddingRight="16dp"
         android:paddingTop="16dp">
 
-        <TextView
+         <TextView
             android:id="@+id/viewOrderHistory"
             android:layout_width="300dp"
             android:layout_height="50dp"
@@ -33,18 +33,20 @@
             android:textSize="20dp"
             android:fontFamily="@font/montserrat_black" />
 
+        <ImageView
+            android:id="@+id/QR_Image"
+            android:layout_below="@id/viewOrderHistory"
+            android:layout_alignLeft="@id/viewOrderHistory"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+
         <ListView
             android:id="@+id/orderCodesList"
-            android:layout_width="300dp"
-            android:layout_height="500dp"
-            android:layout_below="@id/viewOrderHistory"
-            android:layout_alignParentTop="true"
-            android:layout_centerHorizontal="true"
-            android:layout_marginTop="86dp"
-            android:background="@color/background"
-            android:textColor="@color/colorDarkGrey"
-            android:textSize="18dp"
-            android:fontFamily="@font/montserrat_regular"/>
+            android:layout_width="175dp"
+            android:layout_height="wrap_content"
+            android:layout_alignRight="@id/viewOrderHistory"
+            android:layout_below="@id/viewOrderHistory"/>
+
 
     </RelativeLayout>
 
