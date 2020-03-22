@@ -74,6 +74,10 @@ public class EventRegistration extends AppCompatActivity {
         });
     }
 
+    @Override
+    public void onBackPressed(){
+        moveTaskToBack(true);
+    }
 
     void goToNextActivity(String event, User user) {
         Intent intent = new Intent();
