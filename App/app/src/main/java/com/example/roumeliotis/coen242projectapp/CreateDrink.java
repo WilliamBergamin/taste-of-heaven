@@ -199,7 +199,7 @@ public class CreateDrink extends AppCompatActivity implements OnItemSelectedList
 
     void goToEventReg(){
         Intent intent = new Intent();
-        intent.putExtra("eventKey", eventKey);
+        //intent.putExtra("eventKey", eventKey);
         intent.putExtra("user", user);
         intent.setClass(CreateDrink.this, EventRegistration.class);
         startActivity(intent);

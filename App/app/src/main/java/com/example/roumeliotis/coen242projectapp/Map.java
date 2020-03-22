@@ -38,7 +38,6 @@ public class Map extends AppCompatActivity implements OnMapReadyCallback{
         Intent userInfo = getIntent();
         user = userInfo.getParcelableExtra("user");
         eventKey = userInfo.getStringExtra("eventKey");
-        backToOrder = findViewById(R.id.returnButton);
     }
 
     @Override
@@ -101,7 +100,7 @@ public class Map extends AppCompatActivity implements OnMapReadyCallback{
 
     void goToEventReg(){
         Intent intent = new Intent();
-        intent.putExtra("eventKey", eventKey);
+        //intent.putExtra("eventKey", eventKey);
         intent.putExtra("user", user);
         intent.setClass(Map.this, EventRegistration.class);
         startActivity(intent);
