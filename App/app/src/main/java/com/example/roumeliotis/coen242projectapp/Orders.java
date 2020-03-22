@@ -4,9 +4,9 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
-import android.view.View;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.widget.ArrayAdapter;
-import android.widget.ImageButton;
 import android.widget.ListView;
 
 import java.util.ArrayList;
@@ -20,7 +20,6 @@ public class Orders extends AppCompatActivity{
     Manager Manager;
     String eventKey;
     User user;
-    ImageButton backToOrder;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,7 +32,6 @@ public class Orders extends AppCompatActivity{
         Intent userInfo = getIntent();
         user = userInfo.getParcelableExtra("user");
         eventKey = userInfo.getStringExtra("eventKey");
-        backToOrder = findViewById(R.id.returnButton);
 
         ordersList = findViewById(R.id.orderCodesList);
 
@@ -45,19 +43,66 @@ public class Orders extends AppCompatActivity{
         }
 
         ordersList.setAdapter(new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, orderStrings));
-        backToOrder.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                goToCreateDrink();
-            }
-        });
     }
 
-    void goToCreateDrink() {
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.options_menu, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        //Toast.makeText(this, "Selected Item: " +item.getTitle(), Toast.LENGTH_SHORT).show();
+        switch (item.getItemId()) {
+            case R.id.event:
+                goToEventReg();
+                return true;
+            case R.id.drink:
+                goToCreateOrder();
+                return true;
+            case R.id.map:
+                goToMap();
+                return true;
+            case R.id.orders:
+                goToViewPastOrders();
+                return true;
+            default:
+                return super.onContextItemSelected(item);
+        }
+    }
+
+
+
+    void goToMap() {
         Intent intent = new Intent();
         intent.putExtra("user", user);
         intent.putExtra("eventKey", eventKey);
+        intent.setClass(Orders.this, Map.class);
+        startActivity(intent);
+    }
+
+    void goToCreateOrder() {
+        Intent intent = new Intent();
+        intent.putExtra("eventKey", eventKey);
+        intent.putExtra("user", user);
         intent.setClass(Orders.this, CreateDrink.class);
+        startActivity(intent);
+    }
+
+    void goToViewPastOrders(){
+        Intent intent = new Intent();
+        intent.putExtra("eventKey", eventKey);
+        intent.putExtra("user", user);
+        intent.setClass(Orders.this, Orders.class);
+        startActivity(intent);
+    }
+
+    void goToEventReg(){
+        Intent intent = new Intent();
+        intent.putExtra("eventKey", eventKey);
+        intent.putExtra("user", user);
+        intent.setClass(Orders.this, EventRegistration.class);
         startActivity(intent);
     }
 }

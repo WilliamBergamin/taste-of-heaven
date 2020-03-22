@@ -3,6 +3,8 @@ package com.example.roumeliotis.coen242projectapp;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.widget.ImageButton;
 
 import com.google.android.gms.maps.GoogleMap;
@@ -37,13 +39,6 @@ public class Map extends AppCompatActivity implements OnMapReadyCallback{
         user = userInfo.getParcelableExtra("user");
         eventKey = userInfo.getStringExtra("eventKey");
         backToOrder = findViewById(R.id.returnButton);
-/*
-        backToOrder.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                goToCreateDrink();
-            }
-        });*/
     }
 
     @Override
@@ -53,11 +48,62 @@ public class Map extends AppCompatActivity implements OnMapReadyCallback{
         map.moveCamera(CameraUpdateFactory.newLatLngZoom(eV, 15));
     }
 
-    void goToCreateDrink() {
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.options_menu, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        //Toast.makeText(this, "Selected Item: " +item.getTitle(), Toast.LENGTH_SHORT).show();
+        switch (item.getItemId()) {
+            case R.id.event:
+                goToEventReg();
+                return true;
+            case R.id.drink:
+                goToCreateOrder();
+                return true;
+            case R.id.map:
+                goToMap();
+                return true;
+            case R.id.orders:
+                goToViewPastOrders();
+                return true;
+            default:
+                return super.onContextItemSelected(item);
+        }
+    }
+
+    void goToMap() {
         Intent intent = new Intent();
         intent.putExtra("user", user);
         intent.putExtra("eventKey", eventKey);
+        intent.setClass(Map.this, Map.class);
+        startActivity(intent);
+    }
+
+    void goToCreateOrder() {
+        Intent intent = new Intent();
+        intent.putExtra("eventKey", eventKey);
+        intent.putExtra("user", user);
         intent.setClass(Map.this, CreateDrink.class);
+        startActivity(intent);
+    }
+
+    void goToViewPastOrders(){
+        Intent intent = new Intent();
+        intent.putExtra("eventKey", eventKey);
+        intent.putExtra("user", user);
+        intent.setClass(Map.this, Orders.class);
+        startActivity(intent);
+    }
+
+    void goToEventReg(){
+        Intent intent = new Intent();
+        intent.putExtra("eventKey", eventKey);
+        intent.putExtra("user", user);
+        intent.setClass(Map.this, EventRegistration.class);
         startActivity(intent);
     }
 };

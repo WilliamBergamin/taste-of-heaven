@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:id="@+id/event"
+        android:title="Register For New Event" />
+    <item android:id="@+id/drink"
+        android:title="Create A Drink"/>
+    <item android:id="@+id/map"
+        android:title="View Event Map" />
+    <item android:id="@+id/orders"
+        android:title="View Orders" />
+</menu>
