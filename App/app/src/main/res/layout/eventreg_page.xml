@@ -71,6 +71,20 @@
             android:textSize="20dp"
             android:fontFamily="@font/montserrat_regular"/>
 
+        <Button
+            android:id="@+id/eventQrButton"
+            android:layout_width="300dp"
+            android:layout_height="50dp"
+            android:layout_below="@id/eventButton"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="10dp"
+            android:background="@drawable/roundedbutton"
+            android:fontFamily="@font/montserrat_regular"
+            android:text="Scan QR Code"
+            android:textAlignment="center"
+            android:textColor="#FFFFFF"
+            android:textSize="20dp" />
+
     </RelativeLayout>
 
 </android.support.v4.widget.DrawerLayout>

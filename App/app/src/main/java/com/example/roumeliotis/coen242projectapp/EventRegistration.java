@@ -21,6 +21,7 @@ public class EventRegistration extends AppCompatActivity {
 
     EditText getEventCode;
     Button getEventButton;
+    Button getQREventButton;
     ServerHelper serverHelper;
     Manager Manager;
     User user;
@@ -36,6 +37,7 @@ public class EventRegistration extends AppCompatActivity {
         Manager = new Manager(this);
         getEventCode = findViewById(R.id.eventCodeInput);
         getEventButton = findViewById(R.id.eventButton);
+        getQREventButton = findViewById(R.id.eventQrButton);
 
         Intent userInfo = getIntent();
         user = userInfo.getParcelableExtra("loggedInUser");
@@ -72,6 +74,13 @@ public class EventRegistration extends AppCompatActivity {
                 }
             }
         });
+
+        getQREventButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                goToQR();
+            }
+        });
     }
 
     @Override
@@ -84,6 +93,13 @@ public class EventRegistration extends AppCompatActivity {
         intent.putExtra("eventKey", event);
         intent.putExtra("user", user);
         intent.setClass(EventRegistration.this, CreateDrink.class);
+        startActivity(intent);
+    }
+
+    void goToQR(){
+        Intent intent = new Intent();
+        intent.putExtra("user", user);
+        intent.setClass(EventRegistration.this, QrEventReg.class);
         startActivity(intent);
     }
 }
