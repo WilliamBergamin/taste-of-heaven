@@ -70,7 +70,7 @@ class Order:
             "state": self.states[1]
         }
         updated_order = orders.update_one(query,
-                                          {'$set':{
+                                          {'$set': {
                                               'state': self.states[2],
                                               'machine_id': machine_id
                                           }})
@@ -84,7 +84,7 @@ class Order:
             "state": self.states[2]
         }
         updated_order = orders.update_one(query,
-                                          {'$set':{
+                                          {'$set': {
                                               'state': self.states[3]
                                           }})
         if updated_order.modified_count > 0:
@@ -100,10 +100,10 @@ class Order:
         if found_order_data is None:
             return None
         drinks = [
-                    Drink(drink.get('mixer_type'),
-                          drink.get('alcohol_type'),
-                          drink.get('double')) for drink in found_order_data.get('drinks')
-                 ]
+            Drink(drink.get('mixer_type'),
+                  drink.get('alcohol_type'),
+                  drink.get('double')) for drink in found_order_data.get('drinks')
+        ]
         found_order = cls(found_order_data.get('user_id'),
                           drinks,
                           found_order_data.get('payed'))
@@ -121,10 +121,10 @@ class Order:
         if found_order_data is None:
             return None
         drinks = [
-                    Drink(drink.get('mixer_type'),
-                          drink.get('alcohol_type'),
-                          drink.get('double')) for drink in found_order_data.get('drinks')
-                 ]
+            Drink(drink.get('mixer_type'),
+                  drink.get('alcohol_type'),
+                  drink.get('double')) for drink in found_order_data.get('drinks')
+        ]
         found_order = cls(found_order_data.get('user_id'),
                           drinks,
                           found_order_data.get('payed'))
@@ -136,7 +136,7 @@ class Order:
         return found_order
 
     def to_dict(self):
-        order_key_str = str(str(self._id)).encode('utf8')
+        order_key_str = str(self._id).encode('utf8')
         return {
             'order_key': base64.urlsafe_b64encode(order_key_str).decode('utf8'),
             'user_id': str(self.user_id),

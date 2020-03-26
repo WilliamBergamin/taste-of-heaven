@@ -189,6 +189,20 @@ def get_user():
     return json_response(json.dumps(g.current_user.to_dict()), status=200)
 
 
+@app.route('/api/v1/user/orders', methods=['GET'])
+@auth.login_required
+def get_user_orders():
+    """
+    header Authorization: Token Authentication_user_token
+    """
+    if g.get('current_user', None) is None:
+        return json_error('No user found might have been a machine token',
+                          status=401)
+    list_of_orders = [Order.find_by_id(order_id).to_dict()
+                      for order_id in g.current_user.orders]
+    return json_response(json.dumps({"orders": list_of_orders}), status=200)
+
+
 @app.route('/api/v1/user/event/<string:event_key>', methods=['POST'])
 @auth.login_required
 def post_user_to_event(event_key):

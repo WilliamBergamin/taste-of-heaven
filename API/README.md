@@ -113,6 +113,45 @@ json = {
 
 [:top:](#table-of-contents)
 
+### Get User Orders
+
+```JSON
+GET /api/v1/user
+headers = Authorization: Token Authentication_user_token
+```
+
+```JSON
+RETURNS:
+json = {
+    "orders": [
+        {
+           "order_key": "",
+            "user_id": "",
+            "machine_id": "",
+            "state": "",
+            "drinks": [
+                {
+                    "mixer_type": "",
+                    "alcohol_type": "",
+                    "double": true,
+                    "price": 3.5
+                },
+                {
+                    "mixer_type": "",
+                    "alcohol_type": "",
+                    "double": true,
+                    "price": 3.5
+                }
+            ],
+            "price": 7.0,
+            "payed": true
+        }
+    ]
+}
+```
+
+[:top:](#table-of-contents)
+
 ### Add User to Event
 
 ```RESQUEST
