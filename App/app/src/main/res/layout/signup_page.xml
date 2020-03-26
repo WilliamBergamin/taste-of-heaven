@@ -154,6 +154,19 @@
             android:textColor="@color/colorHotPink"
             android:textSize="16dp"
             android:fontFamily="@font/montserrat_regular"/>
+
+        <TextView
+            android:id="@+id/terms"
+            android:layout_width="300dp"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_marginBottom="10dp"
+            android:layout_alignLeft="@id/createanaccount"
+            android:background="@color/background"
+            android:fontFamily="@font/montserrat_regular"
+            android:text="By signing up to Taste of Heaven, you are agreeing to the Terms &amp; Conditions."
+            android:textColor="@color/colorPastelPink"
+            android:textSize="12dp" />
     </RelativeLayout>
 
 </android.support.v4.widget.DrawerLayout>
