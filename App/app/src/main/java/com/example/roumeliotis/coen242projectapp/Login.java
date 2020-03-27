@@ -43,14 +43,14 @@ public class Login extends AppCompatActivity{
     Button getSignup;
     ImageView getLoadImage;
     ServerHelper serverHelper;
-    Manager Manager;
+    Manager manager;
     public static final String TAG = "Login";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         serverHelper = new ServerHelper();
-        Manager = new Manager(this);
+        manager = new Manager(this);
         SharedPreferences prefs = getSharedPreferences("preferences", MODE_PRIVATE);
 
         setContentView(R.layout.login_page);
@@ -95,10 +95,10 @@ public class Login extends AppCompatActivity{
                                         response.getString("email"),
                                         "password",
                                         response.getString("token"));
-                                loggedInUser.setid(Manager.insertUser(loggedInUser));
+                                loggedInUser.setid(manager.insertUser(loggedInUser));
                                 SharedPreferences prefs = getSharedPreferences("preferences", MODE_PRIVATE);
                                 prefs.edit().putString("token", response.getString("token")).commit();
-                                fillDrinkTable(response);
+                                fillDrinkTable(loggedInUser);
                                 goToNextActivity(loggedInUser);
                             } catch(JSONException e){
                                 e.printStackTrace();
@@ -134,12 +134,12 @@ public class Login extends AppCompatActivity{
                     SharedPreferences prefs = getSharedPreferences("preferences", MODE_PRIVATE);
                     String token = prefs.getString("token",null);
                     try {
-                        User loggedInUser = new User(Manager.getUserIdFromToken(token),
+                        User loggedInUser = new User(manager.getUserIdFromToken(token),
                                 response.getString("name"),
                                 response.getString("email"),
                                 "password",
                                 response.getString("token"));
-                        fillDrinkTable(response);
+                        fillDrinkTable(loggedInUser);
                         goToNextActivity(loggedInUser);
                     }
                     catch (JSONException error){    //Will hit here if the JSON response was an error
@@ -192,21 +192,45 @@ public class Login extends AppCompatActivity{
         startActivity(intent);
     }
 
-    void fillDrinkTable(JSONObject response){
+    void fillDrinkTable(final User user){
         Log.d(TAG, "fillDrinkTable");
-//        Manager.clearDrinks();
-//        try {
-//            JSONArray orders = response.getJSONArray("orders");
-//            for (int i = 0; i < orders.length(); i++){
-//                Manager.insertOrder(new Order(
-//                    orders.getJSONObject(i).get
-//                ));
-//            }
-//        }
-//        catch (JSONException error){
-//            Toast toast = Toast.makeText(getApplicationContext(), "Something went wrong", Toast.LENGTH_LONG);
-//            toast.setGravity(Gravity.CENTER, 0, 0);
-//            toast.show();
-//        }
+        serverHelper.getOrders(user, getApplicationContext(), new VolleyCallback() {
+            @Override
+            public void onSuccess(JSONObject response) {
+                try {
+                    manager.clearDrinks();
+                    JSONArray orders = response.getJSONArray("orders");
+                    for(int i = 0; i < orders.length(); i++){
+                        JSONObject order = orders.getJSONObject(i);
+                        manager.insertOrder(new Order(
+                                -1,
+                                user.getid(),
+                                order.getString("order_key"),
+                                "",
+                                order.getJSONArray("drinks").getJSONObject(0).getString("mixer_type"),
+                                order.getJSONArray("drinks").getJSONObject(0).getString("alcohol_type"),
+                                order.getJSONArray("drinks").getJSONObject(0).getBoolean("double"),
+                                order.getDouble("price"),
+                                order.getString("state"),
+                                order.getBoolean("payed")
+                        ));
+                    }
+                }
+                catch (JSONException e){
+                    Log.e(TAG, e.toString());
+                    Toast toast = Toast.makeText(getApplicationContext(), "Error, past orders may incorrect", Toast.LENGTH_LONG);
+                    toast.setGravity(Gravity.CENTER, 0, 0);
+                    toast.show();
+                }
+            }
+
+            @Override
+            public void onError(VolleyError error) {
+                Log.e(TAG, error.toString());
+                Toast toast = Toast.makeText(getApplicationContext(), "Error, past orders may be out of date", Toast.LENGTH_LONG);
+                toast.setGravity(Gravity.CENTER, 0, 0);
+                toast.show();
+            }
+        });
     }
 }
