@@ -144,19 +144,6 @@
             android:textColor="@color/colorPastelPink"
             android:textSize="16dp" />
 
-        <TextView
-            android:id="@+id/ToS"
-            android:layout_width="wrap_content"
-            android:layout_height="52dp"
-            android:layout_below="@id/signupButton"
-            android:layout_alignStart="@+id/signupButton"
-            android:layout_marginTop="30dp"
-            android:background="@color/background"
-            android:fontFamily="@font/montserrat_regular"
-            android:text="By signing up you are agreeing to our Terms of Sevice"
-            android:textColor="@color/colorPastelPink"
-            android:textSize="16dp" />
-
         <Button
             android:id="@+id/loginButton"
             android:layout_width="75dp"
