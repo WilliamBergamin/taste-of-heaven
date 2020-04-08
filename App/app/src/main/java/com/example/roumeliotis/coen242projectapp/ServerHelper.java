@@ -216,4 +216,32 @@ public class ServerHelper {
 //        Log.d(TAG, "Request: " + request.toString());
 //        VolleySingleton.getInstance(context).addToQueue(request);
 //    }
+
+    // Get User
+    public void getOrders(final User user, final Context context, final VolleyCallback callback){
+        Log.d(TAG,"getOrders");
+        final JsonObjectRequest request = new JsonObjectRequest(Method.GET, base_url + "api/v1/user/orders", null, new Response.Listener<JSONObject>() {
+            @Override
+            public void onResponse(JSONObject response) {
+                Log.d(TAG,"Response: \n" +response.toString());
+                callback.onSuccess(response);
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Log.d(TAG, "error caught:"+ error.toString());
+                callback.onError(error);
+            }
+        }){ //no semicolon or coma this is to add headers
+            @Override
+            public Map<String, String> getHeaders() {
+                Map<String, String> params = new HashMap<String, String>();
+                params.put("Content-Type", "application/json");
+                params.put("Authorization", "Token "+ user.getToken());
+                return params;
+            }
+        };
+        VolleySingleton.getInstance(context).addToQueue(request);
+    }
 }
+
