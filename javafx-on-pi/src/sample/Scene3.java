@@ -49,7 +49,7 @@ public class Scene3 {
                         Thread.sleep(100);
                     } catch (InterruptedException e) {
                     }
-                    while(MachineMicrocontrolerHelper.getMicrocontrolerState() != "done"){
+                    while(MachineMicrocontrolerHelper.getMicrocontrolerState() == "processing"){
                         System.out.println("waiting on microcontroler to finish");
                     }
                     return null;
