@@ -57,21 +57,7 @@ public class Scene1 {
         vb.getChildren().add(btn);
 
         Scene scene1 = new Scene(vb, WIDTH, HEIGHT);
-
-        Task<Void> nextSceneSleeper = new Task<Void>() {
-            @Override
-            protected Void call() throws Exception {
-                try {
-                    while(true) {
-                        Thread.sleep(2000);
-                        MachineMicrocontrolerHelper.sendNewOrder(new JSONObject());
-                    }
-                } catch (InterruptedException e) {
-                }
-                return null;
-            }
-        };
-        new Thread(nextSceneSleeper).start();
+        
         primaryStage.setScene(scene1);
     }
 
