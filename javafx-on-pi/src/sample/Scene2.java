@@ -103,7 +103,8 @@ public class Scene2 {
             alert.show();
             orderKey.delete(0, ORDERKEYLENGHT);
         }else {
-            nextScene(orderKey.toString());
+            Machine.setSelectedOrder(response.getString("order_key"));
+            nextScene(response);
         }
     }
 
@@ -113,9 +114,9 @@ public class Scene2 {
         scene1.getScene(primaryStage);
     }
 
-    private void nextScene(String orderToken){
+    private void nextScene(JSONObject order){
         ScannerHelper.scannerOff();
-        Scene3 scene3 = new Scene3(orderToken);
+        Scene3 scene3 = new Scene3(order);
         scene3.getScene(primaryStage);
     }
 }

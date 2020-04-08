@@ -22,11 +22,9 @@ public class MachineMicrocontrolerHelper {
     static{
         mutex = new Semaphore(1);
         possibleMicroState = new HashMap<Byte, String>();
-        possibleMicroState.put((byte) 0x01, "idle");
-        possibleMicroState.put((byte) 0x02, "pouring");
-        possibleMicroState.put((byte) 0x03, "done");
-        possibleMicroState.put((byte) 0x04, "busy");
-        possibleMicroState.put((byte) 0x05, "error");
+        possibleMicroState.put((byte) 1, "idle");
+        possibleMicroState.put((byte) 2, "processing");
+        possibleMicroState.put((byte) 3, "done");
         serial = SerialFactory.createInstance();
         config = new SerialConfig();
     }
@@ -39,13 +37,32 @@ public class MachineMicrocontrolerHelper {
                 // NOTE! - It is extremely important to read the data received from the
                 // serial port.  If it does not get read from the receive buffer, the
                 // buffer will continue to grow and consume memory.
-
-                // print out the data received to the console
                 try {
+                    mutex.acquire();mutex.acquire();
+                    // byte meaning
+                    // 2: status
+                    // 1: water sensors
+                    // 0: water sensors
                     System.out.println("[HEX DATA]   " + event.getHexByteString());
-                    System.out.println("[ASCII DATA] " + event.getAsciiString());
-                } catch (IOException e) {
+                    byte[] received = event.getByteBuffer().array();
+                    MachineMicrocontrolerHelper.microState = possibleMicroState.getOrDefault(received[2], "error");
+                    if (MachineMicrocontrolerHelper.microState == "error"){
+                        Machine.setState((short) 2);
+                        Machine.setError("Problem with micro controller");
+                    }
+                    // TODO add more information on sensor level
+                    // if bottom sensors are not all 1 then put machine in empty mode
+                    if ((received[0] & (byte) 31) != (byte) 31){
+                        // set state of machine to empty
+                        Machine.setState((short) 1);
+                    }else{
+                        // set state of machine to ok
+                        Machine.setState((short) 0);
+                    }
+                } catch (IOException | InterruptedException e) {
                     e.printStackTrace();
+                } finally {
+                    mutex.release();
                 }
             }
         });
@@ -75,15 +92,51 @@ public class MachineMicrocontrolerHelper {
         return null;
     }
 
+    private static byte[] getCommandFromOrder(String mixer, String alcohol, boolean big){
+        byte message[] = {0,0,0,0,0};
+        switch(alcohol) {
+            case "Rum":
+                message[0] = big ? (byte) 2 : (byte) 1;
+                break;
+            case "Vodka":
+                message[1] = big ? (byte) 2 : (byte) 1;
+                break;
+            case "Gin":
+                message[2] = big ? (byte) 2 : (byte) 1;
+                break;
+            default:
+                // "None" do nothing
+        }
+        switch(mixer) {
+            case "Orange juice":
+                message[3] = (byte) 1;
+                break;
+            case "Apple juice":
+                message[4] = (byte) 1;
+                break;
+            default:
+                // "None" do nothing
+        }
+        return message;
+    }
+
     public static void sendNewOrder(JSONObject orderData) {
+        /*
+        expected data for drink
+         {
+              "mixer_type": "",
+              "alcohol_type": "",
+              "double": true,
+              "price": 3.5
+         }
+        */
         try {
             mutex.acquire();
             System.out.println("writting to micro");
-            // write a formatted string to the serial transmit buffer
-            serial.write("CURRENT TIME: " + new Date().toString());
-
-            // write a individual bytes to the serial transmit buffer
-            serial.write((byte) 13);
+            // write a byte array to the serial transmit buffer
+            serial.write(getCommandFromOrder(orderData.getString("mixer_type"),
+                                             orderData.getString("alcohol_type"),
+                                             orderData.getBoolean("double")));
 
         } catch (InterruptedException | IOException e) {
             e.printStackTrace();

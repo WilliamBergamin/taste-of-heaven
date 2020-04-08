@@ -95,8 +95,18 @@ public class Machine {
         Machine.processedOrders = processedOrders;
     }
 
-    public static void setState(String state) {
-        Machine.state = state;
+    //states = ['ok', 'empty', 'error']
+    public static void setState(short state) {
+        switch(state) {
+            case 0:
+                Machine.state = "ok";
+                break;
+            case 1:
+                Machine.state = "empty";
+                break;
+            default:
+                Machine.state = "error";
+        }
     }
 
     public static void setError(String error) {
