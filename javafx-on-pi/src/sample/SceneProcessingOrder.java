@@ -10,13 +10,13 @@ import org.json.JSONObject;
 
 import static sample.Constants.*;
 
-public class Scene3 {
+public class SceneProcessingOrder {
 
     private Stage primaryStage;
     private JSONObject order;
     private Label label = new Label("Order Fetched!");
 
-    public Scene3(JSONObject order){
+    public SceneProcessingOrder(JSONObject order){
         this.order=order;
     }
 
@@ -85,7 +85,7 @@ public class Scene3 {
     }
 
     private void nextScene(){
-        Scene4 scene4 = new Scene4();
-        scene4.getScene(primaryStage);
+        SceneOrderCompleted sceneOrderCompleted = new SceneOrderCompleted();
+        sceneOrderCompleted.getScene(primaryStage);
     }
 }

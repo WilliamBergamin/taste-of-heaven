@@ -11,7 +11,7 @@ import javafx.stage.Stage;
 import static sample.Constants.HEIGHT;
 import static sample.Constants.WIDTH;
 
-public class Scene4 {
+public class SceneOrderCompleted {
 
     private Stage primaryStage;
     private Image image;
@@ -55,7 +55,7 @@ public class Scene4 {
     }
 
     private void nextScene(){
-        Scene1 scene1 = new Scene1();
-        scene1.getScene(primaryStage);
+        SceneHome sceneHome = new SceneHome();
+        sceneHome.getScene(primaryStage);
     }
 }

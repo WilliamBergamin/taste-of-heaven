@@ -15,8 +15,6 @@ import javafx.geometry.Insets;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.sql.ClientInfoStatus;
-
 import static sample.Constants.*;
 
 public class Main extends Application {
@@ -138,8 +136,8 @@ public class Main extends Application {
 
     private void nextScenes(){
         ScannerHelper.scannerOff();
-        Scene1 scene1 = new Scene1();
-        scene1.getScene(primaryStage);
+        SceneHome sceneHome = new SceneHome();
+        sceneHome.getScene(primaryStage);
     }
 
     public static void main(String[] args) {

@@ -1,7 +1,5 @@
 package sample;
 
-import javafx.concurrent.Task;
-import javafx.concurrent.WorkerStateEvent;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
@@ -11,11 +9,10 @@ import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.stage.Stage;
-import org.json.JSONObject;
 
 import static sample.Constants.*;
 
-public class Scene1 {
+public class SceneHome {
 
     private Stage primaryStage;
 
@@ -62,7 +59,7 @@ public class Scene1 {
     }
 
     private void nextScene(){
-        Scene2 scene2 = new Scene2();
-        scene2.getScene(primaryStage);
+        SceneReceiveOrder sceneReceiveOrder = new SceneReceiveOrder();
+        sceneReceiveOrder.getScene(primaryStage);
     }
 }

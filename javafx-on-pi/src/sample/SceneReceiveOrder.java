@@ -11,7 +11,7 @@ import org.json.JSONObject;
 
 import static sample.Constants.*;
 
-public class Scene2 {
+public class SceneReceiveOrder {
 
     private Stage primaryStage;
     private StringBuffer orderKey = new StringBuffer();
@@ -110,13 +110,13 @@ public class Scene2 {
 
     private void backScene(){
         ScannerHelper.scannerOff();
-        Scene1 scene1 = new Scene1();
-        scene1.getScene(primaryStage);
+        SceneHome sceneHome = new SceneHome();
+        sceneHome.getScene(primaryStage);
     }
 
     private void nextScene(JSONObject order){
         ScannerHelper.scannerOff();
-        Scene3 scene3 = new Scene3(order);
-        scene3.getScene(primaryStage);
+        SceneProcessingOrder sceneProcessingOrder = new SceneProcessingOrder(order);
+        sceneProcessingOrder.getScene(primaryStage);
     }
 }
