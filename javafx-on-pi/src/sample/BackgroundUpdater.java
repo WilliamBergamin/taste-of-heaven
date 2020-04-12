@@ -5,7 +5,6 @@ import org.json.JSONObject;
 public class BackgroundUpdater extends Thread {
     public void run() {
         while(true) {
-            MachineMicrocontrolerHelper.getMicrocontrolerState();
             ServerHelper serverHelper = new ServerHelper();
             JSONObject response = serverHelper.postUpdateStatus();
             if (response == null){
