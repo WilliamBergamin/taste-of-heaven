@@ -99,6 +99,7 @@ public class ServerHelper {
                 response.append('\r');
             }
             rd.close();
+            System.out.println(response.toString());
             return new JSONObject(response.toString());
 
         } catch (Exception e) {
