@@ -38,7 +38,7 @@ public class MachineMicrocontrolerHelper {
                 // serial port.  If it does not get read from the receive buffer, the
                 // buffer will continue to grow and consume memory.
                 try {
-                    mutex.acquire();mutex.acquire();
+                    mutex.acquire();
                     // byte meaning
                     // 2: status
                     // 1: water sensors

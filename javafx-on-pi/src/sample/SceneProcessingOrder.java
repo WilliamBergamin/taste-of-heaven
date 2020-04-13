@@ -40,7 +40,7 @@ public class SceneProcessingOrder {
         primaryStage.setScene(scene3);
 
         //TODO fix this for multiple drinks in one order
-
+        System.out.println(order.getJSONArray("drinks").getJSONObject(0).toString());
         MachineMicrocontrolerHelper.sendNewOrder(order.getJSONArray("drinks").getJSONObject(0));
         label.setText("Processing!!!!");
         Task<Void> sendOrderToMicro = new Task<Void>() {
