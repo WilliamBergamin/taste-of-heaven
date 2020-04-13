@@ -16,11 +16,11 @@ public class SceneProcessingOrder {
     private JSONObject order;
     private Label label = new Label("Order Fetched!");
 
-    public SceneProcessingOrder(JSONObject order){
-        this.order=order;
+    public SceneProcessingOrder(JSONObject order) {
+        this.order = order;
     }
 
-    public void getScene(Stage primaryStage){
+    public void getScene(Stage primaryStage) {
 
         System.out.println("Entered scene processing");
         this.primaryStage = primaryStage;
@@ -40,43 +40,43 @@ public class SceneProcessingOrder {
         primaryStage.setScene(scene3);
 
         //TODO fix this for multiple drinks in one order
-        for (int i=0; 1<order.getJSONArray("drinks").length(); i++) {
-            MachineMicrocontrolerHelper.sendNewOrder(order.getJSONArray("drinks").getJSONObject(i));
-            label.setText("Processing!!!!");
-            Task<Void> sendOrderToMicro = new Task<Void>() {
-                @Override
-                protected Void call() throws Exception {
-                    try {
-                        Thread.sleep(3000);
-                    } catch (InterruptedException e) {
-                    }
-                    while(MachineMicrocontrolerHelper.getMicrocontrolerState() == "processing"){
-                        System.out.println("waiting on microcontroler to finish");
-                    }
-                    return null;
+
+        MachineMicrocontrolerHelper.sendNewOrder(order.getJSONArray("drinks").getJSONObject(0));
+        label.setText("Processing!!!!");
+        Task<Void> sendOrderToMicro = new Task<Void>() {
+            @Override
+            protected Void call() throws Exception {
+                try {
+                    Thread.sleep(3000);
+                } catch (InterruptedException e) {
                 }
-            };
-            sendOrderToMicro.setOnSucceeded(new EventHandler<WorkerStateEvent>() {
-                @Override
-                public void handle(WorkerStateEvent event) {
-                    if (Machine.getState() == "error"){
+                while (MachineMicrocontrolerHelper.getMicrocontrolerState() == "processing") {
+                    System.out.println("waiting on microcontroler to finish");
+                }
+                return null;
+            }
+        };
+        sendOrderToMicro.setOnSucceeded(new EventHandler<WorkerStateEvent>() {
+            @Override
+            public void handle(WorkerStateEvent event) {
+                if (Machine.getState() == "error") {
+                    errorScene();
+                } else {
+                    JSONObject response = ServerHelper.postOrderCompleted();
+                    if (response == null) {
+                        System.out.println("problem with server sending confirmation of order finished");
                         errorScene();
-                    }else {
-                        JSONObject response = ServerHelper.postOrderCompleted();
-                        if (response == null){
-                            System.out.println("problem with server sending confirmation of order finished");
-                            errorScene();
-                        }else {
-                            nextScene();
-                        }
+                    } else {
+                        nextScene();
                     }
                 }
-            });
-            new Thread(sendOrderToMicro).start();
-        }
+            }
+        });
+        new Thread(sendOrderToMicro).start();
+
     }
 
-    private void errorScene(){
+    private void errorScene() {
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
         alert.setHeaderText(null);
         alert.setContentText("SOMETHING WENT TERRIBLY WRONG!");
@@ -85,7 +85,7 @@ public class SceneProcessingOrder {
         sceneError.getScene(primaryStage);
     }
 
-    private void nextScene(){
+    private void nextScene() {
         SceneOrderCompleted sceneOrderCompleted = new SceneOrderCompleted();
         sceneOrderCompleted.getScene(primaryStage);
     }
