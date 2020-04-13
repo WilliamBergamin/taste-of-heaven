@@ -18,7 +18,6 @@ public class SceneOrderCompleted {
 
     public void getScene(Stage primaryStage){
 
-        System.out.println("Entered scene completed");
         this.primaryStage = primaryStage;
 
         image = new Image(getClass().getResourceAsStream("static/drink-responsibly.png"));

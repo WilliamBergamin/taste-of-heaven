@@ -18,7 +18,6 @@ public class SceneHome {
 
     public void getScene(Stage primaryStage){
 
-        System.out.println("Entered scene home");
         this.primaryStage = primaryStage;
 
         CustomVBox vb = new CustomVBox();

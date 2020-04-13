@@ -50,15 +50,16 @@ public class MachineMicrocontrolerHelper {
                     if (MachineMicrocontrolerHelper.microState == "error"){
                         Machine.setState((short) 2);
                         Machine.setError("Problem with micro controller");
-                    }
-                    // TODO add more information on sensor level
-                    // if bottom sensors are not all 1 then put machine in empty mode
-                    if ((received[0] & (byte) 31) != (byte) 31){
-                        // set state of machine to empty
-                        Machine.setState((short) 1);
-                    }else{
-                        // set state of machine to ok
-                        Machine.setState((short) 0);
+                    }else {
+                        // TODO add more information on sensor level
+                        // if bottom sensors are not all 1 then put machine in empty mode
+                        if ((received[0] & (byte) 31) != (byte) 31) {
+                            // set state of machine to empty
+                            Machine.setState((short) 1);
+                        } else {
+                            // set state of machine to ok
+                            Machine.setState((short) 0);
+                        }
                     }
                 } catch (IOException | InterruptedException e) {
                     e.printStackTrace();
@@ -146,6 +147,4 @@ public class MachineMicrocontrolerHelper {
         }
 
     }
-
-
 }

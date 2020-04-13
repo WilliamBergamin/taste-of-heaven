@@ -21,7 +21,6 @@ public class SceneReceiveOrder {
 
     public void getScene(Stage primaryStage){
 
-        System.out.println("Entered scene receiver");
         ScannerHelper.scannerOn();
 
         this.primaryStage = primaryStage;
