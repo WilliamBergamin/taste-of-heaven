@@ -22,6 +22,7 @@ public class SceneProcessingOrder {
 
     public void getScene(Stage primaryStage){
 
+        System.out.println("Entered scene processing");
         this.primaryStage = primaryStage;
 
         CustomVBox vb = new CustomVBox();
