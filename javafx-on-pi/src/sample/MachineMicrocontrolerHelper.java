@@ -46,6 +46,7 @@ public class MachineMicrocontrolerHelper {
                     System.out.println("[HEX DATA]   " + event.getHexByteString());
                     byte[] received = event.getByteBuffer().array();
                     MachineMicrocontrolerHelper.microState = possibleMicroState.getOrDefault(received[2], "error");
+                    System.out.print("state:"+MachineMicrocontrolerHelper.microState);
                     if (MachineMicrocontrolerHelper.microState == "error"){
                         Machine.setState((short) 2);
                         Machine.setError("Problem with micro controller");
