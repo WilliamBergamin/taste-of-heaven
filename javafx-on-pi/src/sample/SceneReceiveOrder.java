@@ -86,6 +86,7 @@ public class SceneReceiveOrder {
             public void handle(KeyEvent event) {
                 orderKey.append(event.getCharacter());
                 if (orderKey.length() == ORDERKEYLENGHT){
+                    System.out.println("got key:"+orderKey);
                     onOrderKeyEnter();
                 }
             }
@@ -103,6 +104,7 @@ public class SceneReceiveOrder {
             alert.show();
             orderKey.delete(0, ORDERKEYLENGHT);
         }else {
+            System.out.println("got order:"+response.toString());
             Machine.setSelectedOrder(response.getString("order_key"));
             nextScene(response);
         }
@@ -115,6 +117,7 @@ public class SceneReceiveOrder {
     }
 
     private void nextScene(JSONObject order){
+        System.out.println("going to process order");
         ScannerHelper.scannerOff();
         SceneProcessingOrder sceneProcessingOrder = new SceneProcessingOrder(order);
         sceneProcessingOrder.getScene(primaryStage);
