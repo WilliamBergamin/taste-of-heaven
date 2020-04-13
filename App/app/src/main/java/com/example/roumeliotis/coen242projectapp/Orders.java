@@ -23,7 +23,7 @@ public class Orders extends AppCompatActivity{
     Manager Manager;
     String eventKey;
     User user;
-    List<String> orderKey = new ArrayList<String>();
+    List<Order> orderKey = new ArrayList<Order>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,7 +44,7 @@ public class Orders extends AppCompatActivity{
         List<ImageView> qrImages = new ArrayList<ImageView>();
         for (int i = 0; i < orders.size(); i++) {
             orderStrings.add(orders.get(i).toString());
-            orderKey.add(orders.get(i).toString());
+            orderKey.add(orders.get(i));
         }
 
         ordersList.setAdapter(new ArrayAdapter<String>(this, R.layout.row, orderStrings));
@@ -53,7 +53,7 @@ public class Orders extends AppCompatActivity{
         {
             public void onItemClick(AdapterView<?> arg0,View arg1, int position, long arg3)
             {
-                String ord = orderKey.get(position).toString();
+                String ord = orderKey.get(position).getOrder_key();
                 Intent intent = new Intent();
                 intent.putExtra("eventKey", eventKey);
                 intent.putExtra("user", user);
