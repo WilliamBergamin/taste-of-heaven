@@ -40,12 +40,12 @@ public class MachineMicrocontrolerHelper {
                 try {
                     mutex.acquire();
                     // byte meaning
-                    // 2: status
+                    // 0: status
                     // 1: water sensors
-                    // 0: water sensors
+                    // 2: water sensors
                     System.out.println("[HEX DATA]   " + event.getHexByteString());
                     byte[] received = event.getByteBuffer().array();
-                    MachineMicrocontrolerHelper.microState = possibleMicroState.getOrDefault(received[2], "error");
+                    MachineMicrocontrolerHelper.microState = possibleMicroState.getOrDefault(received[0], "error");
                     System.out.println("state: "+MachineMicrocontrolerHelper.microState);
                     if (MachineMicrocontrolerHelper.microState == "error"){
                         Machine.setState((short) 2);
