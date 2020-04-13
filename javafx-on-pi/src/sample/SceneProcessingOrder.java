@@ -46,7 +46,7 @@ public class SceneProcessingOrder {
                 @Override
                 protected Void call() throws Exception {
                     try {
-                        Thread.sleep(100);
+                        Thread.sleep(3000);
                     } catch (InterruptedException e) {
                     }
                     while(MachineMicrocontrolerHelper.getMicrocontrolerState() == "processing"){
