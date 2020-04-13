@@ -86,6 +86,7 @@ public class SceneReceiveOrder {
             @Override
             public void handle(KeyEvent event) {
                 orderKey.append(event.getCharacter());
+                System.out.println("got char added:"+orderKey);
                 if (orderKey.length() == ORDERKEYLENGHT){
                     System.out.println("got key:"+orderKey);
                     onOrderKeyEnter();
@@ -112,6 +113,7 @@ public class SceneReceiveOrder {
     }
 
     private void backScene(){
+        System.out.println("pressed cancelled");
         ScannerHelper.scannerOff();
         SceneHome sceneHome = new SceneHome();
         sceneHome.getScene(primaryStage);
