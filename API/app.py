@@ -322,6 +322,7 @@ def machine_update():
     if g.get('current_machine', None) is None:
         return json_error('No machine found might have been a user token', status=401)
     data = request.json
+    print(str(json.dumps(data)))
     g.current_machine.set_state_error_location(state=data.get('state'),
                                                error=data.get('error'),
                                                location=data.get('location'))
