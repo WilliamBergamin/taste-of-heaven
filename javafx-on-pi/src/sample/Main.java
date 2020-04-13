@@ -24,6 +24,7 @@ public class Main extends Application {
     @Override
     public void start(Stage primaryStage){
 
+        System.out.println("started!!!!");
         ScannerHelper.scannerOn();
 
         this.primaryStage = primaryStage;
