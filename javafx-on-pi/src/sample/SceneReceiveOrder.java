@@ -16,7 +16,7 @@ public class SceneReceiveOrder {
     private Stage primaryStage;
     private StringBuffer orderKey = new StringBuffer();
 
-    private final TextField tempTextField = new TextField();
+//    private final TextField tempTextField = new TextField();
 
 
     public void getScene(Stage primaryStage){
@@ -30,54 +30,54 @@ public class SceneReceiveOrder {
         ProgressIndicator progressIndicator = new ProgressIndicator();
         progressIndicator.setStyle(PROGRESSSTYLE);
 
-        Button btn = new Button();
-        btn.setText("Cancel");
-        btn.setStyle(BUTTONSTYLE);
-        btn.pressedProperty().addListener((observable, wasPressed, pressed) -> {
+        Button CancelBtn = new Button();
+        CancelBtn.setText("Cancel");
+        CancelBtn.setStyle(BUTTONSTYLE);
+        CancelBtn.pressedProperty().addListener((observable, wasPressed, pressed) -> {
             if (pressed) {
-                btn.setStyle(PRESSEDBUTTONSTYLE);
+                CancelBtn.setStyle(PRESSEDBUTTONSTYLE);
             } else {
-                btn.setStyle(BUTTONSTYLE);
+                CancelBtn.setStyle(BUTTONSTYLE);
             }
         });
-        btn.setPadding(new Insets(10, 15, 10, 15));
-        btn.setOnAction(new EventHandler<ActionEvent>() {
+        CancelBtn.setPadding(new Insets(10, 15, 10, 15));
+        CancelBtn.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
                 backScene();
             }
         });
 
-        Button manualBtn = new Button();
-        manualBtn.setText("Manual Enter");
-        manualBtn.setStyle(BUTTONSTYLE);
-        manualBtn.pressedProperty().addListener((observable, wasPressed, pressed) -> {
-            if (pressed) {
-                manualBtn.setStyle(PRESSEDBUTTONSTYLE);
-            } else {
-                manualBtn.setStyle(BUTTONSTYLE);
-            }
-        });
-        manualBtn.setPadding(new Insets(10, 15, 10, 15));
-        manualBtn.setOnAction(new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent event) {
-                orderKey.delete(0, orderKey.length());
-                orderKey.append(tempTextField.getText());
-                onOrderKeyEnter();
-            }
-        });
+//        Button manualBtn = new Button();
+//        manualBtn.setText("Manual Enter");
+//        manualBtn.setStyle(BUTTONSTYLE);
+//        manualBtn.pressedProperty().addListener((observable, wasPressed, pressed) -> {
+//            if (pressed) {
+//                manualBtn.setStyle(PRESSEDBUTTONSTYLE);
+//            } else {
+//                manualBtn.setStyle(BUTTONSTYLE);
+//            }
+//        });
+//        manualBtn.setPadding(new Insets(10, 15, 10, 15));
+//        manualBtn.setOnAction(new EventHandler<ActionEvent>() {
+//            @Override
+//            public void handle(ActionEvent event) {
+//                orderKey.delete(0, orderKey.length());
+//                orderKey.append(tempTextField.getText());
+//                onOrderKeyEnter();
+//            }
+//        });
 
-        tempTextField.setMaxWidth(200);
+//        tempTextField.setMaxWidth(200);
 
         Label label1 = new Label("Scan Barcode!");
         label1.setStyle(LABELSTYLE);
 
         vb.getChildren().add(label1);
         vb.getChildren().add(progressIndicator);
-        vb.getChildren().add(btn);
-        vb.getChildren().add(tempTextField);
-        vb.getChildren().add(manualBtn);
+        vb.getChildren().add(CancelBtn);
+//        vb.getChildren().add(tempTextField);
+//        vb.getChildren().add(manualBtn);
 
         Scene scene2 = new Scene(vb, WIDTH, HEIGHT);
 
