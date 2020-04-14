@@ -38,26 +38,28 @@ public class MachineMicrocontrolerHelper {
                 // serial port.  If it does not get read from the receive buffer, the
                 // buffer will continue to grow and consume memory.
                 try {
-                    mutex.acquire();mutex.acquire();
+                    mutex.acquire();
                     // byte meaning
-                    // 2: status
+                    // 0: status
                     // 1: water sensors
-                    // 0: water sensors
+                    // 2: water sensors
                     System.out.println("[HEX DATA]   " + event.getHexByteString());
                     byte[] received = event.getByteBuffer().array();
-                    MachineMicrocontrolerHelper.microState = possibleMicroState.getOrDefault(received[2], "error");
+                    MachineMicrocontrolerHelper.microState = possibleMicroState.getOrDefault(received[0], "error");
+                    System.out.println("state: "+MachineMicrocontrolerHelper.microState);
                     if (MachineMicrocontrolerHelper.microState == "error"){
                         Machine.setState((short) 2);
                         Machine.setError("Problem with micro controller");
-                    }
-                    // TODO add more information on sensor level
-                    // if bottom sensors are not all 1 then put machine in empty mode
-                    if ((received[0] & (byte) 31) != (byte) 31){
-                        // set state of machine to empty
-                        Machine.setState((short) 1);
-                    }else{
-                        // set state of machine to ok
-                        Machine.setState((short) 0);
+                    }else {
+                        // TODO add more information on sensor level
+                        // if bottom sensors are not all 1 then put machine in empty mode
+                        if ((received[0] & (byte) 31) != (byte) 31) {
+                            // set state of machine to empty
+                            Machine.setState((short) 1);
+                        } else {
+                            // set state of machine to ok
+                            Machine.setState((short) 0);
+                        }
                     }
                 } catch (IOException | InterruptedException e) {
                     e.printStackTrace();
@@ -145,6 +147,4 @@ public class MachineMicrocontrolerHelper {
         }
 
     }
-
-
 }

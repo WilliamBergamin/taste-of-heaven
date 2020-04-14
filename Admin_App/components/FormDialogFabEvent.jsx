@@ -62,7 +62,7 @@ export default function FormDialogFab(props) {
         aria-labelledby="form-dialog-title"
       >
         <DialogTitle id="form-dialog-title">
-          You are Creating a new machine!
+          You are Creating a new Event!
         </DialogTitle>
         <DialogContent>
           <DialogContentText id="alert-dialog-description">

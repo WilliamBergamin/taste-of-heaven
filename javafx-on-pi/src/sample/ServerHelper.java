@@ -81,6 +81,7 @@ public class ServerHelper {
             obj.put("error", Machine.getError());
             obj.put("location", Machine.getLocation());
 
+            System.out.println(obj.toString());
             //Send request
             DataOutputStream wr = new DataOutputStream (
                     connection.getOutputStream ());
@@ -98,6 +99,7 @@ public class ServerHelper {
                 response.append('\r');
             }
             rd.close();
+            System.out.println(response.toString());
             return new JSONObject(response.toString());
 
         } catch (Exception e) {

@@ -34,7 +34,7 @@ public class QRCode extends AppCompatActivity {
         orderKey = userInfo.getStringExtra("orderKey");
         qrImage = (ImageView) findViewById(R.id.QR_Image);
 
-        qrgEncoder = new QRGEncoder(eventKey, null, QRGContents.Type.TEXT, 700);
+        qrgEncoder = new QRGEncoder(orderKey, null, QRGContents.Type.TEXT, 700);
         try {
             // Getting QR-Code as Bitmap
             bitmap = qrgEncoder.encodeAsBitmap();
