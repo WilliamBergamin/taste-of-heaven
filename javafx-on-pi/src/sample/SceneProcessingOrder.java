@@ -50,7 +50,7 @@ public class SceneProcessingOrder {
                 } catch (InterruptedException e) {
                 }
                 while (MachineMicrocontrolerHelper.getMicrocontrolerState() == "processing") {
-                    System.out.println("waiting on microcontroler to finish");
+                    //wait on microcontroller
                 }
                 return null;
             }
