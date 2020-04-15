@@ -16,7 +16,7 @@ public class Order implements Parcelable {
     private String state = null;
     private boolean paid = false;
 
-    public Order(long id,Long user_id, String order_key, String machine_id, String mixer, String alcohol,
+    public Order(long id,long user_id, String order_key, String machine_id, String mixer, String alcohol,
                  boolean doubleAlcohol, double price, String state, Boolean paid) {
         this.id = id;
         this.user_id = user_id;
